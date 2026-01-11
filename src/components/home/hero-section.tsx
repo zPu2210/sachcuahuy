@@ -92,53 +92,34 @@ export function HeroSection() {
               <div className="absolute inset-0 bg-accent/20 blur-[60px] rounded-full transform scale-110 group-hover:scale-125 transition-transform duration-700"></div>
 
               {/* 3D Book Container */}
-              <Link href={`/sach/${featuredBook.slug}`} className="relative block transform-style-3d hover:rotate-y-[-10deg] hover:rotate-x-[5deg] transition-all duration-500 ease-out cursor-pointer" style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}>
+              <Link href={`/sach/${featuredBook.slug}`} className="relative block transform-style-3d hover:rotate-y-[-10deg] hover:rotate-x-[5deg] transition-all duration-500 ease-out cursor-pointer group" style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}>
 
                 {/* Book Spine (Left) */}
-                <div className="absolute left-0 top-0 bottom-0 w-[40px] bg-[#141D36] transform -translate-x-[20px] translate-z-[-20px] rotate-y-[-90deg] flex flex-col items-center justify-center border-l border-white/10">
-                  <span className="font-serif text-white/80 tracking-[0.2em] text-xs rotate-90 whitespace-nowrap">TRỌNG HUY</span>
+                <div className="absolute left-0 top-[2px] bottom-[2px] w-[24px] bg-[#1a237e] transform -translate-x-[12px] translate-z-[-12px] rotate-y-[-90deg] flex flex-col items-center justify-center border-l border-white/10 rounded-sm overflow-hidden z-20">
+                  <span className="font-serif text-white/80 tracking-[0.2em] text-[8px] rotate-90 whitespace-nowrap mt-auto mb-12 opacity-70">NXB DÂN TRÍ</span>
                 </div>
 
                 {/* Book Pages (Right side thickness) */}
-                <div className="absolute right-0 top-2 bottom-2 w-[30px] bg-white transform translate-x-[15px] translate-z-[-15px] rotate-y-[90deg] shadow-inner"
-                  style={{ backgroundImage: 'linear-gradient(to right, #e5e5e5 1px, transparent 1px)', backgroundSize: '4px 100%' }}>
+                <div className="absolute right-0 top-1 bottom-1 w-[28px] bg-[#F5F5F0] transform translate-x-[14px] translate-z-[-12px] rotate-y-[90deg] shadow-inner rounded-sm"
+                  style={{ backgroundImage: 'linear-gradient(to right, #e0e0e0 1px, transparent 1px)', backgroundSize: '3px 100%' }}>
                 </div>
 
                 {/* Front Cover */}
-                <div className="relative w-[300px] md:w-[380px] aspect-[3/4.5] bg-[#1E2B4D] rounded-r-sm rounded-l-md shadow-2xl overflow-hidden transform translate-z-[20px] border-r-2 border-white/5">
-                  {/* Texture Overlay */}
-                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/leather.png')] opacity-30 mix-blend-overlay"></div>
+                <div className="relative w-[300px] md:w-[350px] aspect-[1/1.45] bg-[#1a237e] rounded-sm shadow-2xl overflow-hidden transform translate-z-[12px]">
+                  {/* Real Image Cover */}
+                  <img
+                    src="/images/book-cover-front.png"
+                    alt="Miền Nam của Huy - Trọng Huy"
+                    className="w-full h-full object-cover"
+                  />
 
-                  {/* Sheen/Reflection */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none z-10"></div>
-
-                  {/* Book Content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center text-white z-0">
-                    <span className="font-serif text-sm tracking-[0.3em] mb-12 opacity-80 border-b border-accent/50 pb-2">TRỌNG HUY</span>
-
-                    <div className="relative mb-12">
-                      <div className="absolute inset-0 border border-accent/30 rounded-full transform scale-110"></div>
-                      <div className="w-40 h-40 bg-white/95 rounded-full flex items-center justify-center shadow-lg transform group-hover:scale-105 transition-transform duration-500">
-                        <div className="text-center transform -rotate-6">
-                          <span className="font-script text-navy text-3xl block leading-none">Miền Nam</span>
-                          <span className="font-sans text-accent font-bold text-sm tracking-widest uppercase mt-1 block">của Huy</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-auto space-y-4">
-                      <div className="w-8 h-8 rounded-full border border-white/20 mx-auto flex items-center justify-center">
-                        <span className="text-[10px] font-bold">TH</span>
-                      </div>
-                      <span className="text-[10px] tracking-widest opacity-50 block">NHÀ XUẤT BẢN DÂN TRÍ</span>
-                    </div>
-                  </div>
-
-                  {/* Gold Foil Effect on Title */}
+                  {/* Sheen/Reflection for realism */}
+                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none z-20 mix-blend-overlay opacity-50"></div>
+                  <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-gradient-to-r from-black/20 to-transparent z-20"></div> {/* Spine crease */}
                 </div>
 
                 {/* Back Cover (just a darker slab behind) */}
-                <div className="absolute inset-0 bg-[#0f1629] rounded-l-md transform translate-z-[-20px] shadow-2xl"></div>
+                <div className="absolute inset-0 bg-[#0f1629] rounded-sm transform translate-z-[-12px] shadow-2xl"></div>
 
               </Link>
             </motion.div>

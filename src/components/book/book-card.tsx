@@ -21,36 +21,47 @@ export function BookCard({ book, featured = false }: BookCardProps) {
       {/* Image Container */}
       <div className="relative aspect-[3/4.2] overflow-hidden rounded-t-2xl bg-[#F0F0F0]">
         <Link href={isComingSoon ? "#" : `/sach/${book.slug}`} className="block w-full h-full">
-          {/* Fallback CSS Cover if no image - simplified for card */}
-          <div className={clsx(
-            "absolute inset-0 flex flex-col items-center justify-center p-6 text-white transition-transform duration-700 ease-out group-hover:scale-105",
-            isComingSoon ? "bg-gray-200" : "bg-[#1E2B4D]"
-          )}>
-            {/* Texture */}
-            {!isComingSoon && <div className="absolute inset-0 bg-white opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/leather.png')]"></div>}
+          {!isComingSoon && book.slug === 'mien-nam-cua-huy' ? (
+            <div className="absolute inset-0 bg-[#E0E0E0] group-hover:scale-105 transition-transform duration-700 ease-out">
+              <img
+                src="/images/book-cover-front.png"
+                alt={book.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/5 mix-blend-multiply"></div>
+            </div>
+          ) : (
+            /* Fallback CSS Cover if no image or for other books */
+            <div className={clsx(
+              "absolute inset-0 flex flex-col items-center justify-center p-6 text-white transition-transform duration-700 ease-out group-hover:scale-105",
+              isComingSoon ? "bg-gray-200" : "bg-[#1E2B4D]"
+            )}>
+              {/* Texture */}
+              {!isComingSoon && <div className="absolute inset-0 bg-white opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/leather.png')]"></div>}
 
-            {isComingSoon ? (
-              <div className="text-gray-400 flex flex-col items-center">
-                <BookIcon className="w-12 h-12 mb-3 opacity-50" />
-                <span className="font-medium text-sm">Sắp ra mắt</span>
-              </div>
-            ) : (
-              <>
-                <div className="w-full h-full border border-white/10 p-4 flex flex-col items-center justify-center relative z-10">
-                  <span className="font-serif text-[10px] tracking-[0.2em] mb-6 opacity-80">TRỌNG HUY</span>
-                  <div className="w-24 h-24 rounded-full bg-white text-primary flex items-center justify-center shadow-lg transform -rotate-3 mb-6">
-                    <div className="text-center leading-none">
-                      <span className="font-script text-lg block">Miền Nam</span>
-                      <span className="font-sans text-[8px] font-bold tracking-widest uppercase mt-1 block text-accent">của Huy</span>
+              {isComingSoon ? (
+                <div className="text-gray-400 flex flex-col items-center">
+                  <BookIcon className="w-12 h-12 mb-3 opacity-50" />
+                  <span className="font-medium text-sm">Sắp ra mắt</span>
+                </div>
+              ) : (
+                <>
+                  <div className="w-full h-full border border-white/10 p-4 flex flex-col items-center justify-center relative z-10">
+                    <span className="font-serif text-[10px] tracking-[0.2em] mb-6 opacity-80">TRỌNG HUY</span>
+                    <div className="w-24 h-24 rounded-full bg-white text-primary flex items-center justify-center shadow-lg transform -rotate-3 mb-6">
+                      <div className="text-center leading-none">
+                        <span className="font-script text-lg block">{book.title.substring(0, 10)}...</span>
+                        <span className="font-sans text-[8px] font-bold tracking-widest uppercase mt-1 block text-accent">của Huy</span>
+                      </div>
+                    </div>
+                    <div className="mt-auto border-t border-white/20 pt-3 w-12 text-center">
+                      <span className="text-[8px] font-bold opacity-60">NXB</span>
                     </div>
                   </div>
-                  <div className="mt-auto border-t border-white/20 pt-3 w-12 text-center">
-                    <span className="text-[8px] font-bold opacity-60">NXB</span>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
+                </>
+              )}
+            </div>
+          )}
         </Link>
 
         {/* Quick Actions overlay */}
