@@ -19,7 +19,7 @@ export function HeroSection() {
         <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
       </div>
 
-      <div className="container-custom relative z-10 py-12 md:py-20">
+      <div className="container-custom relative z-10 pt-28 pb-12 md:py-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Text Content */}
           <div className="order-2 lg:order-1">
@@ -81,7 +81,7 @@ export function HeroSection() {
           </div>
 
           {/* 3D Book Visualization */}
-          <div className="order-1 lg:order-2 flex justify-center perspective-1000">
+          <div className="order-1 lg:order-2 flex justify-center perspective-1000 mt-8 md:mt-0">
             <motion.div
               initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
               animate={{ opacity: 1, scale: 1, rotateY: 0 }}
@@ -108,7 +108,7 @@ export function HeroSection() {
                 <div className="relative w-[300px] md:w-[350px] aspect-[1/1.45] bg-[#1a237e] rounded-sm shadow-2xl overflow-hidden transform translate-z-[12px]">
                   {/* Real Image Cover */}
                   <img
-                    src="/images/book-cover-front.png"
+                    src="/images/book-cover-front.png?v=1"
                     alt="Miền Nam của Huy - Trọng Huy"
                     className="w-full h-full object-cover"
                   />

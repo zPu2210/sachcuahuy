@@ -24,7 +24,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
           {!isComingSoon && book.slug === 'mien-nam-cua-huy' ? (
             <div className="absolute inset-0 bg-[#E0E0E0] group-hover:scale-105 transition-transform duration-700 ease-out">
               <img
-                src="/images/book-cover-front.png"
+                src="/images/book-cover-front.png?v=1"
                 alt={book.title}
                 className="w-full h-full object-cover"
               />
