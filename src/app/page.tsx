@@ -10,7 +10,7 @@ export default function HomePage() {
       <HeroSection />
 
       {/* Decorative Line */}
-      <div className="decorative-line opacity-30 my-8"></div>
+      {/* <div className="decorative-line opacity-30 my-8"></div> */}
 
       <AuthorSection />
       <BooksSection />

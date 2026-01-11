@@ -1,90 +1,102 @@
+"use client";
+
 import Link from "next/link";
-import { ShoppingCart, Bell, Book as BookIcon } from "lucide-react";
+import { ShoppingCart, Eye, Book as BookIcon } from "lucide-react";
 import { Book, formatPrice } from "@/lib/data";
+import clsx from "clsx";
 
 interface BookCardProps {
   book: Book;
+  featured?: boolean;
 }
 
-export function BookCard({ book }: BookCardProps) {
+export function BookCard({ book, featured = false }: BookCardProps) {
   const isComingSoon = book.isComingSoon;
 
   return (
-    <div className="card card-hover overflow-hidden cursor-pointer group">
-      <Link href={isComingSoon ? "#" : `/sach/${book.slug}`}>
-        <div className="aspect-[3/4] relative overflow-hidden bg-primary">
-          {/* Book Cover Placeholder - matching navy theme */}
-          <div
-            className={`absolute inset-0 flex flex-col items-center justify-center p-6 text-white group-hover:scale-105 transition-transform duration-500 ${
-              isComingSoon ? "bg-gray-200" : "bg-primary"
-            }`}
-          >
+    <div className={clsx(
+      "group relative bg-white rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.25,0.8,0.25,1)]",
+      "hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-2"
+    )}>
+      {/* Image Container */}
+      <div className="relative aspect-[3/4.2] overflow-hidden rounded-t-2xl bg-[#F0F0F0]">
+        <Link href={isComingSoon ? "#" : `/sach/${book.slug}`} className="block w-full h-full">
+          {/* Fallback CSS Cover if no image - simplified for card */}
+          <div className={clsx(
+            "absolute inset-0 flex flex-col items-center justify-center p-6 text-white transition-transform duration-700 ease-out group-hover:scale-105",
+            isComingSoon ? "bg-gray-200" : "bg-[#1E2B4D]"
+          )}>
+            {/* Texture */}
+            {!isComingSoon && <div className="absolute inset-0 bg-white opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/leather.png')]"></div>}
+
             {isComingSoon ? (
               <div className="text-gray-400 flex flex-col items-center">
-                <BookIcon className="w-16 h-16 mb-4 opacity-50" />
-                <span className="font-medium">Sắp ra mắt</span>
+                <BookIcon className="w-12 h-12 mb-3 opacity-50" />
+                <span className="font-medium text-sm">Sắp ra mắt</span>
               </div>
             ) : (
               <>
-                <span className="font-serif text-xs tracking-wider mb-3">
-                  TRỌNG HUY
-                </span>
-                <div className="w-20 h-20 bg-white/90 rounded-[40%] flex items-center justify-center transform rotate-[-5deg]">
-                  <span className="font-script text-navy text-sm text-center leading-tight px-2">
-                    {book.title.length > 20
-                      ? book.title.substring(0, 20) + "..."
-                      : book.title}
-                  </span>
+                <div className="w-full h-full border border-white/10 p-4 flex flex-col items-center justify-center relative z-10">
+                  <span className="font-serif text-[10px] tracking-[0.2em] mb-6 opacity-80">TRỌNG HUY</span>
+                  <div className="w-24 h-24 rounded-full bg-white text-primary flex items-center justify-center shadow-lg transform -rotate-3 mb-6">
+                    <div className="text-center leading-none">
+                      <span className="font-script text-lg block">Miền Nam</span>
+                      <span className="font-sans text-[8px] font-bold tracking-widest uppercase mt-1 block text-accent">của Huy</span>
+                    </div>
+                  </div>
+                  <div className="mt-auto border-t border-white/20 pt-3 w-12 text-center">
+                    <span className="text-[8px] font-bold opacity-60">NXB</span>
+                  </div>
                 </div>
               </>
             )}
           </div>
+        </Link>
 
-          {/* Badge */}
-          {book.isNew && (
-            <span className="absolute top-4 left-4 px-3 py-1 bg-accent text-primary text-xs font-semibold rounded-full">
-              Mới
-            </span>
-          )}
-        </div>
-      </Link>
+        {/* Quick Actions overlay */}
+        {!isComingSoon && (
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 px-4">
+            <Link href={`/sach/${book.slug}`} className="bg-white text-primary p-3 rounded-full shadow-lg hover:bg-accent hover:text-white transition-colors" title="Xem chi tiết">
+              <Eye className="w-4 h-4" />
+            </Link>
+            <button className="bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors" title="Thêm vào giỏ">
+              <ShoppingCart className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
-      <div className="p-6">
+        {/* Badge */}
+        {book.isNew && (
+          <span className="absolute top-3 left-3 px-3 py-1 bg-accent text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
+            Mới
+          </span>
+        )}
+      </div>
+
+      {/* Info */}
+      <div className="p-5">
         <Link href={isComingSoon ? "#" : `/sach/${book.slug}`}>
-          <h3
-            className={`font-serif text-xl font-semibold mb-2 ${
-              isComingSoon ? "text-gray-400" : "text-primary"
-            }`}
-          >
+          <h3 className={clsx(
+            "font-serif text-xl font-bold mb-1 line-clamp-1 transition-colors",
+            isComingSoon ? "text-gray-400" : "text-primary group-hover:text-accent"
+          )}>
             {book.title}
           </h3>
         </Link>
-        <p className={`text-sm mb-3 ${isComingSoon ? "text-gray-400" : "text-gray-500"}`}>
-          {book.author} • {book.publishedDate}
+        <p className="text-xs text-gray-500 mb-4 font-medium uppercase tracking-wide">
+          {book.author}
         </p>
-        <div className="flex items-center justify-between">
-          <span
-            className={`font-semibold text-lg ${
-              isComingSoon ? "text-gray-400" : "text-accent"
-            }`}
-          >
-            {isComingSoon ? "Sắp ra mắt" : formatPrice(book.price)}
+
+        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          <span className={clsx("font-serif font-bold text-lg", isComingSoon ? "text-gray-300" : "text-primary")}>
+            {isComingSoon ? "---" : formatPrice(book.price)}
           </span>
-          <button
-            className={`p-2 rounded-lg transition-colors cursor-pointer ${
-              isComingSoon
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-gray-400 hover:text-primary hover:bg-primary/5"
-            }`}
-            disabled={isComingSoon}
-            aria-label={isComingSoon ? "Thông báo khi có hàng" : "Thêm vào giỏ"}
-          >
-            {isComingSoon ? (
-              <Bell className="w-5 h-5" />
-            ) : (
-              <ShoppingCart className="w-5 h-5" />
-            )}
-          </button>
+
+          {!isComingSoon && (
+            <span className="text-xs text-gray-400 font-medium group-hover:text-accent transition-colors">
+              Xem chi tiết &rarr;
+            </span>
+          )}
         </div>
       </div>
     </div>

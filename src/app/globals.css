@@ -27,6 +27,7 @@ html {
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -54,6 +55,7 @@ html {
 
 /* Component layer */
 @layer components {
+
   /* Button variants */
   .btn {
     @apply inline-flex items-center justify-center px-6 py-3 font-medium rounded-lg transition-all duration-200 ease-out cursor-pointer;
@@ -101,4 +103,36 @@ html {
   background-repeat: repeat-x;
   background-size: 200px 20px;
   height: 20px;
+}
+
+@layer utilities {
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+
+  .rotate-x-12 {
+    transform: rotateX(12deg);
+  }
+
+  .rotate-y-12 {
+    transform: rotateY(12deg);
+  }
+
+  .rotate-y-90 {
+    transform: rotateY(90deg);
+  }
+
+  .rotate-y-px {
+    transform: rotateY(1px);
+    /* minimal rotation to force 3d context if needed */
+  }
+
+  /* Glassmorphism */
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-lg;
+  }
 }
