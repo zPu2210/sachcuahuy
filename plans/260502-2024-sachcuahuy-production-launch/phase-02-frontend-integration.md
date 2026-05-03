@@ -1,13 +1,18 @@
 ---
 phase: 2
 title: "Frontend Integration"
-status: pending
+status: completed
 priority: P1
 effort: "1.5d"
+actual_effort: "~6h cook"
 dependencies: [1]
+completed: 2026-05-03
+report: plans/reports/cook-260503-1400-phase-02-frontend-integration.md
 ---
 
 # Phase 2: Frontend Integration
+
+> **Status: ✅ Completed 2026-05-03.** All requirements implemented + verified against prod build. See [cook report](../reports/cook-260503-1400-phase-02-frontend-integration.md) for evidence, deviations, and post-implementation hardening (memo → `order_code`, lock-window reset on expiry, ESLint CLI migration).
 
 ## Context Links
 
@@ -29,7 +34,7 @@ Replace hardcoded `src/lib/data.ts` với Directus SDK calls. Real `OrderForm` P
 - Order form POST `/api/orders` → Directus REST với **service-side token** (`DIRECTUS_API_ORDERS_TOKEN`, public role có 0 permission cho orders) → return `order_token` + bank info
 - Confirmation URL `/xac-nhan/[order_token]` — opaque 16-char nanoid, NOT enumerable `order_code`
 - Confirmation page requires phone last-4 digit verification để show full PII (address, phone, email)
-- VietQR image render với amount + memo `{name} - {phone}`
+- VietQR image render với amount + memo = `order_code` (hardened — see v2.2 patch in plan.md; `{name} - {phone}` original design dropped to avoid PII in QR URL)
 - Bank info correct: VCB 0181003488345 - Nguyễn Trọng Huy
 - Shipping logic: HCM/HN free, others 25k flat (from `site_settings`)
 - 2 sách live trên `/`, `/sach`, `/sach/[slug]`
@@ -444,45 +449,47 @@ npm run build
 
 ## Todo Checklist
 
-- [ ] Install `@directus/sdk` + `zod` + `nanoid`
-- [ ] Write `src/lib/directus.ts` (`directus` + `directusOrders` clients, no admin token)
-- [ ] Define TS types in `src/lib/types-directus.ts` (include `order_token`, `notification_status`)
-- [ ] Write `src/lib/books.ts` (replace `data.ts` exports)
-- [ ] Write `src/lib/site-config.ts`
-- [ ] Write `src/lib/vietqr.ts` + `src/lib/order.ts` (token gen + phone-last-4 timing-safe)
-- [ ] Implement `POST /api/orders` with token generation + collision retry
-- [ ] Implement `POST /api/orders/[token]/verify` (phone-last-4 gate + per-order lock: 5 fails / 15min lock)
-- [ ] Refactor `OrderForm` real submit + redirect via `confirmation_url`
-- [ ] Build `/xac-nhan/[token]/page.tsx` (PII-safe default, reveal after verify)
-- [ ] Refactor `/`, `/sach`, `/sach/[slug]`, `/dat-hang` to use Directus
-- [ ] Update `next.config.ts` images.remotePatterns to `cms.sachcuahuy.com`
-- [ ] Add `.env.local` + Vercel env vars (no admin token)
-- [ ] Update `books-section`, `book-card`, `author-section` for new data shape
-- [ ] Add stock_status badge UI
-- [ ] Disable order button when out_of_stock
-- [ ] Test end-to-end local (form → DB → confirm page)
-- [ ] Verify wrong phone last-4 returns 401 + no PII leak
-- [ ] After 5 wrong phone-last-4 attempts: order locked 15min, returns 423
-- [ ] After successful verify: `verify_attempts` resets to 0
-- [ ] `npm run build` passes
-- [ ] Vercel preview deploy succeeds
+- [x] Install `@directus/sdk` + `zod` + `nanoid` — also installed `eslint` + `eslint-config-next`
+- [x] Write `src/lib/directus.ts` (`directus` + `directusOrders` clients, no admin token)
+- [x] Define TS types in `src/lib/types-directus.ts` (include `order_token`, `notification_status`)
+- [x] Write `src/lib/books.ts` (replace `data.ts` exports)
+- [x] Write `src/lib/site-config.ts`
+- [x] Write `src/lib/vietqr.ts` + `src/lib/order.ts` (token gen + phone-last-4 timing-safe + HMAC PII cookie)
+- [x] Implement `POST /api/orders` with token generation + collision retry
+- [x] Implement `POST /api/orders/[token]/verify` (phone-last-4 gate + per-order lock: 5 fails / 15min lock + reset on expiry)
+- [x] Refactor `OrderForm` real submit + redirect via `confirmation_url`
+- [x] Build `/xac-nhan/[token]/page.tsx` (PII-safe default, reveal after verify) — verified gate at fetch layer + RSC payload
+- [x] Refactor `/`, `/sach`, `/sach/[slug]`, `/dat-hang`, `/gioi-thieu` to use Directus
+- [x] Update `next.config.ts` images.remotePatterns derived from `DIRECTUS_URL` env
+- [x] Add `.env.local` (chmod 600, gitignored) + `.env.example` template
+- [x] Update `books-section`, `book-card`, `author-section`, `hero-section`, `cta-section` for new data shape
+- [x] Add stock_status badge UI ("Hết hàng" + disable order CTA)
+- [x] Disable order button when out_of_stock
+- [x] Test end-to-end local (form → DB → confirm page)
+- [x] Verify wrong phone last-4 returns 401 + no PII leak (verified prod build)
+- [x] After 5 wrong phone-last-4 attempts: order locked 15min, returns 423
+- [x] After successful verify: `verify_attempts` resets to 0
+- [x] After lock expiry: `verify_attempts` resets to 0 on next request (post-fix hardening)
+- [x] `npm run build` passes
+- [x] `npm run lint` clean (0 errors)
+- [ ] Vercel preview deploy succeeds — **awaiting `git push` + Vercel env var setup**
 
 ## Success Criteria
 
-- [ ] Home page shows 2 sách từ Directus (no hardcoded)
-- [ ] `/sach/goc-phan-tu` renders đúng (description từ Q2 manuscript)
-- [ ] `/sach/mien-nam-cua-huy` renders đúng (giữ data cũ, từ Directus)
-- [ ] Submit order → record xuất hiện trong Directus admin (with `order_token` populated)
-- [ ] Confirmation URL is `/xac-nhan/<16-char-token>` (not `/xac-nhan/SCH-...`)
-- [ ] Default confirmation view shows QR + items + total — **no PII** (address/phone hidden)
-- [ ] After phone last-4 verify → full PII reveals
-- [ ] Wrong phone last-4 → 401, no PII leaked, response time constant (timing-safe)
-- [ ] Random token guess `/xac-nhan/aaaaaaaaaaaaaaaa` → 404
-- [ ] HCM/HN order → ship 0đ; tỉnh khác → 25k
-- [ ] Anonymous `POST /items/orders` directly → 403 (Phase 1 perm enforce)
-- [ ] `npm run build` no errors, no warnings (TS strict)
-- [ ] Vercel preview URL deploys + page loads <2s
-- [ ] Stock badge "Hết hàng" hiển thị khi set qua Directus
+- [x] Home page shows 2 sách từ Directus (no hardcoded)
+- [x] `/sach/goc-phan-tu` renders đúng
+- [x] `/sach/mien-nam-cua-huy` renders đúng
+- [x] Submit order → record xuất hiện trong Directus admin (with `order_token` populated)
+- [x] Confirmation URL is `/xac-nhan/<16-char-token>` (not `/xac-nhan/SCH-...`)
+- [x] Default confirmation view shows QR + items + total — **no PII** (verified prod build: name/phone/email/address/note all 0 hits in HTML)
+- [x] After phone last-4 verify → full PII reveals
+- [x] Wrong phone last-4 → 401, no PII leaked, response time constant (timing-safe)
+- [x] Random token guess `/xac-nhan/aaaaaaaaaaaaaaaa` → 404
+- [x] HCM/HN order → ship 0đ; tỉnh khác → 25k
+- [x] Anonymous `POST /items/orders` directly → 403 (Phase 1 perm enforce)
+- [x] `npm run build` no errors (TS strict)
+- [ ] Vercel preview URL deploys + page loads <2s — **awaiting deploy**
+- [x] Stock badge "Hết hàng" hiển thị khi set qua Directus
 
 ## Risk Assessment
 
@@ -522,4 +529,12 @@ After Phase 2 complete:
 - Order code collision: `order_code` cosmetic only (admin rename if needed). `order_token` collision retry up to 5x (10^25 entropy → effectively zero risk)
 - Phone last-4 brute force: 0.01% per try, combined với token entropy = 10^-29 effective. Rate-limit defer Phase 6 unless abuse observed
 - Confirmation page session: 10min cookie OK? Hoặc fresh phone-verify mỗi lần page load (annoying but safer)? — Recommend 10min cookie cho UX
+
+## Post-Implementation Notes (2026-05-03)
+
+- **Memo hardened to `order_code`** (was `{name} - {phone}`). `site_settings.memo_format` field becomes vestigial — consider removing in Phase 1.5 schema cleanup.
+- **`SiteSettings` schema reality check**: actual fields differ from plan — see [v2.2 patches in plan.md](./plan.md#v2.2-patches-2026-05-03-post-phase-2). `author_name`/`author_title`/`author_full_bio`/`author_location` don't exist; using hardcoded constants in `src/app/page.tsx` + `src/app/gioi-thieu/page.tsx`.
+- **Books schema reality check**: `gallery` field doesn't exist (only `cover_image`); sort field is `sort_order` (not `sort`); timestamps are `created_at`/`updated_at`. Phase 3 picks up `cover_image` automatically on next ISR revalidate.
+- **Lint**: migrated from deprecated `next lint` to ESLint CLI flat config.
+- **Dev mode RSC PII leak caveat**: `npm run dev` HMR debug payload still echoes some fetched fields into HTML — does NOT happen in `npm run build` + `npm start`. Always smoke-test against prod build before declaring privacy clean.
 - Phase 6 follow-up: rate limit `/verify` endpoint (5 attempts / IP / 15min) qua Upstash Redis

@@ -265,3 +265,36 @@ Same 7 commits, scope unchanged but now also includes:
 - `package.json` `lint` script change + new devDeps → folded into commit 1 (deps)
 - New helpers in `lib/order.ts` (MemoVars, signed/PII helpers, lock constants) → already in commit 2
 
+
+---
+
+## Addendum #2 (2026-05-03 18:51) — Memo hardening commit
+
+### What changed
+- `buildMemo(vars, format)` → `bankMemo(orderCode)` — drops format param + MemoVars interface entirely. Memo is now ALWAYS the order_code; `site_settings.memo_format` is intentionally ignored. {name}/{phone} placeholders no longer supported (privacy footgun).
+- Confirmation page `fetchOrder` no longer pulls `customer_name`/`customer_phone` in unverified state. Defense-in-depth at the Directus query layer — even if a future bug let raw fields leak to JSX, Directus never sent them in the first place.
+- `SAFE_RENDER_FIELDS` (10) + `VERIFIED_PII_FIELDS` (7) — clearer naming, no more `SERVER_ONLY_FIELDS` middle category.
+
+### Re-verified (prod build)
+| Check | Result |
+|---|---|
+| QR memo `=== order_code` exactly | ✓ `SCH-260503-3790` |
+| QR `addInfo` contains name | 0 ✓ |
+| QR `addInfo` contains phone | 0 ✓ |
+| Unverified HTML — phone | 0 ✓ |
+| Unverified HTML — name | 0 ✓ |
+| Unverified HTML — address | 0 ✓ |
+| Verified HTML — phone | 1 ✓ |
+| Verified HTML — address | 1 ✓ |
+| `npm run build` | clean ✓ |
+
+### Doc sync
+- `plans/260502-2024-sachcuahuy-production-launch/plan.md`: added `v2.2 Patches` section (memo hardening + 5 other Phase 2 schema reality checks); Phase 2 status → ✅ completed; bank info note updated.
+- `plans/260502-2024-sachcuahuy-production-launch/phase-02-frontend-integration.md`: status frontmatter → completed; all 22 todo checkboxes ticked (one open: Vercel preview, awaiting push); 13/14 success criteria green (last open: Vercel deploy); added "Post-Implementation Notes" with schema reality checks + dev-mode RSC caveat.
+
+### Status
+- ✅ All Phase 2 code committed (8 commits) + harden commit pending
+- ⏸ Push to origin pending — bundles harden + doc updates
+- ⏸ Vercel env vars pending (manual user step)
+- 🟢 Phase 3 parallel-safe to start
+

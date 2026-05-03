@@ -1,10 +1,12 @@
 ---
 title: "sachcuahuy production launch — Phase 1-5"
 created: 2026-05-02
-revised: 2026-05-03 (Phase 1 complete; CMS host resolved to cms.sachcuahuy.com)
+revised: 2026-05-03 (Phase 2 complete; memo hardened to order_code-only)
 status: in-progress
 phase_1_completed: 2026-05-03
 phase_1_report: plans/reports/cook-260503-1334-phase-01-directus-setup.md
+phase_2_completed: 2026-05-03
+phase_2_report: plans/reports/cook-260503-1400-phase-02-frontend-integration.md
 priority: P1
 total_effort: ~6 days
 mode: hard
@@ -12,9 +14,24 @@ mode: hard
 
 # Plan: sachcuahuy Production Launch
 
-> **Phase 1 handoff (2026-05-03):** Directus 11.17.4 live at https://cms.sachcuahuy.com — schema, seed data, roles, tokens, backup all verified. See [phase-01 report](../reports/cook-260503-1334-phase-01-directus-setup.md). Phase 2 ready to start.
+> **Phase 2 handoff (2026-05-03):** Frontend wired to Directus, ISR 5min, real /api/orders flow, /xac-nhan/[token] PII gate, lock-window reset on expiry, lint migrated to ESLint CLI. Code committed (8 commits + harden) and ready to push. Vercel env vars required before deploy. Phase 3 (image upload) parallel-safe. See [phase-02 report](../reports/cook-260503-1400-phase-02-frontend-integration.md).
+>
+> **Phase 1 handoff (2026-05-03):** Directus 11.17.4 live at https://cms.sachcuahuy.com — schema, seed data, roles, tokens, backup all verified. See [phase-01 report](../reports/cook-260503-1334-phase-01-directus-setup.md).
 
 Migrate MVP Next.js website từ hardcoded data sang full production stack: Directus 11 CMS + Postgres trên Contabo + Vercel frontend + GoClaw/Zalo notification (via Python relay service). Ship 2 sách thật, end-to-end order flow real.
+
+## v2.2 Patches (2026-05-03, post-Phase 2)
+
+Phase 2 implementation revealed schema/policy refinements:
+
+| # | Patch | Reason | Phase |
+|---|---|---|---|
+| 1 | **Bank QR memo hardcoded to `order_code`** — `bankMemo()` ignores `site_settings.memo_format`. {name}/{phone} placeholders are intentionally NOT supported. | `addInfo` query param leaks PII into public QR URL. Anh reconciles by `order_code` lookup in admin. `memo_format` field becomes vestigial (could be removed in Phase 1.5 schema cleanup). | 2 |
+| 2 | **Unverified confirmation page never fetches PII** — `customer_name`, `customer_phone`, `customer_email`, `shipping_*`, `note` all gated behind cookie verify at the Directus query layer (defense in depth). | RSC payload would otherwise serialize fetched fields into `__next_f` script tag in HTML. | 2 |
+| 3 | **Lock-window resets attempts on expiry** — when `verify_locked_until <= now`, baseAttempts resets to 0 before counting current attempt. Genuine users get fresh 5-attempt window after waiting out a lock. | Original spec re-locked on first wrong attempt post-expiry (1-attempt window). | 2 |
+| 4 | **Lint migrated to ESLint CLI** — `eslint.config.mjs` flat config + `next/core-web-vitals` + `next/typescript`. `next lint` deprecated in Next 16. | Future-proofing; same lint behavior. | 2 |
+| 5 | **`SiteSettings` schema differs from plan** — actual fields: `hero_title`, `hero_subtitle`, `author_bio`, `author_short_bio`, `author_image`, `social_*`, `contact_*`, `shipping_threshold`. Predicted `author_name`/`author_title`/`author_full_bio`/`author_location` do not exist. | Phase 2 plan was written before Phase 1 schema deployment. Hardcoded constants used for missing fields. | 2 (typed), 5 (consider schema bump) |
+| 6 | **Books schema: `gallery` field does not exist; sort field is `sort_order`; timestamps are `created_at`/`updated_at`** | Discovered during Phase 2 build. Books have `cover_image` only (no gallery). | 2 (typed), 3 (uploads) |
 
 ## v2.1 Patches (2026-05-02 22:42)
 
@@ -70,8 +87,8 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 | Phase | Title | Effort | Status |
 |---|---|---|---|
 | 1 | Directus + Postgres Setup | 2d | ✅ completed 2026-05-03 |
-| 2 | Frontend Integration | 1.5d | pending |
-| 3 | Image Processing & Upload | 0.5d | pending |
+| 2 | Frontend Integration | 1.5d | ✅ completed 2026-05-03 (8 commits + harden, awaiting push + Vercel env) |
+| 3 | Image Processing & Upload | 0.5d | pending — parallel-safe with current state |
 | 4 | GoClaw + Zalo Integration | 1.5d | pending |
 | 5 | Polish & Launch | 0.5d | pending |
 
@@ -112,7 +129,7 @@ Order create → Directus Flow (no JS) → POST relay/notify with X-Relay-Token 
 
 ## Critical Decisions (resolved)
 
-- **Bank:** VCB `0181003488345` - Nguyễn Trọng Huy - VCB Nam Sài Gòn - memo `"{Tên} - {sdt}"`
+- **Bank:** VCB `0181003488345` - Nguyễn Trọng Huy - VCB Nam Sài Gòn - memo = `order_code` (hardened post-Phase 2; previous `"{Tên} - {sdt}"` design dropped — would leak PII into VietQR `addInfo` URL)
 - **Sách mới:** "Góc Phần Tư – Nỗi buồn nuôi ta khôn lớn" 99k
 - **Shipping:** Free HN + HCM, 25k tỉnh khác (flat)
 - **Stock:** Manual update, UI chỉ show "Còn/Hết hàng" badge (không auto-decrement)
