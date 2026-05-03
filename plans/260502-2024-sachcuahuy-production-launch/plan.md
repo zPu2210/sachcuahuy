@@ -7,6 +7,8 @@ phase_1_completed: 2026-05-03
 phase_1_report: plans/reports/cook-260503-1334-phase-01-directus-setup.md
 phase_2_completed: 2026-05-03
 phase_2_report: plans/reports/cook-260503-1400-phase-02-frontend-integration.md
+phase_4_completed: 2026-05-03
+phase_4_report: plans/reports/cook-260503-2041-phase-04-goclaw-zalo-integration.md
 priority: P1
 total_effort: ~6 days
 mode: hard
@@ -89,7 +91,7 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 | 1 | Directus + Postgres Setup | 2d | ✅ completed 2026-05-03 |
 | 2 | Frontend Integration | 1.5d | ✅ completed 2026-05-03 (8 commits + harden, awaiting push + Vercel env) |
 | 3 | Image Processing & Upload | 0.5d | 🟡 prep complete 2026-05-03 (classify + WebP + scripts); upload+link deferred until admin token |
-| 4 | GoClaw + Zalo Integration | 1.5d | pending |
+| 4 | GoClaw + Zalo Integration | 1.5d | ✅ completed 2026-05-03 |
 | 5 | Polish & Launch | 0.5d | pending |
 
 **Total: ~6 days work** (pessimistic, có buffer).
