@@ -54,7 +54,7 @@ Vercel Edge (Next.js 15 SSR/ISR)
 │   - createItem(...)     │
 │                         │ HTTPS REST
 │                         ▼
-│                    <DIRECTUS_CMS_HOST> (Directus 11)
+│                    cms.sachcuahuy.com (Directus 11)
 │
 ├── src/lib/site-config.ts (cached site_settings, ISR 1h)
 ├── src/lib/books.ts (catalog queries with revalidate 300s)
@@ -96,7 +96,7 @@ Vercel Edge (Next.js 15 SSR/ISR)
 - `src/app/sach/[slug]/page.tsx` — `generateStaticParams` từ Directus, ISR
 - `src/app/dat-hang/page.tsx` — fetch site_settings cho shipping logic
 - `src/components/checkout/order-form.tsx` — real fetch POST + show success state
-- `next.config.ts` — add `<DIRECTUS_CMS_HOST>` to `images.remotePatterns` (replace supabase entry)
+- `next.config.ts` — add `cms.sachcuahuy.com` to `images.remotePatterns` (replace supabase entry)
 - `package.json` — add `@directus/sdk`, `zod`
 - `src/components/home/author-section.tsx` — fetch author from site_settings
 
@@ -403,7 +403,7 @@ Write `src/app/api/orders/[token]/verify/route.ts`:
   // ...
   images: { remotePatterns: [{ protocol: 'https', hostname: directusHost }] }
   ```
-- For client-side `<Image>` src, use `NEXT_PUBLIC_DIRECTUS_ASSETS_URL` (public env, set to `https://<DIRECTUS_CMS_HOST>`):
+- For client-side `<Image>` src, use `NEXT_PUBLIC_DIRECTUS_ASSETS_URL` (public env, set to `https://cms.sachcuahuy.com`):
   ```tsx
   <Image src={`${process.env.NEXT_PUBLIC_DIRECTUS_ASSETS_URL}/assets/${file.id}?width=800&format=webp`} />
   ```
@@ -411,10 +411,10 @@ Write `src/app/api/orders/[token]/verify/route.ts`:
 ### 12. Environment vars
 `.env.local`:
 ```
-DIRECTUS_URL=https://<DIRECTUS_CMS_HOST>
+DIRECTUS_URL=https://cms.sachcuahuy.com
 DIRECTUS_PUBLIC_TOKEN=<public role token, read-only catalog>
 DIRECTUS_API_ORDERS_TOKEN=<api-orders role token, server-only>
-NEXT_PUBLIC_DIRECTUS_ASSETS_URL=https://<DIRECTUS_CMS_HOST>   # client-side image src
+NEXT_PUBLIC_DIRECTUS_ASSETS_URL=https://cms.sachcuahuy.com   # client-side image src
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 COOKIE_SECRET=<openssl rand -hex 32, server-only — for signed PII cookie>
 ```
@@ -455,7 +455,7 @@ npm run build
 - [ ] Refactor `OrderForm` real submit + redirect via `confirmation_url`
 - [ ] Build `/xac-nhan/[token]/page.tsx` (PII-safe default, reveal after verify)
 - [ ] Refactor `/`, `/sach`, `/sach/[slug]`, `/dat-hang` to use Directus
-- [ ] Update `next.config.ts` images.remotePatterns to `<DIRECTUS_CMS_HOST>`
+- [ ] Update `next.config.ts` images.remotePatterns to `cms.sachcuahuy.com`
 - [ ] Add `.env.local` + Vercel env vars (no admin token)
 - [ ] Update `books-section`, `book-card`, `author-section` for new data shape
 - [ ] Add stock_status badge UI

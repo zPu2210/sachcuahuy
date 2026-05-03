@@ -612,7 +612,7 @@ Pre-requisite: a real order record in Directus to test against (relay fetches ca
 ```bash
 # Step 1: Create real test order via api-orders token (Phase 1 issued)
 DIRECTUS_TOKEN=<api-orders token>
-ORDER_RESPONSE=$(curl -s -X POST https://<DIRECTUS_CMS_HOST>/items/orders \
+ORDER_RESPONSE=$(curl -s -X POST https://cms.sachcuahuy.com/items/orders \
   -H "Authorization: Bearer $DIRECTUS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -693,7 +693,7 @@ Then `docker compose up -d --force-recreate` Directus to pick up env changes.
 **5.4.** Test: create order via API:
 ```bash
 TOKEN=<api-orders token from Phase 1>
-curl -X POST https://<DIRECTUS_CMS_HOST>/items/orders \
+curl -X POST https://cms.sachcuahuy.com/items/orders \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -760,7 +760,7 @@ curl -X POST http://127.0.0.1:9090/notify \
 # Simulate missed webhook: stop relay, create order via Directus API, restart relay
 docker stop sachcuahuy-relay
 TOKEN=<api-orders token from Phase 1>
-curl -X POST https://<DIRECTUS_CMS_HOST>/items/orders \
+curl -X POST https://cms.sachcuahuy.com/items/orders \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d '{

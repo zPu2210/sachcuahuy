@@ -153,7 +153,7 @@ du -h /tmp/sachcuahuy-optimized/*.webp | tail -1       # optimized total
 
 **3.1.** Get admin token (from Phase 1 `.env` or generate dedicated for upload):
 ```bash
-TOKEN=$(curl -s -X POST https://<DIRECTUS_CMS_HOST>/auth/login \
+TOKEN=$(curl -s -X POST https://cms.sachcuahuy.com/auth/login \
   -H "Content-Type: application/json" \
   -d '{"email":"pu.hungphu@gmail.com","password":"<pwd>"}' | jq -r .data.access_token)
 ```
@@ -162,7 +162,7 @@ TOKEN=$(curl -s -X POST https://<DIRECTUS_CMS_HOST>/auth/login \
 ```bash
 upload_file() {
   local path="$1" title="$2"
-  curl -s -X POST https://<DIRECTUS_CMS_HOST>/files \
+  curl -s -X POST https://cms.sachcuahuy.com/files \
     -H "Authorization: Bearer $TOKEN" \
     -F "title=$title" \
     -F "file=@$path" | jq -r .data.id
@@ -180,7 +180,7 @@ Save IDs trong `image-classification.md` cho audit.
 
 **4.1.** Update books cover (PATCH):
 ```bash
-curl -X PATCH https://<DIRECTUS_CMS_HOST>/items/books/<miennam-id> \
+curl -X PATCH https://cms.sachcuahuy.com/items/books/<miennam-id> \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"cover_image\":\"$MIENNAM_COVER_ID\"}"
@@ -189,7 +189,7 @@ curl -X PATCH https://<DIRECTUS_CMS_HOST>/items/books/<miennam-id> \
 **4.2.** Link gallery (m2m relation, depends on Directus junction table):
 ```bash
 # Directus auto-generates junction `books_files`
-curl -X POST https://<DIRECTUS_CMS_HOST>/items/books_files \
+curl -X POST https://cms.sachcuahuy.com/items/books_files \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"books_id\":\"<miennam-id>\",\"directus_files_id\":\"$GALLERY_1_ID\"}"
@@ -200,7 +200,7 @@ Or simpler: do via Directus admin UI drag-drop (faster for 8-12 files).
 
 **4.3.** Update site_settings author_image:
 ```bash
-curl -X PATCH https://<DIRECTUS_CMS_HOST>/items/site_settings \
+curl -X PATCH https://cms.sachcuahuy.com/items/site_settings \
   -H "Authorization: Bearer $TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"author_image\":\"$AUTHOR_ID\"}"
@@ -214,7 +214,7 @@ curl -X PATCH https://<DIRECTUS_CMS_HOST>/items/site_settings \
 
 **5.2.** Verify access từ public URL:
 ```bash
-curl -I "https://<DIRECTUS_CMS_HOST>/assets/$MIENNAM_COVER_ID?width=800&format=webp"
+curl -I "https://cms.sachcuahuy.com/assets/$MIENNAM_COVER_ID?width=800&format=webp"
 # Expect 200 OK, Content-Type: image/webp
 ```
 
