@@ -1,44 +1,95 @@
 "use client";
 
 import { useState } from "react";
-import { Check } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export function OrderForm() {
+interface OrderFormProps {
+  bookSlug: string;
+  qty: number;
+  bankInfo: {
+    name: string;
+    account: string;
+    holder: string;
+    branch: string | null;
+  };
+  shippingFreeCities: string[];
+  disabled?: boolean;
+}
+
+interface OrderResponse {
+  order_token: string;
+  order_code: string;
+  total: number;
+  qr_url: string | null;
+  confirmation_url: string;
+}
+
+export function OrderForm({
+  bookSlug,
+  qty,
+  bankInfo,
+  shippingFreeCities,
+  disabled = false,
+}: OrderFormProps) {
+  const router = useRouter();
   const [paymentMethod, setPaymentMethod] = useState<"cod" | "bank">("cod");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (disabled) return;
     setIsSubmitting(true);
+    setError(null);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      customer_name: String(formData.get("name") ?? "").trim(),
+      customer_phone: String(formData.get("phone") ?? "").replace(/\s+/g, ""),
+      customer_email: String(formData.get("email") ?? "").trim(),
+      shipping_city: String(formData.get("city") ?? ""),
+      shipping_district: String(formData.get("district") ?? "").trim(),
+      shipping_address: String(formData.get("address") ?? "").trim(),
+      note: String(formData.get("note") ?? "").trim(),
+      payment_method: paymentMethod,
+      items: [{ slug: bookSlug, qty }],
+    };
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    try {
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = (await res.json().catch(() => ({}))) as
+        | OrderResponse
+        | { error: string; issues?: unknown };
+      if (res.ok && "confirmation_url" in data) {
+        router.push(data.confirmation_url);
+        return;
+      }
+      const errCode = "error" in data ? data.error : "unknown";
+      if (errCode === "out_of_stock") {
+        setError("Sách hiện đã hết hàng. Vui lòng quay lại sau.");
+      } else if (errCode === "invalid_input") {
+        setError("Thông tin đặt hàng chưa hợp lệ. Vui lòng kiểm tra lại.");
+      } else {
+        setError("Có lỗi khi đặt hàng. Vui lòng thử lại sau ít phút.");
+      }
+    } catch {
+      setError("Không kết nối được máy chủ. Vui lòng thử lại.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  if (isSubmitted) {
-    return (
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
-        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-          <Check className="w-8 h-8 text-green-600" />
-        </div>
-        <h2 className="font-serif text-2xl font-semibold text-primary mb-4">
-          Đặt Hàng Thành Công!
-        </h2>
-        <p className="text-gray-600 mb-6">
-          Cảm ơn bạn đã đặt hàng tại Sách Của Huy.
-          <br />
-          Chúng tôi sẽ liên hệ xác nhận qua điện thoại trong thời gian sớm nhất.
-        </p>
-        <p className="text-sm text-gray-500">
-          Mã đơn hàng: <span className="font-mono font-semibold">#SCH-{Date.now().toString().slice(-8)}</span>
-        </p>
-      </div>
-    );
-  }
+  const cityFreeNote =
+    shippingFreeCities.length > 0
+      ? `Miễn phí ship: ${shippingFreeCities
+          .map((c) => c.toUpperCase())
+          .join(", ")} • Tỉnh khác: 25.000đ`
+      : null;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
@@ -60,6 +111,8 @@ export function OrderForm() {
               type="text"
               name="name"
               required
+              minLength={2}
+              maxLength={100}
               className="input"
               placeholder="Nguyễn Văn A"
             />
@@ -73,8 +126,9 @@ export function OrderForm() {
               type="tel"
               name="phone"
               required
+              pattern="0[0-9]{9,10}"
               className="input"
-              placeholder="0912 345 678"
+              placeholder="0912345678"
             />
           </div>
 
@@ -106,13 +160,18 @@ export function OrderForm() {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Tỉnh/Thành phố <span className="text-red-500">*</span>
             </label>
-            <select name="city" required className="input">
-              <option value="">Chọn tỉnh/thành phố</option>
+            <select name="city" required defaultValue="" className="input">
+              <option value="" disabled>
+                Chọn tỉnh/thành phố
+              </option>
               <option value="hcm">TP. Hồ Chí Minh</option>
               <option value="hn">Hà Nội</option>
               <option value="dn">Đà Nẵng</option>
               <option value="other">Tỉnh/Thành khác</option>
             </select>
+            {cityFreeNote && (
+              <p className="text-xs text-gray-500 mt-1">{cityFreeNote}</p>
+            )}
           </div>
 
           <div>
@@ -123,6 +182,7 @@ export function OrderForm() {
               type="text"
               name="district"
               required
+              maxLength={100}
               className="input"
               placeholder="Quận/Huyện"
             />
@@ -136,6 +196,8 @@ export function OrderForm() {
               type="text"
               name="address"
               required
+              minLength={5}
+              maxLength={500}
               className="input"
               placeholder="Số nhà, tên đường, phường/xã..."
             />
@@ -148,6 +210,7 @@ export function OrderForm() {
             <textarea
               name="note"
               rows={3}
+              maxLength={500}
               className="input resize-none"
               placeholder="Ghi chú cho đơn hàng (nếu có)..."
             />
@@ -165,7 +228,6 @@ export function OrderForm() {
         </h2>
 
         <div className="space-y-4">
-          {/* COD */}
           <label
             className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-colors ${
               paymentMethod === "cod"
@@ -191,7 +253,6 @@ export function OrderForm() {
             </div>
           </label>
 
-          {/* Bank Transfer */}
           <label
             className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-colors ${
               paymentMethod === "bank"
@@ -210,12 +271,11 @@ export function OrderForm() {
             <div>
               <p className="font-medium text-primary">Chuyển khoản ngân hàng</p>
               <p className="text-sm text-gray-500">
-                Quét mã QR hoặc chuyển khoản trực tiếp
+                Quét mã QR sau khi đặt hàng (hiển thị ở bước xác nhận)
               </p>
             </div>
           </label>
 
-          {/* Bank details if selected */}
           {paymentMethod === "bank" && (
             <div className="ml-8 p-4 bg-secondary rounded-xl">
               <p className="text-sm font-medium text-primary mb-2">
@@ -223,16 +283,28 @@ export function OrderForm() {
               </p>
               <div className="text-sm text-gray-600 space-y-1">
                 <p>
-                  Ngân hàng: <span className="font-medium">VPBank</span>
+                  Ngân hàng:{" "}
+                  <span className="font-medium">{bankInfo.name}</span>
                 </p>
                 <p>
-                  Số TK: <span className="font-medium font-mono">123456789</span>
+                  Số TK:{" "}
+                  <span className="font-medium font-mono">
+                    {bankInfo.account}
+                  </span>
                 </p>
                 <p>
-                  Chủ TK: <span className="font-medium">TRỌNG HUY</span>
+                  Chủ TK:{" "}
+                  <span className="font-medium">{bankInfo.holder}</span>
                 </p>
+                {bankInfo.branch && (
+                  <p>
+                    Chi nhánh:{" "}
+                    <span className="font-medium">{bankInfo.branch}</span>
+                  </p>
+                )}
                 <p className="text-xs text-gray-500 mt-2">
-                  * Nội dung CK: [Họ tên] - [SĐT]
+                  * Mã QR + nội dung CK sẽ hiển thị ở trang xác nhận sau khi đặt
+                  hàng.
                 </p>
               </div>
             </div>
@@ -240,10 +312,27 @@ export function OrderForm() {
         </div>
       </div>
 
-      {/* Submit Button */}
+      {error && (
+        <div
+          role="alert"
+          className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700"
+        >
+          {error}
+        </div>
+      )}
+
+      {disabled && (
+        <div
+          role="alert"
+          className="p-4 bg-amber-50 border border-amber-200 rounded-xl text-sm text-amber-800"
+        >
+          Sách hiện đã hết hàng. Vui lòng quay lại sau.
+        </div>
+      )}
+
       <button
         type="submit"
-        disabled={isSubmitting}
+        disabled={isSubmitting || disabled}
         className="w-full btn btn-primary py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isSubmitting ? (
