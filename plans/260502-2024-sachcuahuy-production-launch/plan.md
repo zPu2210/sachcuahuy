@@ -80,7 +80,7 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 │   VERCEL (Edge - free)   │         │    CONTABO VPS (existing)         │
 │                          │         │   185.111.159.28 (SG)             │
 │  Next.js 15 SSR/ISR      │  HTTPS  │                                    │
-│  - /sach catalog (ISR)   │◄───────►│  Directus 11 (<DIRECTUS_CMS_HOST>) │
+│  - /sach catalog (ISR)   │◄───────►│  Directus 11 (cms.sachcuahuy.com)  │
 │  - /api/orders POST      │  REST   │   ↕                                │
 │    → api-orders token    │         │  Postgres 16 (existing)            │
 │  - /xac-nhan/[token]     │         │   ↕ goclaw_default network         │
@@ -118,7 +118,7 @@ Order create → Directus Flow (no JS) → POST relay/notify with X-Relay-Token 
 - **Order create:** server-side `api-orders` token only (no anonymous Directus perm)
 - **Admin:** Anh super-admin, Huy editor role; separate `relay-notifier` role least-privilege
 - **Podcast:** Placeholder "Coming Soon" Phase 1
-- **CMS hostname:** Phase 1 Step 0 BLOCKER — decide before container boot
+- **CMS hostname:** ✅ Resolved 2026-05-03 — `cms.sachcuahuy.com` (Cloudflare Tunnel; domain at PAVietnam, NS migrated to CF)
 
 ## Deferred to Phase 6 (cut from MVP)
 
