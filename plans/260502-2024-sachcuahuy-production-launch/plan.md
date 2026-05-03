@@ -56,7 +56,7 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 | Frontend hosting | Vercel free | $0 |
 | Frontend framework | Next.js 15.1.5 + React 19 + Tailwind 3.4 + Framer Motion (existing) | $0 |
 | Backend CMS | Directus 11 (Docker) | $0 |
-| Database | Postgres 16 (existing `goclaw-postgres-1` container, share network `goclaw_default`) | $0 |
+| Database | Postgres 18 (existing `goclaw-postgres-1` container, share network `goclaw_default`) | $0 |
 | Backend hosting | Contabo VPS 185.111.159.28 (existing) | $0 |
 | QR thanh toán | VietQR.io image API | $0 |
 | Notifications | GoClaw + Meow agent + Zalo Personal channel | $0 |
@@ -86,7 +86,7 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 │  Next.js 15 SSR/ISR      │  HTTPS  │                                    │
 │  - /sach catalog (ISR)   │◄───────►│  Directus 11 (cms.sachcuahuy.com)  │
 │  - /api/orders POST      │  REST   │   ↕                                │
-│    → api-orders token    │         │  Postgres 16 (existing)            │
+│    → api-orders token    │         │  Postgres 18 (existing)            │
 │  - /xac-nhan/[token]     │         │   ↕ goclaw_default network         │
 │    + phone-last-4 gate   │         │  Sachcuahuy Relay (FastAPI)        │
 │  - VietQR generate       │         │   - SQLite retry queue             │
