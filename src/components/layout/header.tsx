@@ -20,7 +20,7 @@ export function Header() {
   const navLinks = [
     { href: "/sach", label: "Tác Phẩm" },
     { href: "/gioi-thieu", label: "Tác Giả" },
-    { href: "/blog", label: "Chuyện Bên Lề" },
+    { href: "/podcast", label: "Podcast" },
   ];
 
   return (
@@ -80,15 +80,13 @@ export function Header() {
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Cart */}
+            {/* Cart shortcut → catalog (no real cart MVP) */}
             <Link
-              href="/gio-hang"
+              href="/sach"
+              aria-label="Xem sách"
               className="relative p-2 text-gray-600 hover:text-primary transition-colors hover:bg-gray-100/50 rounded-full mr-2"
             >
               <ShoppingCart className="w-5 h-5" />
-              <span className="absolute top-0 right-0 w-4 h-4 bg-accent text-[10px] text-white font-bold rounded-full flex items-center justify-center ring-2 ring-white">
-                0
-              </span>
             </Link>
 
             <Link href="/sach" className="hidden md:flex btn btn-primary py-2 px-5 text-sm shadow-md shadow-primary/20">

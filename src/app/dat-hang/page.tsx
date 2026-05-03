@@ -9,8 +9,9 @@ import { getSiteSettings } from "@/lib/site-config";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Đặt Hàng - Sách Của Huy",
+  title: "Đặt Hàng",
   description: "Đặt mua sách văn học của Trọng Huy",
+  robots: { index: false, follow: false },
 };
 
 interface PageProps {

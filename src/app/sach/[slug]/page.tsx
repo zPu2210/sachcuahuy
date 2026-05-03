@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { ChevronRight, Truck, CreditCard, Package } from "lucide-react";
 import { BookCard } from "@/components/book/book-card";
+import { JsonLdBook } from "@/components/seo/json-ld";
 import { getBookBySlug, getBooks, formatPrice } from "@/lib/books";
 import { buildAssetUrl } from "@/lib/directus";
 import type { Book } from "@/lib/types-directus";
@@ -28,13 +29,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Không tìm thấy sách" };
   }
 
+  const ogImage = getOgImageUrl(book);
+  const title = book.seo_title || book.title;
+  const description = book.seo_description || book.short_description;
+
   return {
-    title: `${book.title} - Sách Của Huy`,
-    description: book.short_description,
+    title,
+    description,
+    alternates: { canonical: `/sach/${book.slug}` },
     openGraph: {
       title: book.title,
-      description: book.short_description,
-      type: "website",
+      description,
+      type: "article",
+      url: `/sach/${book.slug}`,
+      ...(ogImage && {
+        images: [{ url: ogImage, width: 1200, height: 630, alt: book.title }],
+      }),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: book.title,
+      description,
+      ...(ogImage && { images: [ogImage] }),
     },
   };
 }
@@ -45,6 +61,18 @@ function getCoverUrl(book: Book): string | null {
   if (typeof cover === "string") return cover;
   if (cover.id) return buildAssetUrl(cover.id, { width: 800, format: "webp" });
   return null;
+}
+
+function getOgImageUrl(book: Book): string | null {
+  const cover = book.cover_image;
+  if (!cover || typeof cover === "string") return null;
+  if (!cover.id) return null;
+  return buildAssetUrl(cover.id, {
+    width: 1200,
+    height: 630,
+    format: "webp",
+    quality: 80,
+  });
 }
 
 export default async function BookDetailPage({ params }: PageProps) {
@@ -64,6 +92,7 @@ export default async function BookDetailPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen">
+      <JsonLdBook book={book} coverUrl={getOgImageUrl(book)} />
       <div className="bg-white border-b border-gray-100">
         <div className="container-custom py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">

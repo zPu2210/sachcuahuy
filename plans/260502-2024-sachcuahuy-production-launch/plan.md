@@ -1,7 +1,7 @@
 ---
 title: "sachcuahuy production launch — Phase 1-5"
 created: 2026-05-02
-revised: 2026-05-03 (Phase 2 complete; memo hardened to order_code-only)
+revised: 2026-05-03 (Phase 5 cook complete; ready for prod deploy + UAT)
 status: in-progress
 phase_1_completed: 2026-05-03
 phase_1_report: plans/reports/cook-260503-1334-phase-01-directus-setup.md
@@ -9,6 +9,8 @@ phase_2_completed: 2026-05-03
 phase_2_report: plans/reports/cook-260503-1400-phase-02-frontend-integration.md
 phase_4_completed: 2026-05-03
 phase_4_report: plans/reports/cook-260503-2041-phase-04-goclaw-zalo-integration.md
+phase_5_cook_completed: 2026-05-03
+phase_5_report: plans/reports/cook-260503-2215-phase-05-polish-launch.md
 priority: P1
 total_effort: ~6 days
 mode: hard
@@ -92,7 +94,7 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 | 2 | Frontend Integration | 1.5d | ✅ completed 2026-05-03 (8 commits + harden, awaiting push + Vercel env) |
 | 3 | Image Processing & Upload | 0.5d | 🟡 prep complete 2026-05-03 (classify + WebP + scripts); upload+link deferred until admin token |
 | 4 | GoClaw + Zalo Integration | 1.5d | ✅ completed 2026-05-03 |
-| 5 | Polish & Launch | 0.5d | pending |
+| 5 | Polish & Launch | 0.5d | 🟡 cook complete 2026-05-03 (build/lint/smoke green); pending prod deploy + UAT |
 
 **Total: ~6 days work** (pessimistic, có buffer).
 

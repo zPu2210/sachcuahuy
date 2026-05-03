@@ -13,8 +13,14 @@ const AUTHOR_FALLBACK_BIO_HTML =
   "<p>Trọng Huy là phát thanh viên radio và Voice Talent Quảng Cáo tại Việt Nam. Bên cạnh công việc giọng nói, anh còn là một người viết với những tản văn nhẹ nhàng về cuộc sống đời thường.</p>";
 
 export const metadata: Metadata = {
-  title: "Về Tác Giả - Sách Của Huy",
+  title: "Về Tác Giả",
   description: AUTHOR_FALLBACK_BIO_HTML.replace(/<[^>]+>/g, ""),
+  alternates: { canonical: "/gioi-thieu" },
+  openGraph: {
+    title: "Về Tác Giả Trọng Huy",
+    description: AUTHOR_FALLBACK_BIO_HTML.replace(/<[^>]+>/g, ""),
+    type: "profile",
+  },
 };
 
 export default async function AboutPage() {

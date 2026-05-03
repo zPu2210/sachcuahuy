@@ -1,11 +1,15 @@
 ---
 phase: 5
 title: "Polish & Launch"
-status: pending
+status: in-progress
 priority: P1
 effort: "0.5d"
 dependencies: [2, 3, 4]
+cook_completed: 2026-05-03
+cook_report: plans/reports/cook-260503-2215-phase-05-polish-launch.md
 ---
+
+> **Cook handoff (2026-05-03):** Code-side polish complete (podcast page, SEO meta + JSON-LD on every page, sitemap.xml + robots.txt, Vercel Analytics + Speed Insights, dynamic footer, 404 + nav fixes). `next build` + lint green; all 11 routes return correct status; Vercel Production env vars confirmed. Manual gates remaining: prod deploy, Lighthouse mobile run, T-1 smoke + anh/Huy UAT (Section 10). See [cook report](../reports/cook-260503-2215-phase-05-polish-launch.md).
 
 # Phase 5: Polish & Launch
 
@@ -381,18 +385,18 @@ After Phase 5 deploy, monitor for 7 days. **NOT a Phase 5 ship blocker** — Pha
 
 ## Todo Checklist
 
-- [ ] Build podcast placeholder page (`/podcast`)
-- [ ] Add `/podcast` link in nav + footer
-- [ ] Implement global metadata trong layout.tsx
-- [ ] Implement per-page generateMetadata (book detail, sach, gioi-thieu)
-- [ ] Add JSON-LD Organization + Book schemas
-- [ ] Build dynamic `sitemap.ts` + `robots.ts`
-- [ ] Install + enable Vercel Analytics + Speed Insights
-- [ ] Mobile QA pass (5 device widths × 7 pages)
-- [ ] A11y audit (Lighthouse + manual)
-- [ ] Lighthouse mobile scores: Perf>85, A11y>95, SEO>95
-- [ ] Production Vercel env vars confirmed
-- [ ] Production deploy successful
+- [x] Build podcast placeholder page (`/podcast`) — 2026-05-03
+- [x] Add `/podcast` link in nav + footer — 2026-05-03
+- [x] Implement global metadata trong layout.tsx — 2026-05-03
+- [x] Implement per-page generateMetadata (book detail, sach, gioi-thieu) — 2026-05-03
+- [x] Add JSON-LD Organization + Book schemas — 2026-05-03
+- [x] Build dynamic `sitemap.ts` + `robots.ts` — 2026-05-03
+- [x] Install + enable Vercel Analytics + Speed Insights — 2026-05-03
+- [ ] Mobile QA pass (5 device widths × 7 pages) — manual, post-deploy
+- [ ] A11y audit (Lighthouse + manual) — manual, post-deploy
+- [ ] Lighthouse mobile scores: Perf>85, A11y>95, SEO>95 — run vs prod URL
+- [x] Production Vercel env vars confirmed (5/5 set) — 2026-05-03
+- [ ] Production deploy successful — pending push
 - [ ] Anh UAT test pass (order flow + admin edit)
 - [ ] Huy UAT test pass (<30min unassisted edit task)
 - [ ] Backups verified (Directus + Postgres + uploads)

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { HeroSection } from "@/components/home/hero-section";
 import { AuthorSection } from "@/components/home/author-section";
 import { BooksSection } from "@/components/home/books-section";
@@ -12,6 +13,27 @@ const AUTHOR_NAME = "Trọng Huy";
 const AUTHOR_TITLE = "Tác giả • Voice Talent";
 const AUTHOR_FALLBACK_BIO =
   "Sinh ra tại Phú Thọ, lớn lên ở Hà Nội, chọn sống ở Sài Gòn. Phát thanh viên radio — Voice Talent Quảng Cáo.";
+
+export async function generateMetadata(): Promise<Metadata> {
+  try {
+    const s = await getSiteSettings();
+    const description =
+      s.hero_subtitle ||
+      "Tác phẩm văn học của Trọng Huy. Miền Nam của Huy, Góc Phần Tư.";
+    return {
+      title: { absolute: s.hero_title || "Sách Của Huy" },
+      description,
+      openGraph: {
+        title: s.hero_title || "Sách Của Huy",
+        description,
+        type: "website",
+      },
+      alternates: { canonical: "/" },
+    };
+  } catch {
+    return { alternates: { canonical: "/" } };
+  }
+}
 
 export default async function HomePage() {
   const [books, settings] = await Promise.all([getBooks(), getSiteSettings()]);

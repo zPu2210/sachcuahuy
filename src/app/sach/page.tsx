@@ -7,8 +7,14 @@ import { getBooks } from "@/lib/books";
 export const revalidate = 300;
 
 export const metadata: Metadata = {
-  title: "Tất Cả Sách - Sách Của Huy",
+  title: "Tất Cả Sách",
   description: "Danh sách các tác phẩm văn học của Trọng Huy",
+  alternates: { canonical: "/sach" },
+  openGraph: {
+    title: "Tất Cả Sách",
+    description: "Danh sách các tác phẩm văn học của Trọng Huy",
+    type: "website",
+  },
 };
 
 export default async function BooksPage() {

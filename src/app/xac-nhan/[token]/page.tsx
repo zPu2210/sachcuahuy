@@ -14,7 +14,7 @@ import { VerifyForm } from "./verify-form";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Xác Nhận Đơn Hàng - Sách Của Huy",
+  title: "Xác Nhận Đơn Hàng",
   robots: { index: false, follow: false },
 };
 
