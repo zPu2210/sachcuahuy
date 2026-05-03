@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { ShoppingCart, Menu, X, Book, Search } from "lucide-react";
+import { ShoppingCart, Menu, X, Book } from "lucide-react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
@@ -76,10 +76,6 @@ export function Header() {
 
           {/* Right Section */}
           <div className="flex items-center gap-2">
-            <button className="p-2 text-gray-400 hover:text-primary transition-colors rounded-full hover:bg-gray-100/50">
-              <Search className="w-5 h-5" />
-            </button>
-
             {/* Cart shortcut → catalog (no real cart MVP) */}
             <Link
               href="/sach"

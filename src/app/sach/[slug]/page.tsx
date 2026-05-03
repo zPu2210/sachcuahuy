@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     return { title: "Không tìm thấy sách" };
   }
 
-  const ogImage = getOgImageUrl(book);
+  const ogImage = getOgImageUrl(book) ?? "/images/book-cover-front.png";
   const title = book.seo_title || book.title;
   const description = book.seo_description || book.short_description;
 
@@ -42,15 +42,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description,
       type: "article",
       url: `/sach/${book.slug}`,
-      ...(ogImage && {
-        images: [{ url: ogImage, width: 1200, height: 630, alt: book.title }],
-      }),
+      images: [{ url: ogImage, width: 1200, height: 630, alt: book.title }],
     },
     twitter: {
       card: "summary_large_image",
       title: book.title,
       description,
-      ...(ogImage && { images: [ogImage] }),
+      images: [ogImage],
     },
   };
 }
