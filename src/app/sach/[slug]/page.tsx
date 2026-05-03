@@ -4,9 +4,10 @@ import { Metadata } from "next";
 import { ChevronRight, Truck, CreditCard, Package } from "lucide-react";
 import { BookCard } from "@/components/book/book-card";
 import { JsonLdBook } from "@/components/seo/json-ld";
-import { getBookBySlug, getBooks, formatPrice } from "@/lib/books";
-import { buildAssetUrl } from "@/lib/directus";
+import { getBookBySlug, getBooks } from "@/lib/books";
+import { buildAssetUrl } from "@/lib/directus-assets";
 import type { Book } from "@/lib/types-directus";
+import { formatPrice } from "@/lib/utils";
 
 export const revalidate = 300;
 

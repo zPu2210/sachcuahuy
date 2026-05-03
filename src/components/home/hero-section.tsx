@@ -4,7 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { FadeIn } from "@/components/ui/fade-in";
-import { formatPrice } from "@/lib/books";
+import { formatPrice } from "@/lib/utils";
 import type { Book } from "@/lib/types-directus";
 
 interface HeroSectionProps {

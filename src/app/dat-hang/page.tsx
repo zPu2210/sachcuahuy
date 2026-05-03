@@ -3,8 +3,9 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { OrderForm } from "@/components/checkout/order-form";
-import { getBookBySlug, getBooks, formatPrice } from "@/lib/books";
+import { getBookBySlug, getBooks } from "@/lib/books";
 import { getSiteSettings } from "@/lib/site-config";
+import { formatPrice } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 

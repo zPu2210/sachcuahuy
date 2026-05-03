@@ -1,3 +1,4 @@
+import "server-only";
 import { readItems } from "@directus/sdk";
 import { directus } from "./directus";
 import type { Book } from "./types-directus";
@@ -31,8 +32,4 @@ export async function getBookBySlug(slug: string): Promise<Book | null> {
   );
   const books = result as unknown as Book[];
   return books[0] ?? null;
-}
-
-export function formatPrice(price: number): string {
-  return new Intl.NumberFormat("vi-VN").format(price) + "đ";
 }

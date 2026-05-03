@@ -1,0 +1,15 @@
+const directusAssetsUrl =
+  process.env.NEXT_PUBLIC_DIRECTUS_ASSETS_URL ?? "https://cms.sachcuahuy.com";
+
+export function buildAssetUrl(
+  fileId: string,
+  params?: { width?: number; height?: number; format?: string; quality?: number },
+): string {
+  const qs = new URLSearchParams();
+  if (params?.width) qs.set("width", String(params.width));
+  if (params?.height) qs.set("height", String(params.height));
+  if (params?.format) qs.set("format", params.format);
+  if (params?.quality) qs.set("quality", String(params.quality));
+  const qsStr = qs.toString();
+  return `${directusAssetsUrl}/assets/${fileId}${qsStr ? `?${qsStr}` : ""}`;
+}

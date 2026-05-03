@@ -1,3 +1,4 @@
+import "server-only";
 import { createDirectus, rest, staticToken } from "@directus/sdk";
 import type { Schema } from "./types-directus";
 
@@ -13,20 +14,3 @@ export const directus = createDirectus<Schema>(directusUrl).with(rest());
 export const directusOrders = createDirectus<Schema>(directusUrl)
   .with(rest())
   .with(staticToken(process.env.DIRECTUS_API_ORDERS_TOKEN ?? ""));
-
-// Public asset URL for client-side <Image> src (set in NEXT_PUBLIC_DIRECTUS_ASSETS_URL).
-export const directusAssetsUrl =
-  process.env.NEXT_PUBLIC_DIRECTUS_ASSETS_URL ?? directusUrl;
-
-export function buildAssetUrl(
-  fileId: string,
-  params?: { width?: number; height?: number; format?: string; quality?: number },
-): string {
-  const qs = new URLSearchParams();
-  if (params?.width) qs.set("width", String(params.width));
-  if (params?.height) qs.set("height", String(params.height));
-  if (params?.format) qs.set("format", params.format);
-  if (params?.quality) qs.set("quality", String(params.quality));
-  const qsStr = qs.toString();
-  return `${directusAssetsUrl}/assets/${fileId}${qsStr ? `?${qsStr}` : ""}`;
-}

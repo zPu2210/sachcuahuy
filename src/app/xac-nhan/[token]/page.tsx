@@ -5,10 +5,10 @@ import type { Metadata } from "next";
 import { readItems } from "@directus/sdk";
 import { directusOrders } from "@/lib/directus";
 import { getSiteSettings } from "@/lib/site-config";
-import { formatPrice } from "@/lib/books";
 import { bankMemo, isValidOrderToken, verifyPiiCookie } from "@/lib/order";
 import { buildVietQRUrl } from "@/lib/vietqr";
 import type { Order } from "@/lib/types-directus";
+import { formatPrice } from "@/lib/utils";
 import { VerifyForm } from "./verify-form";
 
 export const dynamic = "force-dynamic";

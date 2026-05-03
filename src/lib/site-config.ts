@@ -1,3 +1,4 @@
+import "server-only";
 import { readSingleton } from "@directus/sdk";
 import { directus } from "./directus";
 import type { SiteSettings } from "./types-directus";

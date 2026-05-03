@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { ShoppingCart, Eye, Book as BookIcon } from "lucide-react";
 import clsx from "clsx";
-import { formatPrice } from "@/lib/books";
-import { buildAssetUrl } from "@/lib/directus";
+import { buildAssetUrl } from "@/lib/directus-assets";
+import { formatPrice } from "@/lib/utils";
 import type { Book } from "@/lib/types-directus";
 
 interface BookCardProps {
