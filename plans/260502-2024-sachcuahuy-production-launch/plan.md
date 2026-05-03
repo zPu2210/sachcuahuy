@@ -61,7 +61,7 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 | QR thanh toán | VietQR.io image API | $0 |
 | Notifications | GoClaw + Meow agent + Zalo Personal channel | $0 |
 | Multi-tenant | GoClaw `X-GoClaw-User-Id: sachcuahuy` header | $0 |
-| Domain | `sachcuahuy.vercel.app` Phase 1 (mua domain sau) | $0 |
+| Domain | `sachcuahuy.com` (PAVietnam, NS at Cloudflare) — CMS `cms.sachcuahuy.com`, frontend stays `sachcuahuy.vercel.app` Phase 1 | ~$12/yr |
 
 **Total: $0/mo**
 
@@ -188,7 +188,7 @@ Phase 1 (Directus setup)
 - Customer Zalo confirmation noti (Phase 6)
 - Cron 5p auto-retry failed notifications (Phase 6)
 - Auto stock decrement (decided manual)
-- Domain purchase decision deferred (but CMS hostname must resolve Phase 1 Step 0)
+- ~~Domain purchase decision deferred~~ ✅ Resolved 2026-05-03 — `sachcuahuy.com` bought at PAVietnam
 - Codex models replacement (separate issue)
 - Episodic summarizer warn loop (cosmetic, fix later)
 - Rate-limit phone-last-4 verify endpoint (Phase 6 if abuse observed)
