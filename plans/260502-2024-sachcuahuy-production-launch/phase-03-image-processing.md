@@ -1,10 +1,13 @@
 ---
 phase: 3
 title: "Image Processing & Upload"
-status: pending
+status: in-progress (prep complete 2026-05-03; upload+link deferred until anh paste admin token)
 priority: P2
 effort: "0.5d"
 dependencies: [1]
+prep_completed: 2026-05-03
+prep_report: plans/reports/cook-260503-1944-phase-03-image-prep.md
+classification_doc: image-classification.md
 ---
 
 # Phase 3: Image Processing & Upload
@@ -236,20 +239,24 @@ curl -I "https://cms.sachcuahuy.com/assets/$MIENNAM_COVER_ID?width=800&format=we
 
 ## Todo Checklist
 
-- [ ] AI-classify 20 ảnh qua ai-multimodal skill (Gemini vision)
-- [ ] Anh confirm classification table per row
-- [ ] Install `webp` + `imagemagick` tools (if missing)
-- [ ] Convert selected images → WebP @q80, max 1600px width
-- [ ] Verify size reduction + visual quality
-- [ ] Upload to Directus Files (cover, gallery, author)
-- [ ] Link `books.cover_image` cho 2 sách
-- [ ] Link `books.gallery` (m2m) cho 2 sách
-- [ ] Link `site_settings.author_image`
-- [ ] Add alt text VI cho mỗi file
-- [ ] Move files into Directus folder `sachcuahuy-launch`
-- [ ] Verify public asset URL accessible
-- [ ] Frontend smoke test (no broken images)
-- [ ] Document final mapping trong `image-classification.md`
+- [x] AI-classify 20 ảnh qua ai-multimodal skill (Gemini vision)
+- [x] Anh confirm classification picks (3 files: 2 covers + 1 author)
+- [x] Tools available: `cwebp` + `magick` (Homebrew, already installed)
+- [x] Convert selected images → WebP @q80, max 1600px width (288KB total)
+- [x] Verify size reduction + visual quality (Read inline; no artifacts)
+- [x] Prep upload script `scripts/upload-images-to-directus.sh` (idempotent)
+- [x] Document final mapping trong `image-classification.md`
+- [ ] **DEFERRED — needs admin token from anh:**
+  - [ ] Upload 3 WebP to Directus Files
+  - [ ] Link `books[mien-nam-cua-huy].cover_image`
+  - [ ] Link `books[goc-phan-tu].cover_image`
+  - [ ] Link `site_settings.author_image`
+  - [ ] Add alt text VI (script does it via `description` field on POST)
+  - [ ] Move files into Directus folder `sachcuahuy-launch` (script does it)
+  - [ ] Verify public asset URL accessible (script does HEAD check)
+  - [ ] Frontend smoke test (no broken images, ISR pickup after 5min revalidate)
+
+**Note:** v2.2 reality check — `books.gallery` field does not exist. Phase 3 = 3 uploads only (no m2m gallery). 14 product-mien-nam shots remain in source for future use (Phase 6 if schema bumped).
 
 ## Success Criteria
 

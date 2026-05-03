@@ -88,7 +88,7 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 |---|---|---|---|
 | 1 | Directus + Postgres Setup | 2d | ✅ completed 2026-05-03 |
 | 2 | Frontend Integration | 1.5d | ✅ completed 2026-05-03 (8 commits + harden, awaiting push + Vercel env) |
-| 3 | Image Processing & Upload | 0.5d | pending — parallel-safe with current state |
+| 3 | Image Processing & Upload | 0.5d | 🟡 prep complete 2026-05-03 (classify + WebP + scripts); upload+link deferred until admin token |
 | 4 | GoClaw + Zalo Integration | 1.5d | pending |
 | 5 | Polish & Launch | 0.5d | pending |
 
