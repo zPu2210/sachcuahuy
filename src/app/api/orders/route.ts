@@ -5,7 +5,7 @@ import { directusOrders } from "@/lib/directus";
 import { getSiteSettings } from "@/lib/site-config";
 import { getBookBySlug } from "@/lib/books";
 import {
-  buildMemo,
+  bankMemo,
   calcShipping,
   generateOrderCode,
   generateOrderToken,
@@ -106,14 +106,7 @@ export async function POST(req: NextRequest) {
       }),
     );
 
-    const memo = buildMemo(
-      {
-        name: parsed.customer_name,
-        phone: parsed.customer_phone,
-        order_code,
-      },
-      settings.memo_format,
-    );
+    const memo = bankMemo(order_code);
     const qr_url =
       parsed.payment_method === "bank"
         ? buildVietQRUrl({

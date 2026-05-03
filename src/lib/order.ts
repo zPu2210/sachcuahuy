@@ -31,21 +31,12 @@ export function calcShipping(city: string, settings: SiteSettings): number {
   return settings.shipping_flat_fee;
 }
 
-export interface MemoVars {
-  name: string;
-  phone: string;
-  order_code: string;
-}
-
-// Substitute {order_code}, {name}, {phone} placeholders in memo template.
-// Default to {order_code} when format empty/null — order_code is the privacy-safe
-// reconciliation key (no PII in QR URL). Anh matches bank statement by code.
-export function buildMemo(vars: MemoVars, format: string | null | undefined): string {
-  const tpl = format && format.trim().length > 0 ? format : "{order_code}";
-  return tpl
-    .replace(/\{order_code\}/g, vars.order_code)
-    .replace(/\{name\}/g, vars.name)
-    .replace(/\{phone\}/g, vars.phone);
+// Bank QR memo is always the order_code — no template substitution.
+// {name}/{phone} placeholders in `site_settings.memo_format` are intentionally
+// ignored: they would leak PII into the public QR URL (`addInfo` query param).
+// Anh reconciles bank statements by order_code lookup in admin.
+export function bankMemo(orderCode: string): string {
+  return orderCode;
 }
 
 // Timing-safe compare of phone last-4 digits.

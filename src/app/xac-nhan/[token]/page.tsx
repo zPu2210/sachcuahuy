@@ -6,11 +6,7 @@ import { readItems } from "@directus/sdk";
 import { directusOrders } from "@/lib/directus";
 import { getSiteSettings } from "@/lib/site-config";
 import { formatPrice } from "@/lib/books";
-import {
-  buildMemo,
-  isValidOrderToken,
-  verifyPiiCookie,
-} from "@/lib/order";
+import { bankMemo, isValidOrderToken, verifyPiiCookie } from "@/lib/order";
 import { buildVietQRUrl } from "@/lib/vietqr";
 import type { Order } from "@/lib/types-directus";
 import { VerifyForm } from "./verify-form";
@@ -42,12 +38,12 @@ const SAFE_RENDER_FIELDS = [
   "order_status",
 ] as const;
 
-// Fields fetched server-side ALWAYS — name + phone are needed only for
-// memo construction (when memo_format references {name} or {phone}).
-// They are NEVER passed to JSX in unverified state.
-const SERVER_ONLY_FIELDS = ["customer_name", "customer_phone"] as const;
-
-const VERIFIED_EXTRA_FIELDS = [
+// PII fields fetched ONLY when the cookie verifies. Memo no longer needs
+// name/phone (always uses order_code), so unverified requests now never
+// pull PII from Directus at all — defense in depth at the query layer.
+const VERIFIED_PII_FIELDS = [
+  "customer_name",
+  "customer_phone",
   "customer_email",
   "shipping_city",
   "shipping_district",
@@ -62,12 +58,8 @@ async function fetchOrder(
   verified: boolean,
 ): Promise<Order | null> {
   const fields = verified
-    ? [
-        ...SAFE_RENDER_FIELDS,
-        ...SERVER_ONLY_FIELDS,
-        ...VERIFIED_EXTRA_FIELDS,
-      ]
-    : [...SAFE_RENDER_FIELDS, ...SERVER_ONLY_FIELDS];
+    ? [...SAFE_RENDER_FIELDS, ...VERIFIED_PII_FIELDS]
+    : [...SAFE_RENDER_FIELDS];
   const result = (await directusOrders.request(
     readItems("orders", {
       filter: { order_token: { _eq: token } },
@@ -174,14 +166,7 @@ export default async function ConfirmationPage({ params }: PageProps) {
 
   if (raw.payment_method === "bank") {
     const settings = await getSiteSettings();
-    const memo = buildMemo(
-      {
-        name: raw.customer_name,
-        phone: raw.customer_phone,
-        order_code: raw.order_code,
-      },
-      settings.memo_format,
-    );
+    const memo = bankMemo(raw.order_code);
     qrUrl = buildVietQRUrl({
       bank: settings.bank_name,
       account: settings.bank_account,
