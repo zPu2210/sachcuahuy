@@ -74,28 +74,31 @@ Wire end-to-end notification: Directus order create → Flow webhook → **relay
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ ORDER CREATE FLOW                                            │
+│ ORDER CREATE FLOW                       (deployed 2026-05-03)│
 │                                                               │
 │ User → Vercel /api/orders → directusOrders.createItem(orders)│
 │                                       │                       │
 │                                       ▼                       │
 │             Directus Flow "notify_new_order"                 │
 │             trigger: items.create on orders                  │
-│             ops (no JS exec — sandbox blocks `require`):    │
-│               1. Read order data                              │
-│               2. Webhook POST http://sachcuahuy-relay:9090/notify
-│                  Headers: X-Relay-Token: $env.RELAY_INGRESS_TOKEN
-│                  Body: { event_type: "order.created",        │
-│                          order: <full order JSON> }          │
+│             op (single Webhook, no Read/JS):                 │
+│               POST http://sachcuahuy-relay:9090/notify       │
+│               Headers: X-Relay-Token: {{$env.RELAY_INGRESS_TOKEN}}
+│               Body: { "event_type": "order.created",         │
+│                       "order_id": "{{$trigger.key}}" }       │
+│                  (only id — no PII in Flow logs;             │
+│                   relay refetches canonical record)          │
 │                                       │                       │
 │                                       ▼                       │
 │             Relay service (FastAPI, port 127.0.0.1:9090)     │
 │             ┌─────────────────────────────────────────────┐  │
 │             │ POST /notify                                │  │
 │             │   1. Verify X-Relay-Token (static bearer)   │  │
-│             │   2. Mark order notification_status=queued  │  │
+│             │   2. Fetch canonical order from Directus    │  │
+│             │      (relay-notifier role; 403/404 → drop)  │  │
 │             │   3. Push job to SQLite queue               │  │
-│             │   4. Return 202 Accepted                    │  │
+│             │   4. Mark notification_status=queued        │  │
+│             │   5. Return 200 {queued, job_id}            │  │
 │             │                                             │  │
 │             │ Sender worker (asyncio loop, 2s tick)       │  │
 │             │   Loop:                                      │  │
@@ -103,29 +106,35 @@ Wire end-to-end notification: Directus order create → Flow webhook → **relay
 │             │     - For each: open WS to GoClaw, send,    │  │
 │             │       on success → status=sent + PATCH Directus │
 │             │       on fail → retry_count++, backoff      │  │
-│             │       on retry_count==3 → status=failed     │  │
+│             │       BACKOFF=[5,30,120]; >3 → status=failed│  │
 │             │                                             │  │
 │             │ Reconciliation worker (60s tick)            │  │
 │             │   GET Directus /items/orders                │  │
 │             │     filter: notification_status=pending     │  │
 │             │     filter: created_at < now - 90s          │  │
-│             │   For each: enqueue job + mark queued       │  │
-│             │   (catches missed webhooks)                 │  │
+│             │   For each: enqueue + mark queued           │  │
+│             │   (catches missed webhooks; idempotent      │  │
+│             │    via notification_status≠pending skip)    │  │
 │             └─────────────────────────────────────────────┘  │
 │                                       │                       │
 │                                       ▼ WebSocket RPC          │
 │             GoClaw ws://goclaw-goclaw-1:18790/ws             │
 │             (internal Docker network goclaw_default)          │
-│             Method: send                                      │
-│             Params: { channel: "zalo_personal",               │
-│                       to: "<anh-zalo-uid>",                  │
-│                       message: "📦 Đơn mới..." }             │
+│             connect: { token, user_id: "sachcuahuy" }         │
+│             send:    { channel: "meow-zalo",                 │
+│                        to: "3889487929250090246",            │
+│                        message: "📦 Đơn mới..." }            │
+│             ⚠ channel param is the instance NAME             │
+│               (not type "zalo_personal" — gateway returns    │
+│                false ok=true for wrong type, see runbook)    │
 │                                       │                       │
 │                                       ▼                       │
-│             Zalo Personal API → anh's Zalo                    │
+│             meow-zalo channel instance → Zalo → anh           │
 └─────────────────────────────────────────────────────────────┘
 
-PAID FLOW: Same architecture, different trigger + message template.
+PAID FLOW: trigger=items.update, prepended Condition op
+(payment_status==paid), Webhook body uses {{$trigger.keys[0]}}
+(plural — Directus update events ship a key array even for singletons).
 ```
 
 ## Related Code Files

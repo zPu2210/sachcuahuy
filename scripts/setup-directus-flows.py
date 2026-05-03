@@ -18,8 +18,13 @@ Re-running the script is safe: it deletes any flow with the same name first
 
 Env vars required:
   DIRECTUS_URL      e.g. https://cms.sachcuahuy.com
-  ADMIN_EMAIL
-  ADMIN_PASSWORD
+  ADMIN_TOKEN       static admin token (preferred; works with 2FA/OAuth setups)
+                    OR
+  ADMIN_EMAIL       email/password fallback (fails when 2FA is enabled —
+  ADMIN_PASSWORD    Directus rejects /auth/login without OTP)
+
+If both are set, ADMIN_TOKEN wins. The token must belong to a user with
+admin policy (it manages /flows + /operations).
 """
 import json
 import os
@@ -28,8 +33,9 @@ import urllib.error
 import urllib.request
 
 URL = os.environ["DIRECTUS_URL"].rstrip("/")
-EMAIL = os.environ["ADMIN_EMAIL"]
-PWD = os.environ["ADMIN_PASSWORD"]
+ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "").strip()
+EMAIL = os.environ.get("ADMIN_EMAIL", "")
+PWD = os.environ.get("ADMIN_PASSWORD", "")
 
 UA = "sachcuahuy-bootstrap/1.0 (Directus flows setup)"
 RELAY_URL = "http://sachcuahuy-relay:9090/notify"
@@ -55,10 +61,19 @@ def req(method, path, token=None, body=None):
             return e.code, {"raw": raw.decode("utf-8", "replace")}
 
 
-def login() -> str:
+def auth() -> str:
+    """Return an admin bearer token. ADMIN_TOKEN takes precedence; fall
+    back to ADMIN_EMAIL/ADMIN_PASSWORD only if no token is provided.
+    Email/password login fails on 2FA-enabled accounts — prefer a token."""
+    if ADMIN_TOKEN:
+        return ADMIN_TOKEN
+    if not EMAIL or not PWD:
+        sys.exit(
+            "no auth: set ADMIN_TOKEN, or both ADMIN_EMAIL + ADMIN_PASSWORD"
+        )
     code, b = req("POST", "/auth/login", body={"email": EMAIL, "password": PWD})
     if code != 200:
-        sys.exit(f"login failed: {code} {b}")
+        sys.exit(f"login failed: {code} {b} (use ADMIN_TOKEN if 2FA is on)")
     return b["data"]["access_token"]
 
 
@@ -248,8 +263,8 @@ def upsert_paid_flow(token: str):
 
 
 def main():
-    print(f"Logging in as {EMAIL}...")
-    token = login()
+    print("Authenticating: " + ("ADMIN_TOKEN" if ADMIN_TOKEN else f"login {EMAIL}"))
+    token = auth()
     print("Setting up flow: notify_new_order")
     upsert_new_order_flow(token)
     print("Setting up flow: notify_paid")
