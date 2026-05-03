@@ -1,56 +1,69 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Metadata } from "next";
-import { ChevronRight, Truck, CreditCard, Package, Minus, Plus } from "lucide-react";
-import { books, getBookBySlug, formatPrice } from "@/lib/data";
+import { ChevronRight, Truck, CreditCard, Package } from "lucide-react";
 import { BookCard } from "@/components/book/book-card";
+import { getBookBySlug, getBooks, formatPrice } from "@/lib/books";
+import { buildAssetUrl } from "@/lib/directus";
+import type { Book } from "@/lib/types-directus";
+
+export const revalidate = 300;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
+  const books = await getBooks();
   return books
-    .filter((book) => !book.isComingSoon)
-    .map((book) => ({
-      slug: book.slug,
-    }));
+    .filter((b) => !b.is_coming_soon)
+    .map((b) => ({ slug: b.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const book = getBookBySlug(slug);
+  const book = await getBookBySlug(slug);
 
   if (!book) {
-    return {
-      title: "Không tìm thấy sách",
-    };
+    return { title: "Không tìm thấy sách" };
   }
 
   return {
     title: `${book.title} - Sách Của Huy`,
-    description: book.shortDescription,
+    description: book.short_description,
     openGraph: {
       title: book.title,
-      description: book.shortDescription,
+      description: book.short_description,
       type: "website",
     },
   };
 }
 
+function getCoverUrl(book: Book): string | null {
+  const cover = book.cover_image;
+  if (!cover) return null;
+  if (typeof cover === "string") return cover;
+  if (cover.id) return buildAssetUrl(cover.id, { width: 800, format: "webp" });
+  return null;
+}
+
 export default async function BookDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const book = getBookBySlug(slug);
+  const book = await getBookBySlug(slug);
 
-  if (!book || book.isComingSoon) {
+  if (!book || book.is_coming_soon) {
     notFound();
   }
 
-  const relatedBooks = books.filter((b) => b.id !== book.id && !b.isComingSoon);
+  const allBooks = await getBooks();
+  const relatedBooks = allBooks.filter(
+    (b) => b.id !== book.id && !b.is_coming_soon,
+  );
+  const isOutOfStock = book.stock_status === "out_of_stock";
+  const coverUrl = getCoverUrl(book);
 
   return (
     <div className="min-h-screen">
-      {/* Breadcrumb */}
       <div className="bg-white border-b border-gray-100">
         <div className="container-custom py-4">
           <nav className="flex items-center gap-2 text-sm text-gray-500">
@@ -67,118 +80,109 @@ export default async function BookDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Book Detail */}
       <section className="section">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Image Gallery */}
             <div className="space-y-4">
-              {/* Main Image */}
               <div className="aspect-[3/4] bg-primary rounded-2xl overflow-hidden shadow-book">
-                <div className="w-full h-full flex flex-col items-center justify-center p-12 text-white">
-                  <span className="font-serif text-lg tracking-wider mb-6">
-                    TRỌNG HUY
-                  </span>
-                  <div className="w-48 h-48 bg-white/90 rounded-[40%] flex items-center justify-center transform rotate-[-5deg]">
-                    <span className="font-script text-navy text-3xl text-center leading-tight">
-                      Miền Nam
-                      <br />
-                      của Huy
+                {coverUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={coverUrl}
+                    alt={book.title}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full flex flex-col items-center justify-center p-12 text-white">
+                    <span className="font-serif text-lg tracking-wider mb-6">
+                      {book.author.toUpperCase()}
                     </span>
-                  </div>
-                  <span className="text-sm opacity-60 mt-auto">NXB DÂN TRÍ</span>
-                </div>
-              </div>
-
-              {/* Thumbnails - placeholder for now */}
-              <div className="flex gap-4">
-                {[1, 2, 3].map((i) => (
-                  <button
-                    key={i}
-                    className="w-20 h-24 bg-primary/10 rounded-lg border-2 border-transparent hover:border-accent transition-colors cursor-pointer"
-                    aria-label={`Xem ảnh ${i}`}
-                  >
-                    <div className="w-full h-full flex items-center justify-center">
-                      <span className="font-script text-navy text-xs">Ảnh {i}</span>
+                    <div className="w-48 h-48 bg-white/90 rounded-[40%] flex items-center justify-center transform rotate-[-5deg]">
+                      <span className="font-script text-navy text-2xl text-center leading-tight px-4">
+                        {book.title}
+                      </span>
                     </div>
-                  </button>
-                ))}
+                    {book.publisher && (
+                      <span className="text-sm opacity-60 mt-auto">
+                        {book.publisher.toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Book Info */}
             <div>
               <h1 className="font-serif text-3xl md:text-4xl font-semibold text-primary mb-2">
                 {book.title}
               </h1>
+              {book.subtitle && (
+                <p className="text-lg text-gray-500 italic mb-2">
+                  {book.subtitle}
+                </p>
+              )}
 
-              <div className="flex items-center gap-4 text-gray-500 mb-6">
+              <div className="flex items-center gap-4 text-gray-500 mb-6 flex-wrap">
                 <span>Tác giả: {book.author}</span>
-                <span>•</span>
-                <span>{book.publisher}</span>
+                {book.publisher && (
+                  <>
+                    <span>•</span>
+                    <span>{book.publisher}</span>
+                  </>
+                )}
               </div>
 
               {book.isbn && (
                 <p className="text-sm text-gray-500 mb-4">ISBN: {book.isbn}</p>
               )}
 
-              {/* Price */}
               <div className="bg-secondary rounded-xl p-6 mb-6">
-                <div className="flex items-baseline gap-4">
+                <div className="flex items-baseline gap-4 flex-wrap">
                   <span className="text-3xl font-serif font-semibold text-accent">
                     {formatPrice(book.price)}
                   </span>
-                  {book.comparePrice && (
+                  {book.compare_price && (
                     <span className="text-lg text-gray-400 line-through">
-                      {formatPrice(book.comparePrice)}
+                      {formatPrice(book.compare_price)}
                     </span>
                   )}
                 </div>
               </div>
 
-              {/* Stock */}
-              <p className="flex items-center gap-2 text-green-600 mb-6">
-                <span className="w-2 h-2 bg-green-500 rounded-full"></span>
-                Còn hàng: {book.stock.toLocaleString()} cuốn
-              </p>
+              {isOutOfStock ? (
+                <p className="flex items-center gap-2 text-gray-500 mb-6">
+                  <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                  Hết hàng
+                </p>
+              ) : (
+                <p className="flex items-center gap-2 text-green-600 mb-6">
+                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                  Còn hàng
+                </p>
+              )}
 
-              {/* Quantity */}
-              <div className="flex items-center gap-4 mb-6">
-                <span className="text-gray-600">Số lượng:</span>
-                <div className="flex items-center border border-gray-200 rounded-lg">
-                  <button
-                    className="p-3 text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors cursor-pointer"
-                    aria-label="Giảm số lượng"
-                  >
-                    <Minus className="w-4 h-4" />
-                  </button>
-                  <span className="w-12 text-center font-medium">1</span>
-                  <button
-                    className="p-3 text-gray-600 hover:text-primary hover:bg-gray-50 transition-colors cursor-pointer"
-                    aria-label="Tăng số lượng"
-                  >
-                    <Plus className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <button className="btn btn-outline flex-1">Thêm vào giỏ hàng</button>
-                <Link href="/dat-hang" className="btn btn-primary flex-1 justify-center">
-                  Mua Ngay
+                <Link
+                  href={isOutOfStock ? "#" : `/dat-hang?slug=${book.slug}`}
+                  aria-disabled={isOutOfStock}
+                  className={`btn flex-1 justify-center ${
+                    isOutOfStock
+                      ? "btn-outline opacity-50 cursor-not-allowed pointer-events-none"
+                      : "btn-primary"
+                  }`}
+                >
+                  {isOutOfStock ? "Hết hàng" : "Mua Ngay"}
                 </Link>
               </div>
 
-              {/* Features */}
               <div className="border-t border-gray-100 pt-6 space-y-4">
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
                   <Truck className="w-5 h-5 text-accent" />
-                  <span>Miễn phí ship đơn từ 300K</span>
+                  <span>Miễn phí ship HCM/HN, tỉnh khác 25.000đ</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
                   <CreditCard className="w-5 h-5 text-accent" />
-                  <span>COD hoặc chuyển khoản</span>
+                  <span>COD hoặc chuyển khoản (VietQR)</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
                   <Package className="w-5 h-5 text-accent" />
@@ -190,7 +194,6 @@ export default async function BookDetailPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Description */}
       <section className="section bg-white">
         <div className="container-custom">
           <h2 className="font-serif text-2xl font-semibold text-primary mb-6">
@@ -204,29 +207,39 @@ export default async function BookDetailPage({ params }: PageProps) {
             ))}
           </div>
 
-          {/* Book Specs */}
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-secondary rounded-lg p-4">
-              <p className="text-sm text-gray-500">Số trang</p>
-              <p className="font-semibold text-primary">{book.pageCount} trang</p>
-            </div>
-            <div className="bg-secondary rounded-lg p-4">
-              <p className="text-sm text-gray-500">Năm xuất bản</p>
-              <p className="font-semibold text-primary">{book.publishedDate}</p>
-            </div>
-            <div className="bg-secondary rounded-lg p-4">
-              <p className="text-sm text-gray-500">Nhà xuất bản</p>
-              <p className="font-semibold text-primary">{book.publisher}</p>
-            </div>
-            <div className="bg-secondary rounded-lg p-4">
-              <p className="text-sm text-gray-500">Loại bìa</p>
-              <p className="font-semibold text-primary">Bìa cứng</p>
-            </div>
+            {book.page_count != null && (
+              <div className="bg-secondary rounded-lg p-4">
+                <p className="text-sm text-gray-500">Số trang</p>
+                <p className="font-semibold text-primary">
+                  {book.page_count} trang
+                </p>
+              </div>
+            )}
+            {book.published_date && (
+              <div className="bg-secondary rounded-lg p-4">
+                <p className="text-sm text-gray-500">Năm xuất bản</p>
+                <p className="font-semibold text-primary">
+                  {book.published_date}
+                </p>
+              </div>
+            )}
+            {book.publisher && (
+              <div className="bg-secondary rounded-lg p-4">
+                <p className="text-sm text-gray-500">Nhà xuất bản</p>
+                <p className="font-semibold text-primary">{book.publisher}</p>
+              </div>
+            )}
+            {book.isbn && (
+              <div className="bg-secondary rounded-lg p-4">
+                <p className="text-sm text-gray-500">ISBN</p>
+                <p className="font-semibold text-primary text-sm">{book.isbn}</p>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Related Books */}
       {relatedBooks.length > 0 && (
         <section className="section">
           <div className="container-custom">
@@ -234,8 +247,8 @@ export default async function BookDetailPage({ params }: PageProps) {
               Sách Khác Của Tác Giả
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {relatedBooks.slice(0, 3).map((relatedBook) => (
-                <BookCard key={relatedBook.id} book={relatedBook} />
+              {relatedBooks.slice(0, 3).map((b) => (
+                <BookCard key={b.id} book={b} />
               ))}
             </div>
           </div>
