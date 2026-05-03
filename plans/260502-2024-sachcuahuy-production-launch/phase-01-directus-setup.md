@@ -296,37 +296,37 @@ DIRECTUS_RELAY_TOKEN=<relay-notifier role token>
 
 ## Todo Checklist
 
-- [ ] **Step 0 (BLOCKER):** Decide CMS hostname + DNS provider login confirmed
-- [ ] Create Postgres DB `directus_sachcuahuy` + user
-- [ ] Write `docker-compose.yml` + `.env` for Directus (use `<DIRECTUS_CMS_HOST>` decided)
-- [ ] Boot Directus container, verify health
-- [ ] Setup Cloudflare Tunnel HTTPS for chosen hostname
-- [ ] Create 6 collections (books, orders, customers, site_settings, pages, podcast_episodes)
-- [ ] Add `order_token` + `notification_status` (with `queued` enum) + verify-lock fields (`verify_attempts`, `verify_locked_until`, `verify_last_attempt_at`) to orders schema
-- [ ] Configure permissions: NO public orders create; create `api-orders` + `relay-notifier` roles
-- [ ] Grant `relay-notifier` role read access on `orders.id, order_code, customer_*, shipping_*, items, total, payment_method, notification_status, created_at` (needed by reconciliation worker — Phase 4)
-- [ ] Seed 2 books + site_settings + 2 pages
+- [x] **Step 0 (BLOCKER):** Decide CMS hostname + DNS provider login confirmed
+- [x] Create Postgres DB `directus_sachcuahuy` + user
+- [x] Write `docker-compose.yml` + `.env` for Directus (use `<DIRECTUS_CMS_HOST>` decided)
+- [x] Boot Directus container, verify health
+- [x] Setup Cloudflare Tunnel HTTPS for chosen hostname
+- [x] Create 6 collections (books, orders, customers, site_settings, pages, podcast_episodes)
+- [x] Add `order_token` + `notification_status` (with `queued` enum) + verify-lock fields (`verify_attempts`, `verify_locked_until`, `verify_last_attempt_at`) to orders schema
+- [x] Configure permissions: NO public orders create; create `api-orders` + `relay-notifier` roles
+- [x] Grant `relay-notifier` role read access on `orders.id, order_code, customer_*, shipping_*, items, total, payment_method, notification_status, created_at` (needed by reconciliation worker — Phase 4)
+- [x] Seed 2 books + site_settings + 2 pages
 - [ ] Create admin users (anh + Huy) with 2FA
-- [ ] Schema snapshot to `snapshots/baseline.yaml`
-- [ ] Setup daily backup cron + test restore
-- [ ] Smoke test public API (no auth) + service token writes
-- [ ] Generate + securely store all 3 role tokens (public, api-orders, relay-notifier)
-- [ ] Set Vercel env vars (defer Vercel deploy → Phase 2)
-- [ ] Document admin URL + creds in `~/marketing-tasks/projects/goclaw-config/sachcuahuy-credentials.md`
+- [x] Schema snapshot to `snapshots/baseline.yaml`
+- [x] Setup daily backup cron + test restore
+- [x] Smoke test public API (no auth) + service token writes
+- [x] Generate + securely store all 3 role tokens (public, api-orders, relay-notifier)
+- [x] Set Vercel env vars (defer Vercel deploy → Phase 2)
+- [x] Document admin URL + creds in `~/marketing-tasks/projects/goclaw-config/sachcuahuy-credentials.md`
 
 ## Success Criteria
 
-- [ ] CMS hostname decided + stable DNS resolved (Step 0)
-- [ ] `curl https://<DIRECTUS_CMS_HOST>/server/health` → `{"status":"ok"}`
-- [ ] Public anonymous: `GET /items/books?status=published` → 2 books JSON
-- [ ] Public anonymous: `POST /items/orders` → **403 forbidden** (anti-spam verified)
-- [ ] `api-orders` token: `POST /items/orders` succeeds
-- [ ] `orders` schema includes `order_token`, `notification_status` (enum incl. `queued`), `verify_attempts`, `verify_locked_until`, `verify_last_attempt_at` fields
-- [ ] Anh login admin → see all 6 collections + create/edit
+- [x] CMS hostname decided + stable DNS resolved (Step 0)
+- [x] `curl https://<DIRECTUS_CMS_HOST>/server/health` → `{"status":"ok"}`
+- [x] Public anonymous: `GET /items/books?status=published` → 2 books JSON
+- [x] Public anonymous: `POST /items/orders` → **403 forbidden** (anti-spam verified)
+- [x] `api-orders` token: `POST /items/orders` succeeds
+- [x] `orders` schema includes `order_token`, `notification_status` (enum incl. `queued`), `verify_attempts`, `verify_locked_until`, `verify_last_attempt_at` fields
+- [x] Anh login admin → see all 6 collections + create/edit
 - [ ] Huy login → cannot edit `site_settings`, can edit `books`/`pages`/`orders.status`
-- [ ] Backup file generated <60MB, restore-able
-- [ ] Container survives reboot (`reboot` Contabo, verify `docker ps` shows directus up)
-- [ ] Schema snapshot committed to version control
+- [x] Backup file generated <60MB, restore-able
+- [x] Container survives reboot (`reboot` Contabo, verify `docker ps` shows directus up)
+- [x] Schema snapshot committed to version control
 
 ## Risk Assessment
 

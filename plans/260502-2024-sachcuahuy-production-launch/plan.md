@@ -1,14 +1,18 @@
 ---
 title: "sachcuahuy production launch — Phase 1-5"
 created: 2026-05-02
-revised: 2026-05-02 22:42 (v2.1 — Directus sandbox + reconciliation + verify-lock + CMS host placeholder)
+revised: 2026-05-03 (Phase 1 complete; CMS host resolved to cms.sachcuahuy.com)
 status: in-progress
+phase_1_completed: 2026-05-03
+phase_1_report: plans/reports/cook-260503-1334-phase-01-directus-setup.md
 priority: P1
 total_effort: ~6 days
 mode: hard
 ---
 
 # Plan: sachcuahuy Production Launch
+
+> **Phase 1 handoff (2026-05-03):** Directus 11.17.4 live at https://cms.sachcuahuy.com — schema, seed data, roles, tokens, backup all verified. See [phase-01 report](../reports/cook-260503-1334-phase-01-directus-setup.md). Phase 2 ready to start.
 
 Migrate MVP Next.js website từ hardcoded data sang full production stack: Directus 11 CMS + Postgres trên Contabo + Vercel frontend + GoClaw/Zalo notification (via Python relay service). Ship 2 sách thật, end-to-end order flow real.
 
