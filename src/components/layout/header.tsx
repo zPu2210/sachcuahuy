@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ShoppingCart, Menu, X, Book } from "lucide-react";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { usePathname } from "next/navigation";
@@ -26,7 +26,7 @@ export function Header() {
   return (
     <motion.header
       className={clsx(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        "sticky top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm py-2" : "bg-transparent py-4"
       )}
       initial={{ y: -100 }}
