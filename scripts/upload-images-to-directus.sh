@@ -14,7 +14,7 @@ curl -sf -H "Authorization: Bearer $ADMIN_TOKEN" "$BASE/items/books?fields=id,sl
 
 # 2. (Optional) Create folder for grouping
 echo "==> Create/find folder 'sachcuahuy-launch'"
-FOLDER_ID=$(curl -sf -H "Authorization: Bearer $ADMIN_TOKEN" \
+FOLDER_ID=$(curl -sfg -H "Authorization: Bearer $ADMIN_TOKEN" \
   "$BASE/folders?filter[name][_eq]=sachcuahuy-launch&fields=id" | jq -r '.data[0].id // empty')
 if [ -z "$FOLDER_ID" ]; then
   FOLDER_ID=$(curl -sf -X POST "$BASE/folders" \
@@ -77,7 +77,13 @@ curl -sf -X PATCH "$BASE/items/site_settings" \
 echo "==> Verify public asset access"
 for id in "$MIENNAM_ID" "$GOCPHANTU_ID" "$AUTHOR_ID"; do
   echo "   $id:"
-  curl -sI "$BASE/assets/$id?width=800&format=webp" | grep -E "HTTP|Content-Type|Content-Length"
+  status=$(curl -sI -o /tmp/sachcuahuy-asset-head.txt -w "%{http_code}" \
+    "$BASE/assets/$id?width=800&format=webp")
+  grep -E "HTTP|Content-Type|Content-Length" /tmp/sachcuahuy-asset-head.txt || true
+  if [ "$status" != "200" ]; then
+    echo "   asset check failed with HTTP $status" >&2
+    exit 1
+  fi
 done
 
 echo "==> Save IDs to mapping doc"

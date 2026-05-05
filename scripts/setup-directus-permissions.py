@@ -167,6 +167,7 @@ def main():
     create_perm(t, pub_id, "books", "read", permissions=PUBLISHED_ONLY)
     create_perm(t, pub_id, "pages", "read", permissions=PUBLISHED_ONLY)
     create_perm(t, pub_id, "site_settings", "read")
+    create_perm(t, pub_id, "directus_files", "read")
     print()
 
     # ---- api-orders ----
