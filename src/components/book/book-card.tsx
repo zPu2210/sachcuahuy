@@ -149,8 +149,8 @@ export function BookCard({ book }: BookCardProps) {
               className={clsx(
                 "text-xs font-medium",
                 isOutOfStock
-                  ? "text-gray-400"
-                  : "text-gray-400 group-hover:text-accent transition-colors",
+                  ? "text-gray-600"
+                  : "text-gray-600 group-hover:text-primary transition-colors",
               )}
             >
               {isOutOfStock ? "Hết hàng" : "Xem chi tiết →"}

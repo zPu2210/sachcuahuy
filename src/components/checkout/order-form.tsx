@@ -257,7 +257,7 @@ export function OrderForm({
                     <Info className="w-4 h-4 text-accent" aria-hidden="true" />
                   </span>
                 </div>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-600">
                   Sau khi bạn gửi thông tin đặt sách, mình sẽ liên hệ xác nhận
                   đơn và hướng dẫn chuyển khoản.
                 </p>
@@ -288,7 +288,7 @@ export function OrderForm({
                   <span className="font-medium">{bankInfo.branch}</span>
                 </p>
               )}
-              <p className="text-xs text-gray-500 mt-2">
+              <p className="text-xs text-gray-600 mt-2">
                 * Bạn có thể chuyển khoản ngay nếu muốn; mã QR và nội dung CK
                 chính xác sẽ hiển thị ở trang xác nhận sau khi đặt hàng.
               </p>
@@ -349,7 +349,7 @@ export function OrderForm({
         )}
       </button>
 
-      <p className="text-center text-sm text-gray-500">
+      <p className="text-center text-sm text-gray-600">
         Bằng việc đặt hàng, bạn đồng ý với{" "}
         <a href="#" className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary">
           điều khoản dịch vụ

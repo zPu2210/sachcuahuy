@@ -150,7 +150,7 @@ export function Footer({ settings }: FooterProps) {
                 </a>
               )}
               {!facebook && !instagram && !zalo && (
-                <span className="text-sm text-gray-400">Sẽ cập nhật sau.</span>
+                <span className="text-sm text-gray-600">Sẽ cập nhật sau.</span>
               )}
             </div>
           </div>
