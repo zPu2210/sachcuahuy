@@ -1,9 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { motion } from "framer-motion";
-import { FadeIn } from "@/components/ui/fade-in";
 import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import { formatPrice } from "@/lib/utils";
 import type { Book } from "@/lib/types-directus";
@@ -56,14 +52,14 @@ export function HeroSection({
       <div className="container-custom relative z-10 pt-28 pb-12 md:py-20">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1">
-            <FadeIn delay={0.1}>
+            <div>
               <span className="inline-flex items-center gap-2 text-accent font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20 w-fit">
                 <Sparkles className="w-4 h-4 fill-accent" />
                 Tác phẩm mới ra mắt
               </span>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.2}>
+            <div>
               <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-primary leading-[1.1] mb-6 tracking-tight">
                 {titleParts.lead}
                 {titleParts.accent && (
@@ -87,21 +83,21 @@ export function HeroSection({
                   </>
                 )}
               </h1>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.3}>
+            <div>
               <p className="font-script text-2xl md:text-3xl text-gray-500 mb-6">
                 &ldquo;{displaySubtitle}&rdquo;
               </p>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.4}>
+            <div>
               <p className="text-gray-600 mb-10 leading-relaxed text-lg max-w-lg">
                 {featuredBook.short_description}
               </p>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.5} className="flex flex-wrap items-center gap-6">
+            <div className="flex flex-wrap items-center gap-6">
               <Link
                 href={`/sach/${featuredBook.slug}`}
                 className="btn btn-primary group px-8 py-4 text-lg"
@@ -118,12 +114,9 @@ export function HeroSection({
                   {formatPrice(featuredBook.price)}
                 </span>
               </div>
-            </FadeIn>
+            </div>
 
-            <FadeIn
-              delay={0.6}
-              className="mt-12 flex items-center gap-4 text-sm text-gray-500"
-            >
+            <div className="mt-12 flex items-center gap-4 text-sm text-gray-500">
               <div className="flex -space-x-3">
                 {[1, 2, 3].map((i) => (
                   <div
@@ -141,16 +134,11 @@ export function HeroSection({
               <p>
                 Đã được <strong className="text-primary">100+</strong> độc giả yêu thích
               </p>
-            </FadeIn>
+            </div>
           </div>
 
           <div className="order-1 lg:order-2 flex justify-center perspective-1000 mt-8 md:mt-0">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
-              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="relative group"
-            >
+            <div className="relative group">
               <div className="absolute inset-0 bg-accent/20 blur-[60px] rounded-full transform scale-110 group-hover:scale-125 transition-transform duration-700"></div>
 
               <Link
@@ -186,7 +174,7 @@ export function HeroSection({
 
                 <div className="absolute inset-0 bg-[#0f1629] rounded-sm transform translate-z-[-12px] shadow-2xl"></div>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

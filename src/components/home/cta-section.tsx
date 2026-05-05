@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-import { FadeIn } from "@/components/ui/fade-in";
 import type { Book } from "@/lib/types-directus";
 
 interface CTASectionProps {
@@ -18,29 +15,29 @@ export function CTASection({ featuredBook }: CTASectionProps) {
       </div>
 
       <div className="container-custom relative z-10 text-center">
-        <FadeIn>
+        <div>
           <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/10 text-white/90 text-sm font-medium mb-6 backdrop-blur-sm border border-white/10">
             <Sparkles className="w-4 h-4 text-accent" />
             <span>Phiên bản giới hạn</span>
           </div>
-        </FadeIn>
+        </div>
 
-        <FadeIn delay={0.1}>
+        <div>
           <h2 className="font-serif text-4xl md:text-5xl md:leading-tight font-bold text-white mb-6">
             Sở hữu cuốn sách <br className="hidden md:block" />
             <span className="text-accent">{featuredBook.title}</span> ngay hôm nay
           </h2>
-        </FadeIn>
+        </div>
 
-        <FadeIn delay={0.2}>
+        <div>
           <p className="text-white/70 mb-10 max-w-xl mx-auto text-lg">
             Đặt hàng ngay hôm nay để nhận được ấn bản đầu tiên với{" "}
             <strong className="text-white">chữ ký tác giả</strong> và{" "}
             <strong className="text-white">bookmarks</strong> độc quyền.
           </p>
-        </FadeIn>
+        </div>
 
-        <FadeIn delay={0.3}>
+        <div>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href={`/dat-hang?slug=${featuredBook.slug}`}
@@ -63,7 +60,7 @@ export function CTASection({ featuredBook }: CTASectionProps) {
           <p className="mt-8 text-white/40 text-sm">
             * Miễn phí giao hàng cho 100 đơn đầu tiên
           </p>
-        </FadeIn>
+        </div>
       </div>
     </section>
   );

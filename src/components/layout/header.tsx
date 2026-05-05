@@ -1,21 +1,23 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ShoppingCart, Menu, X, Book } from "lucide-react";
-import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { scrollY } = useScroll();
   const pathname = usePathname();
 
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setIsScrolled(latest > 50);
-  });
+  useEffect(() => {
+    const updateScrollState = () => setIsScrolled(window.scrollY > 50);
+
+    updateScrollState();
+    window.addEventListener("scroll", updateScrollState, { passive: true });
+    return () => window.removeEventListener("scroll", updateScrollState);
+  }, []);
 
   const navLinks = [
     { href: "/sach", label: "Tác Phẩm" },
@@ -24,14 +26,11 @@ export function Header() {
   ];
 
   return (
-    <motion.header
+    <header
       className={clsx(
         "sticky top-0 left-0 right-0 z-50 transition-all duration-300",
         isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm py-2" : "bg-transparent py-4"
       )}
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.5 }}
     >
       <div className="container-custom">
         <div className="flex items-center justify-between">
@@ -63,10 +62,8 @@ export function Header() {
                 >
                   {link.label}
                   {isActive && (
-                    <motion.div
-                      layoutId="navbar-indicator"
+                    <span
                       className="absolute inset-0 bg-primary/5 rounded-full -z-10"
-                      transition={{ duration: 0.3 }}
                     />
                   )}
                 </Link>
@@ -105,18 +102,21 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation Overlay */}
-        <motion.div
-          initial={false}
-          animate={isMenuOpen ? { opacity: 1, pointerEvents: "auto" } : { opacity: 0, pointerEvents: "none" }}
-          className="fixed inset-0 bg-white/95 backdrop-blur-xl z-40 md:hidden flex flex-col items-center justify-center"
+        <div
+          className={clsx(
+            "fixed inset-0 bg-white/95 backdrop-blur-xl z-40 md:hidden flex flex-col items-center justify-center transition-opacity duration-200",
+            isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+          )}
         >
           <nav className="flex flex-col items-center gap-8">
             {navLinks.map((link, i) => (
-              <motion.div
+              <div
                 key={link.href}
-                initial={{ y: 20, opacity: 0 }}
-                animate={isMenuOpen ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                transition={{ delay: 0.1 + i * 0.1 }}
+                className={clsx(
+                  "transition-all duration-200",
+                  isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+                )}
+                style={{ transitionDelay: isMenuOpen ? `${100 + i * 80}ms` : "0ms" }}
               >
                 <Link
                   href={link.href}
@@ -125,20 +125,22 @@ export function Header() {
                 >
                   {link.label}
                 </Link>
-              </motion.div>
+              </div>
             ))}
-            <motion.div
-              initial={{ y: 20, opacity: 0 }}
-              animate={isMenuOpen ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-              transition={{ delay: 0.4 }}
+            <div
+              className={clsx(
+                "transition-all duration-200",
+                isMenuOpen ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0",
+              )}
+              style={{ transitionDelay: isMenuOpen ? "340ms" : "0ms" }}
             >
               <Link href="/sach" onClick={() => setIsMenuOpen(false)} className="btn btn-primary mt-4">
                 Đến Cửa Hàng
               </Link>
-            </motion.div>
+            </div>
           </nav>
-        </motion.div>
+        </div>
       </div>
-    </motion.header>
+    </header>
   );
 }

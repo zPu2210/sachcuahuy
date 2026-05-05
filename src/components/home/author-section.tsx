@@ -1,8 +1,5 @@
-"use client";
-
 import Link from "next/link";
 import { ChevronRight, Feather } from "lucide-react";
-import { FadeIn } from "@/components/ui/fade-in";
 
 interface AuthorSectionProps {
   name: string;
@@ -31,7 +28,7 @@ export function AuthorSection({
 
       <div className="container-custom relative z-10">
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
-          <FadeIn direction="right" className="flex-shrink-0">
+          <div className="flex-shrink-0">
             <div className="relative">
               <div className="absolute inset-0 border-2 border-accent/20 rounded-full transform rotate-6 scale-105"></div>
               <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-secondary border-4 border-white shadow-xl overflow-hidden relative z-10">
@@ -60,35 +57,35 @@ export function AuthorSection({
                 <Feather className="w-5 h-5" />
               </div>
             </div>
-          </FadeIn>
+          </div>
 
           <div className="flex-1 text-center md:text-left">
-            <FadeIn delay={0.2}>
+            <div>
               <span className="text-accent font-medium text-sm tracking-widest uppercase mb-2 block">
                 Về Tác Giả
               </span>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.3}>
+            <div>
               <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-3">
                 {name}
               </h2>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.4}>
+            <div>
               <p className="text-gray-500 font-medium italic mb-6 relative inline-block">
                 {title}
                 <span className="absolute bottom-0 right-0 w-full h-[1px] bg-accent/30"></span>
               </p>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.5}>
+            <div>
               <p className="text-gray-600 leading-relaxed text-lg mb-8 max-w-xl mx-auto md:mx-0">
                 &ldquo;{shortBio}&rdquo;
               </p>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.6}>
+            <div>
               <Link
                 href="/gioi-thieu"
                 className="group inline-flex items-center text-primary font-bold hover:text-accent transition-colors border-b-2 border-primary/10 hover:border-accent pb-1"
@@ -96,17 +93,14 @@ export function AuthorSection({
                 Tìm hiểu thêm về hành trình
                 <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Link>
-            </FadeIn>
+            </div>
           </div>
 
-          <FadeIn
-            delay={0.7}
-            className="hidden lg:block opacity-10 rotate-[-10deg]"
-          >
+          <div className="hidden lg:block opacity-10 rotate-[-10deg]">
             <span className="font-script text-6xl md:text-8xl text-primary whitespace-nowrap">
               {name}
             </span>
-          </FadeIn>
+          </div>
         </div>
       </div>
     </section>

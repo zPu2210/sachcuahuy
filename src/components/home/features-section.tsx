@@ -1,7 +1,4 @@
-"use client";
-
 import { Truck, Package, CreditCard, type LucideIcon } from "lucide-react";
-import { FadeIn } from "@/components/ui/fade-in";
 import { formatPrice } from "@/lib/utils";
 
 interface FeaturesSectionProps {
@@ -58,13 +55,11 @@ export function FeaturesSection(props: FeaturesSectionProps) {
   return (
     <section className="section bg-[#FDFBF7]">
       <div className="container-custom">
-        <FadeIn>
-          <h2 className="sr-only">Cam kết dịch vụ</h2>
-        </FadeIn>
+        <h2 className="sr-only">Cam kết dịch vụ</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <FadeIn key={index} delay={0.1 * index} className="h-full">
+          {features.map((feature) => (
+            <div key={feature.title} className="h-full">
               <div className="h-full text-center p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary transition-colors duration-300">
                   <feature.icon className="w-8 h-8 text-primary transition-colors duration-300" />
@@ -74,7 +69,7 @@ export function FeaturesSection(props: FeaturesSectionProps) {
                 </h3>
                 <p className="text-gray-500 text-sm leading-relaxed">{feature.description}</p>
               </div>
-            </FadeIn>
+            </div>
           ))}
         </div>
       </div>
