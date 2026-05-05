@@ -1,5 +1,4 @@
-"use client";
-
+import Image from "next/image";
 import Link from "next/link";
 import { ShoppingCart, Eye, Book as BookIcon } from "lucide-react";
 import clsx from "clsx";
@@ -12,7 +11,7 @@ interface BookCardProps {
   featured?: boolean;
 }
 
-export function BookCard({ book }: BookCardProps) {
+export function BookCard({ book, featured = false }: BookCardProps) {
   const isComingSoon = !!book.is_coming_soon;
   const isOutOfStock = book.stock_status === "out_of_stock";
   const coverUrl = buildAssetUrlFromFile(book.cover_image, {
@@ -34,12 +33,13 @@ export function BookCard({ book }: BookCardProps) {
         >
           {!isComingSoon && coverUrl ? (
             <div className="absolute inset-0 bg-[#E0E0E0] group-hover:scale-105 transition-transform duration-700 ease-out">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={coverUrl}
                 alt={book.title}
-                className="w-full h-full object-cover"
-                loading="lazy"
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                className="object-cover"
+                priority={featured}
               />
               <div className="absolute inset-0 bg-black/5 mix-blend-multiply"></div>
             </div>
@@ -105,7 +105,7 @@ export function BookCard({ book }: BookCardProps) {
 
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {book.is_new && !isComingSoon && (
-            <span className="px-3 py-1 bg-accent text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
+            <span className="px-3 py-1 bg-[#8A6F2B] text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
               Mới
             </span>
           )}
@@ -124,7 +124,7 @@ export function BookCard({ book }: BookCardProps) {
               "font-serif text-xl font-bold mb-1 line-clamp-1 transition-colors",
               isComingSoon
                 ? "text-gray-400"
-                : "text-primary group-hover:text-accent",
+                : "text-primary group-hover:text-[#8A6F2B]",
             )}
           >
             {book.title}

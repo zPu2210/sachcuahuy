@@ -50,8 +50,8 @@ export default async function BooksPage() {
         <div className="container-custom">
           {books.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {books.map((book) => (
-                <BookCard key={book.id} book={book} />
+              {books.map((book, index) => (
+                <BookCard key={book.id} book={book} featured={index === 0} />
               ))}
             </div>
           ) : (

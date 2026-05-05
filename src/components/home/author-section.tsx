@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, Feather } from "lucide-react";
 
@@ -33,11 +34,12 @@ export function AuthorSection({
               <div className="absolute inset-0 border-2 border-accent/20 rounded-full transform rotate-6 scale-105"></div>
               <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-secondary border-4 border-white shadow-xl overflow-hidden relative z-10">
                 {imageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
+                  <Image
                     src={imageUrl}
                     alt={name}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(min-width: 768px) 224px, 160px"
+                    className="object-cover"
                   />
                 ) : (
                   <div className="w-full h-full bg-[#1E2B4D] flex items-center justify-center">
@@ -61,7 +63,7 @@ export function AuthorSection({
 
           <div className="flex-1 text-center md:text-left">
             <div>
-              <span className="text-accent font-medium text-sm tracking-widest uppercase mb-2 block">
+              <span className="text-[#8A6F2B] font-medium text-sm tracking-widest uppercase mb-2 block">
                 Về Tác Giả
               </span>
             </div>

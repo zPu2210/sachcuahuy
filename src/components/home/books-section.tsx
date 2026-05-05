@@ -13,7 +13,7 @@ export function BooksSection({ books }: BooksSectionProps) {
       <div className="container-custom">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div>
-            <span className="text-accent font-medium text-sm tracking-widest uppercase mb-3 block">
+            <span className="text-[#8A6F2B] font-medium text-sm tracking-widest uppercase mb-3 block">
               Tủ sách
             </span>
             <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-6">
@@ -27,12 +27,12 @@ export function BooksSection({ books }: BooksSectionProps) {
 
         {books.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-            {books.map((book) => (
+            {books.map((book, index) => (
               <div
                 key={book.id}
                 className="h-full"
               >
-                <BookCard book={book} />
+                <BookCard book={book} featured={index === 0} />
               </div>
             ))}
           </div>

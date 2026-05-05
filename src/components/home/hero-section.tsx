@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { buildAssetUrlFromFile } from "@/lib/directus-assets";
@@ -53,7 +54,7 @@ export function HeroSection({
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1">
             <div>
-              <span className="inline-flex items-center gap-2 text-accent font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20 w-fit">
+              <span className="inline-flex items-center gap-2 text-[#8A6F2B] font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20 w-fit">
                 <Sparkles className="w-4 h-4 fill-accent" />
                 Tác phẩm mới ra mắt
               </span>
@@ -65,7 +66,7 @@ export function HeroSection({
                 {titleParts.accent && (
                   <>
                     <br />
-                    <span className="text-accent italic relative">
+                    <span className="text-[#8A6F2B] italic relative">
                       {titleParts.accent}
                       <svg
                         className="absolute w-full h-3 -bottom-1 left-0 text-accent/30"
@@ -127,6 +128,8 @@ export function HeroSection({
                     <img
                       src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${i}`}
                       alt="avatar"
+                      width={36}
+                      height={36}
                     />
                   </div>
                 ))}
@@ -162,11 +165,13 @@ export function HeroSection({
                 ></div>
 
                 <div className="relative w-[300px] md:w-[350px] aspect-[1/1.45] bg-[#1a237e] rounded-sm shadow-2xl overflow-hidden transform translate-z-[12px]">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={coverUrl}
                     alt={`${featuredBook.title} - ${featuredBook.author}`}
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(min-width: 768px) 350px, 300px"
+                    className="object-cover"
+                    priority
                   />
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none z-20 mix-blend-overlay opacity-50"></div>
                   <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-gradient-to-r from-black/20 to-transparent z-20"></div>
