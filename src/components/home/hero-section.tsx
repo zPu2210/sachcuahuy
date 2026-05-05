@@ -54,7 +54,7 @@ export function HeroSection({
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1">
             <div>
-              <span className="inline-flex items-center gap-2 text-[#8A6F2B] font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20 w-fit">
+              <span className="inline-flex items-center gap-2 text-[#7A6125] font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20 w-fit">
                 <Sparkles className="w-4 h-4 fill-accent" />
                 Tác phẩm mới ra mắt
               </span>
@@ -66,7 +66,7 @@ export function HeroSection({
                 {titleParts.accent && (
                   <>
                     <br />
-                    <span className="text-[#8A6F2B] italic relative">
+                    <span className="text-[#7A6125] italic relative">
                       {titleParts.accent}
                       <svg
                         className="absolute w-full h-3 -bottom-1 left-0 text-accent/30"

@@ -13,7 +13,7 @@ export function BooksSection({ books }: BooksSectionProps) {
       <div className="container-custom">
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <div>
-            <span className="text-[#8A6F2B] font-medium text-sm tracking-widest uppercase mb-3 block">
+            <span className="text-[#7A6125] font-medium text-sm tracking-widest uppercase mb-3 block">
               Tủ sách
             </span>
             <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-6">

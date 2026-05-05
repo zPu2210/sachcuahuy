@@ -105,7 +105,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
 
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {book.is_new && !isComingSoon && (
-            <span className="px-3 py-1 bg-[#8A6F2B] text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
+            <span className="px-3 py-1 bg-[#7A6125] text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
               Mới
             </span>
           )}
@@ -124,7 +124,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
               "font-serif text-xl font-bold mb-1 line-clamp-1 transition-colors",
               isComingSoon
                 ? "text-gray-400"
-                : "text-primary group-hover:text-[#8A6F2B]",
+                : "text-primary group-hover:text-[#7A6125]",
             )}
           >
             {book.title}

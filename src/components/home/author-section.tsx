@@ -63,7 +63,7 @@ export function AuthorSection({
 
           <div className="flex-1 text-center md:text-left">
             <div>
-              <span className="text-[#8A6F2B] font-medium text-sm tracking-widest uppercase mb-2 block">
+              <span className="text-[#7A6125] font-medium text-sm tracking-widest uppercase mb-2 block">
                 Về Tác Giả
               </span>
             </div>

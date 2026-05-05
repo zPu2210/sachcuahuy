@@ -97,7 +97,7 @@ export default async function CheckoutPage({ searchParams }: PageProps) {
                     </h3>
                     <p className="text-sm text-gray-500">{book.author}</p>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-[#8A6F2B] font-semibold">
+                      <span className="text-[#7A6125] font-semibold">
                         {formatPrice(book.price)}
                       </span>
                       <span className="text-sm text-gray-500">x{qty}</span>
@@ -133,7 +133,7 @@ export default async function CheckoutPage({ searchParams }: PageProps) {
                     <span className="font-semibold text-primary">
                       Tổng (ước tính)
                     </span>
-                    <span className="text-2xl font-serif font-semibold text-[#8A6F2B]">
+                    <span className="text-2xl font-serif font-semibold text-[#7A6125]">
                       {formatPrice(previewTotal)}
                     </span>
                   </div>
