@@ -4,14 +4,42 @@ import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { FadeIn } from "@/components/ui/fade-in";
+import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import { formatPrice } from "@/lib/utils";
 import type { Book } from "@/lib/types-directus";
 
 interface HeroSectionProps {
   featuredBook: Book;
+  title?: string | null;
+  subtitle?: string | null;
 }
 
-export function HeroSection({ featuredBook }: HeroSectionProps) {
+function splitTitle(title: string) {
+  const words = title.trim().split(/\s+/);
+  if (words.length < 3) return { lead: title, accent: null };
+  return {
+    lead: words.slice(0, -2).join(" "),
+    accent: words.slice(-2).join(" "),
+  };
+}
+
+export function HeroSection({
+  featuredBook,
+  title,
+  subtitle,
+}: HeroSectionProps) {
+  const displayTitle = title?.trim() || featuredBook.title;
+  const displaySubtitle =
+    subtitle?.trim() || featuredBook.subtitle || "Nơi ấy có Mina và một mái nhà";
+  const titleParts = splitTitle(displayTitle);
+  const coverUrl =
+    buildAssetUrlFromFile(featuredBook.cover_image, {
+      width: 800,
+      format: "webp",
+      quality: 85,
+    }) ?? "/images/book-cover-front.png?v=1";
+  const spineLabel = featuredBook.publisher || featuredBook.author;
+
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#FDFBF7]">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -37,28 +65,33 @@ export function HeroSection({ featuredBook }: HeroSectionProps) {
 
             <FadeIn delay={0.2}>
               <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl font-bold text-primary leading-[1.1] mb-6 tracking-tight">
-                Miền Nam <br />
-                <span className="text-accent italic relative">
-                  của Huy
-                  <svg
-                    className="absolute w-full h-3 -bottom-1 left-0 text-accent/30"
-                    viewBox="0 0 100 10"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      d="M0 5 Q 50 10 100 5"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      fill="none"
-                    />
-                  </svg>
-                </span>
+                {titleParts.lead}
+                {titleParts.accent && (
+                  <>
+                    <br />
+                    <span className="text-accent italic relative">
+                      {titleParts.accent}
+                      <svg
+                        className="absolute w-full h-3 -bottom-1 left-0 text-accent/30"
+                        viewBox="0 0 100 10"
+                        preserveAspectRatio="none"
+                      >
+                        <path
+                          d="M0 5 Q 50 10 100 5"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          fill="none"
+                        />
+                      </svg>
+                    </span>
+                  </>
+                )}
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.3}>
               <p className="font-script text-2xl md:text-3xl text-gray-500 mb-6">
-                &ldquo;Nơi ấy có Mina và một mái nhà&rdquo;
+                &ldquo;{displaySubtitle}&rdquo;
               </p>
             </FadeIn>
 
@@ -127,7 +160,7 @@ export function HeroSection({ featuredBook }: HeroSectionProps) {
               >
                 <div className="absolute left-0 top-[2px] bottom-[2px] w-[24px] bg-[#1a237e] transform -translate-x-[12px] translate-z-[-12px] rotate-y-[-90deg] flex flex-col items-center justify-center border-l border-white/10 rounded-sm overflow-hidden z-20">
                   <span className="font-serif text-white/80 tracking-[0.2em] text-[8px] rotate-90 whitespace-nowrap mt-auto mb-12 opacity-70">
-                    NXB DÂN TRÍ
+                    {spineLabel.toUpperCase()}
                   </span>
                 </div>
 
@@ -143,7 +176,7 @@ export function HeroSection({ featuredBook }: HeroSectionProps) {
                 <div className="relative w-[300px] md:w-[350px] aspect-[1/1.45] bg-[#1a237e] rounded-sm shadow-2xl overflow-hidden transform translate-z-[12px]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src="/images/book-cover-front.png?v=1"
+                    src={coverUrl}
                     alt={`${featuredBook.title} - ${featuredBook.author}`}
                     className="w-full h-full object-cover"
                   />

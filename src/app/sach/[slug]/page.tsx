@@ -5,7 +5,7 @@ import { ChevronRight, Truck, CreditCard, Package } from "lucide-react";
 import { BookCard } from "@/components/book/book-card";
 import { JsonLdBook } from "@/components/seo/json-ld";
 import { getBookBySlug, getBooks } from "@/lib/books";
-import { buildAssetUrl } from "@/lib/directus-assets";
+import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import type { Book } from "@/lib/types-directus";
 import { formatPrice } from "@/lib/utils";
 
@@ -55,18 +55,11 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 function getCoverUrl(book: Book): string | null {
-  const cover = book.cover_image;
-  if (!cover) return null;
-  if (typeof cover === "string") return cover;
-  if (cover.id) return buildAssetUrl(cover.id, { width: 800, format: "webp" });
-  return null;
+  return buildAssetUrlFromFile(book.cover_image, { width: 800, format: "webp" });
 }
 
 function getOgImageUrl(book: Book): string | null {
-  const cover = book.cover_image;
-  if (!cover || typeof cover === "string") return null;
-  if (!cover.id) return null;
-  return buildAssetUrl(cover.id, {
+  return buildAssetUrlFromFile(book.cover_image, {
     width: 1200,
     height: 630,
     format: "webp",
@@ -210,7 +203,7 @@ export default async function BookDetailPage({ params }: PageProps) {
                 </div>
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
                   <CreditCard className="w-5 h-5 text-accent" />
-                  <span>COD hoặc chuyển khoản (VietQR)</span>
+                  <span>Đặt trước qua chuyển khoản; có mã QR VietQR</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
                   <Package className="w-5 h-5 text-accent" />

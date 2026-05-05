@@ -143,7 +143,7 @@ BOOKS = [
         "description": MIEN_NAM_DESCRIPTION,
         "short_description": ("Tập tản văn ghi lại những kỷ niệm, những mảnh ghép cuộc sống tại Sài Gòn. "
                               "Cùng với chú chó Mina - người bạn đồng hành trung thành."),
-        "price": 179000,
+        "price": 199000,
         "stock_status": "in_stock",
         "isbn": "978-604-464-000-0",
         "publisher": "NXB Dân Trí & Thế Giới",

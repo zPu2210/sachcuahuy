@@ -191,7 +191,7 @@ export default async function ConfirmationPage({ params }: PageProps) {
             Xác Nhận Đơn Hàng
           </h1>
           <p className="text-gray-600">
-            Cảm ơn bạn đã đặt hàng. Mã đơn:{" "}
+            Đơn đã được ghi nhận. Mã đơn:{" "}
             <span className="font-mono font-semibold text-primary">
               {order.order_code}
             </span>
@@ -207,6 +207,11 @@ export default async function ConfirmationPage({ params }: PageProps) {
             <h2 className="font-serif text-xl font-semibold text-primary mb-4">
               Thanh Toán Chuyển Khoản
             </h2>
+            <p className="text-sm text-gray-600 mb-5">
+              Bạn có thể chuyển khoản ngay theo mã QR bên dưới, hoặc chờ mình
+              liên hệ qua số điện thoại đã cung cấp để xác nhận đơn và hướng dẫn
+              chuyển khoản.
+            </p>
             <div className="grid md:grid-cols-2 gap-6 items-start">
               <div className="flex justify-center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}

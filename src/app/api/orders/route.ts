@@ -23,7 +23,7 @@ const OrderSchema = z.object({
   shipping_district: z.string().min(1).max(100),
   shipping_address: z.string().min(5).max(500),
   note: z.string().max(500).optional(),
-  payment_method: z.enum(["cod", "bank"]),
+  payment_method: z.literal("bank"),
   items: z
     .array(
       z.object({

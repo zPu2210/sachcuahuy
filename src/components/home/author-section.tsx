@@ -8,9 +8,15 @@ interface AuthorSectionProps {
   name: string;
   title: string;
   shortBio: string;
+  imageUrl?: string | null;
 }
 
-export function AuthorSection({ name, title, shortBio }: AuthorSectionProps) {
+export function AuthorSection({
+  name,
+  title,
+  shortBio,
+  imageUrl,
+}: AuthorSectionProps) {
   const initials = name
     .split(" ")
     .map((s) => s[0])
@@ -29,16 +35,25 @@ export function AuthorSection({ name, title, shortBio }: AuthorSectionProps) {
             <div className="relative">
               <div className="absolute inset-0 border-2 border-accent/20 rounded-full transform rotate-6 scale-105"></div>
               <div className="w-40 h-40 md:w-56 md:h-56 rounded-full bg-secondary border-4 border-white shadow-xl overflow-hidden relative z-10">
-                <div className="w-full h-full bg-[#1E2B4D] flex items-center justify-center">
-                  <div className="text-center">
-                    <span className="font-serif text-4xl md:text-5xl text-accent block">
-                      {initials}
-                    </span>
-                    <span className="text-[10px] text-accent/50 uppercase tracking-widest mt-1">
-                      {name}
-                    </span>
+                {imageUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={imageUrl}
+                    alt={name}
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#1E2B4D] flex items-center justify-center">
+                    <div className="text-center">
+                      <span className="font-serif text-4xl md:text-5xl text-accent block">
+                        {initials}
+                      </span>
+                      <span className="text-[10px] text-accent/50 uppercase tracking-widest mt-1">
+                        {name}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               <div className="absolute -bottom-2 -right-2 bg-white p-3 rounded-full shadow-lg z-20 text-accent">

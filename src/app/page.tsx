@@ -4,6 +4,7 @@ import { AuthorSection } from "@/components/home/author-section";
 import { BooksSection } from "@/components/home/books-section";
 import { FeaturesSection } from "@/components/home/features-section";
 import { CTASection } from "@/components/home/cta-section";
+import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import { getBooks } from "@/lib/books";
 import { getSiteSettings } from "@/lib/site-config";
 
@@ -39,17 +40,34 @@ export default async function HomePage() {
   const [books, settings] = await Promise.all([getBooks(), getSiteSettings()]);
 
   const featured = books.find((b) => b.is_new) ?? books[0];
+  const authorImageUrl = buildAssetUrlFromFile(settings.author_image, {
+    width: 480,
+    height: 480,
+    format: "webp",
+    quality: 85,
+  });
 
   return (
     <>
-      {featured && <HeroSection featuredBook={featured} />}
+      {featured && (
+        <HeroSection
+          featuredBook={featured}
+          title={settings.hero_title}
+          subtitle={settings.hero_subtitle}
+        />
+      )}
       <AuthorSection
         name={AUTHOR_NAME}
         title={AUTHOR_TITLE}
         shortBio={settings.author_short_bio || AUTHOR_FALLBACK_BIO}
+        imageUrl={authorImageUrl}
       />
       <BooksSection books={books} />
-      <FeaturesSection />
+      <FeaturesSection
+        shippingFreeCities={settings.shipping_free_cities}
+        shippingFlatFee={settings.shipping_flat_fee}
+        shippingThreshold={settings.shipping_threshold}
+      />
       {featured && <CTASection featuredBook={featured} />}
     </>
   );

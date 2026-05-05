@@ -1,13 +1,40 @@
 "use client";
 
-import { Truck, Package, CreditCard, ShieldCheck } from "lucide-react";
+import { Truck, Package, CreditCard, type LucideIcon } from "lucide-react";
 import { FadeIn } from "@/components/ui/fade-in";
+import { formatPrice } from "@/lib/utils";
 
-const features = [
+interface FeaturesSectionProps {
+  shippingFreeCities: string[];
+  shippingFlatFee: number;
+  shippingThreshold?: number | null;
+}
+
+function shippingDescription({
+  shippingFreeCities,
+  shippingFlatFee,
+  shippingThreshold,
+}: FeaturesSectionProps): string {
+  if (shippingThreshold && shippingThreshold > 0) {
+    return `Miễn phí ship cho đơn từ ${formatPrice(shippingThreshold)}.`;
+  }
+
+  if (shippingFreeCities.length > 0) {
+    const cities = shippingFreeCities.map((city) => city.toUpperCase()).join("/");
+    return `Miễn phí ship ${cities}; tỉnh khác ${formatPrice(shippingFlatFee)}.`;
+  }
+
+  return `Phí ship toàn quốc ${formatPrice(shippingFlatFee)}.`;
+}
+
+const staticFeatures: Array<{
+  icon: LucideIcon;
+  title: string;
+  description?: string;
+}> = [
   {
     icon: Truck,
     title: "Giao Hàng Toàn Quốc",
-    description: "Miễn phí ship cho đơn từ 300,000đ. Giao hàng nhanh chóng.",
   },
   {
     icon: Package,
@@ -16,12 +43,18 @@ const features = [
   },
   {
     icon: CreditCard,
-    title: "Thanh Toán Linh Hoạt",
-    description: "Hỗ trợ COD (thanh toán khi nhận hàng) hoặc chuyển khoản ngân hàng.",
+    title: "Đặt Trước Rõ Ràng",
+    description: "Có thông tin chuyển khoản và mã QR; mình sẽ liên hệ xác nhận đơn.",
   },
 ];
 
-export function FeaturesSection() {
+export function FeaturesSection(props: FeaturesSectionProps) {
+  const features = staticFeatures.map((feature) =>
+    feature.icon === Truck
+      ? { ...feature, description: shippingDescription(props) }
+      : feature,
+  );
+
   return (
     <section className="section bg-[#FDFBF7]">
       <div className="container-custom">

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ShoppingCart, Eye, Book as BookIcon } from "lucide-react";
 import clsx from "clsx";
-import { buildAssetUrl } from "@/lib/directus-assets";
+import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import { formatPrice } from "@/lib/utils";
 import type { Book } from "@/lib/types-directus";
 
@@ -12,18 +12,13 @@ interface BookCardProps {
   featured?: boolean;
 }
 
-function getCoverUrl(book: Book): string | null {
-  const cover = book.cover_image;
-  if (!cover) return null;
-  if (typeof cover === "string") return cover;
-  if (cover.id) return buildAssetUrl(cover.id, { width: 600, format: "webp" });
-  return null;
-}
-
 export function BookCard({ book }: BookCardProps) {
   const isComingSoon = !!book.is_coming_soon;
   const isOutOfStock = book.stock_status === "out_of_stock";
-  const coverUrl = getCoverUrl(book);
+  const coverUrl = buildAssetUrlFromFile(book.cover_image, {
+    width: 600,
+    format: "webp",
+  });
 
   return (
     <div

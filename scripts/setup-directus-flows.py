@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Idempotent setup for Directus Flows that notify the relay on order events.
+"""Idempotent setup for Directus Flows.
 
-Creates / updates two flows:
+Creates / updates order notification flows:
 
 - `notify_new_order` — fires on `orders.items.create`, posts
   `{"event_type":"order.created","order_id":<id>}` to the relay with
@@ -9,6 +9,15 @@ Creates / updates two flows:
 - `notify_paid` — fires on `orders.items.update`; a Condition op short-circuits
   the flow unless `payload.payment_status === "paid"`. Then posts
   `{"event_type":"order.paid","order_id":<key>}`.
+
+Creates / updates content revalidation flows:
+
+- `revalidate_content_create`
+- `revalidate_content_update`
+- `revalidate_content_delete`
+
+These post to Next.js `/api/revalidate` with `X-Revalidate-Secret` from
+`$env.REVALIDATE_SECRET`.
 
 Webhook URL targets the Docker-internal relay hostname `sachcuahuy-relay:9090`
 (both Directus and relay live on the `goclaw_default` network).
@@ -18,6 +27,8 @@ Re-running the script is safe: it deletes any flow with the same name first
 
 Env vars required:
   DIRECTUS_URL      e.g. https://cms.sachcuahuy.com
+  REVALIDATE_URL    production URL for Next.js /api/revalidate
+                    e.g. https://sachcuahuy.vercel.app/api/revalidate
   ADMIN_TOKEN       static admin token (preferred; works with 2FA/OAuth setups)
                     OR
   ADMIN_EMAIL       email/password fallback (fails when 2FA is enabled —
@@ -25,6 +36,9 @@ Env vars required:
 
 If both are set, ADMIN_TOKEN wins. The token must belong to a user with
 admin policy (it manages /flows + /operations).
+
+Directus container must allow Flow env interpolation for:
+  FLOWS_ENV_ALLOW_LIST=RELAY_INGRESS_TOKEN,REVALIDATE_SECRET
 """
 import json
 import os
@@ -39,6 +53,9 @@ PWD = os.environ.get("ADMIN_PASSWORD", "")
 
 UA = "sachcuahuy-bootstrap/1.0 (Directus flows setup)"
 RELAY_URL = "http://sachcuahuy-relay:9090/notify"
+REVALIDATE_URL = os.environ.get("REVALIDATE_URL", "").strip().rstrip("/")
+CONTENT_COLLECTIONS = ["books", "site_settings"]
+CONTENT_PATHS = ["/", "/sach", "/gioi-thieu", "/podcast", "/sitemap.xml"]
 
 
 def req(method, path, token=None, body=None):
@@ -148,6 +165,31 @@ def webhook_op(name: str, key: str, body_template: dict, position: tuple) -> dic
                 {"header": "X-Relay-Token", "value": "{{$env.RELAY_INGRESS_TOKEN}}"},
             ],
             "body": json.dumps(body_template),
+        },
+    }
+
+
+def revalidate_op(name: str, key: str, key_expr: str, position: tuple) -> dict:
+    return {
+        "name": name,
+        "key": key,
+        "type": "request",
+        "position_x": position[0],
+        "position_y": position[1],
+        "options": {
+            "method": "POST",
+            "url": REVALIDATE_URL,
+            "headers": [
+                {"header": "Content-Type", "value": "application/json"},
+                {"header": "X-Revalidate-Secret", "value": "{{$env.REVALIDATE_SECRET}}"},
+            ],
+            "body": json.dumps(
+                {
+                    "collection": "{{$trigger.collection}}",
+                    "key": key_expr,
+                    "paths": CONTENT_PATHS,
+                }
+            ),
         },
     }
 
@@ -262,13 +304,78 @@ def upsert_paid_flow(token: str):
     print("  wired condition.resolve -> webhook")
 
 
+def upsert_content_revalidate_flow(
+    token: str,
+    name: str,
+    scope: str,
+    key_expr: str,
+):
+    """Recreate a content change flow that calls Next.js on-demand revalidation."""
+    existing = find_flow_by_name(token, name)
+    if existing:
+        print(f"  found existing flow id={existing['id']}, deleting for clean re-create")
+        delete_flow(token, existing["id"])
+
+    flow_id = create_flow(
+        token,
+        {
+            "name": name,
+            "icon": "refresh",
+            "color": "#F59E0B",
+            "description": "POST to Next.js /api/revalidate when CMS content changes",
+            "status": "active",
+            "trigger": "event",
+            "accountability": "all",
+            "options": {
+                "type": "action",
+                "scope": [scope],
+                "collections": CONTENT_COLLECTIONS,
+            },
+        },
+    )
+    print(f"  created flow id={flow_id}")
+
+    op_id = create_op(
+        token,
+        {
+            **revalidate_op(
+                "Webhook to Next.js revalidate",
+                "webhook_revalidate",
+                key_expr,
+                (19, 1),
+            ),
+            "flow": flow_id,
+        },
+    )
+    print(f"  created revalidate op id={op_id}")
+    link_first_op(token, flow_id, op_id)
+    print("  linked op as flow's first operation")
+
+
 def main():
+    if not REVALIDATE_URL:
+        sys.exit(
+            "REVALIDATE_URL is required, e.g. "
+            "https://sachcuahuy.vercel.app/api/revalidate"
+        )
     print("Authenticating: " + ("ADMIN_TOKEN" if ADMIN_TOKEN else f"login {EMAIL}"))
     token = auth()
     print("Setting up flow: notify_new_order")
     upsert_new_order_flow(token)
     print("Setting up flow: notify_paid")
     upsert_paid_flow(token)
+    print("Setting up flow: revalidate_content_create")
+    upsert_content_revalidate_flow(
+        token, "revalidate_content_create", "items.create", "{{$trigger.key}}"
+    )
+    print("Setting up flow: revalidate_content_update")
+    upsert_content_revalidate_flow(
+        token, "revalidate_content_update", "items.update", "{{$trigger.keys[0]}}"
+    )
+    print("Setting up flow: revalidate_content_delete")
+    upsert_content_revalidate_flow(
+        token, "revalidate_content_delete", "items.delete", "{{$trigger.keys[0]}}"
+    )
     print("Done. Verify in Directus admin UI -> Settings -> Flows.")
 
 

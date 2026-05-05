@@ -11,8 +11,8 @@ const FALLBACK_PHONE = "0123 456 789";
 const LOCATION = "TP. Hồ Chí Minh";
 
 export function Footer({ settings }: FooterProps) {
-  const email = settings?.contact_email || FALLBACK_EMAIL;
-  const phone = settings?.contact_phone || FALLBACK_PHONE;
+  const email = settings ? settings.contact_email?.trim() : FALLBACK_EMAIL;
+  const phone = settings ? settings.contact_phone?.trim() : FALLBACK_PHONE;
   const facebook = settings?.social_facebook;
   const instagram = settings?.social_instagram;
   const zalo = settings?.social_zalo;
@@ -79,24 +79,28 @@ export function Footer({ settings }: FooterProps) {
           <div>
             <h4 className="font-semibold text-primary mb-4">Liên Hệ</h4>
             <ul className="space-y-2">
-              <li className="flex items-center gap-2 text-gray-600 text-sm">
-                <Mail className="w-4 h-4 flex-shrink-0" />
-                <a
-                  href={`mailto:${email}`}
-                  className="hover:text-primary transition-colors break-all"
-                >
-                  {email}
-                </a>
-              </li>
-              <li className="flex items-center gap-2 text-gray-600 text-sm">
-                <Phone className="w-4 h-4 flex-shrink-0" />
-                <a
-                  href={`tel:${phone.replace(/\s+/g, "")}`}
-                  className="hover:text-primary transition-colors"
-                >
-                  {phone}
-                </a>
-              </li>
+              {email && (
+                <li className="flex items-center gap-2 text-gray-600 text-sm">
+                  <Mail className="w-4 h-4 flex-shrink-0" />
+                  <a
+                    href={`mailto:${email}`}
+                    className="hover:text-primary transition-colors break-all"
+                  >
+                    {email}
+                  </a>
+                </li>
+              )}
+              {phone && (
+                <li className="flex items-center gap-2 text-gray-600 text-sm">
+                  <Phone className="w-4 h-4 flex-shrink-0" />
+                  <a
+                    href={`tel:${phone.replace(/\s+/g, "")}`}
+                    className="hover:text-primary transition-colors"
+                  >
+                    {phone}
+                  </a>
+                </li>
+              )}
               <li className="flex items-center gap-2 text-gray-600 text-sm">
                 <MapPin className="w-4 h-4 flex-shrink-0" />
                 <span>{LOCATION}</span>

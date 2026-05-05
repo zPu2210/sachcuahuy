@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Info } from "lucide-react";
 
 interface OrderFormProps {
   bookSlug: string;
@@ -32,7 +33,6 @@ export function OrderForm({
   disabled = false,
 }: OrderFormProps) {
   const router = useRouter();
-  const [paymentMethod, setPaymentMethod] = useState<"cod" | "bank">("cod");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -52,7 +52,7 @@ export function OrderForm({
       shipping_district: String(formData.get("district") ?? "").trim(),
       shipping_address: String(formData.get("address") ?? "").trim(),
       note: String(formData.get("note") ?? "").trim(),
-      payment_method: paymentMethod,
+      payment_method: "bank",
       items: [{ slug: bookSlug, qty }],
     };
 
@@ -228,87 +228,66 @@ export function OrderForm({
         </h2>
 
         <div className="space-y-4">
-          <label
-            className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-colors ${
-              paymentMethod === "cod"
-                ? "border-primary bg-primary/5"
-                : "border-gray-200 hover:border-gray-300"
-            }`}
-          >
-            <input
-              type="radio"
-              name="payment"
-              value="cod"
-              checked={paymentMethod === "cod"}
-              onChange={() => setPaymentMethod("cod")}
-              className="mt-1"
-            />
-            <div>
-              <p className="font-medium text-primary">
-                Thanh toán khi nhận hàng (COD)
-              </p>
-              <p className="text-sm text-gray-500">
-                Thanh toán tiền mặt cho shipper khi nhận sách
-              </p>
-            </div>
-          </label>
-
-          <label
-            className={`flex items-start gap-4 p-4 border rounded-xl cursor-pointer transition-colors ${
-              paymentMethod === "bank"
-                ? "border-primary bg-primary/5"
-                : "border-gray-200 hover:border-gray-300"
-            }`}
-          >
-            <input
-              type="radio"
-              name="payment"
-              value="bank"
-              checked={paymentMethod === "bank"}
-              onChange={() => setPaymentMethod("bank")}
-              className="mt-1"
-            />
-            <div>
-              <p className="font-medium text-primary">Chuyển khoản ngân hàng</p>
-              <p className="text-sm text-gray-500">
-                Quét mã QR sau khi đặt hàng (hiển thị ở bước xác nhận)
-              </p>
-            </div>
-          </label>
-
-          {paymentMethod === "bank" && (
-            <div className="ml-8 p-4 bg-secondary rounded-xl">
-              <p className="text-sm font-medium text-primary mb-2">
-                Thông tin chuyển khoản:
-              </p>
-              <div className="text-sm text-gray-600 space-y-1">
-                <p>
-                  Ngân hàng:{" "}
-                  <span className="font-medium">{bankInfo.name}</span>
-                </p>
-                <p>
-                  Số TK:{" "}
-                  <span className="font-medium font-mono">
-                    {bankInfo.account}
-                  </span>
-                </p>
-                <p>
-                  Chủ TK:{" "}
-                  <span className="font-medium">{bankInfo.holder}</span>
-                </p>
-                {bankInfo.branch && (
-                  <p>
-                    Chi nhánh:{" "}
-                    <span className="font-medium">{bankInfo.branch}</span>
+          <div className="p-4 border border-primary bg-primary/5 rounded-xl">
+            <div className="flex items-start gap-3">
+              <input
+                type="radio"
+                name="payment"
+                value="bank"
+                checked
+                readOnly
+                className="mt-1"
+              />
+              <div>
+                <div className="flex items-center gap-2">
+                  <p className="font-medium text-primary">
+                    Đặt trước qua chuyển khoản ngân hàng
                   </p>
-                )}
-                <p className="text-xs text-gray-500 mt-2">
-                  * Mã QR + nội dung CK sẽ hiển thị ở trang xác nhận sau khi đặt
-                  hàng.
+                  <span
+                    className="inline-flex"
+                    title="Bạn có thể chuyển khoản ngay bằng thông tin bên dưới, hoặc chờ mình liên hệ xác nhận đơn rồi hướng dẫn chuyển khoản."
+                    aria-label="Giải thích thanh toán chuyển khoản"
+                  >
+                    <Info className="w-4 h-4 text-accent" />
+                  </span>
+                </div>
+                <p className="text-sm text-gray-500">
+                  Sau khi bạn gửi thông tin đặt sách, mình sẽ liên hệ xác nhận
+                  đơn và hướng dẫn chuyển khoản.
                 </p>
               </div>
             </div>
-          )}
+          </div>
+
+          <div className="p-4 bg-secondary rounded-xl">
+            <p className="text-sm font-medium text-primary mb-2">
+              Thông tin chuyển khoản:
+            </p>
+            <div className="text-sm text-gray-600 space-y-1">
+              <p>
+                Ngân hàng: <span className="font-medium">{bankInfo.name}</span>
+              </p>
+              <p>
+                Số TK:{" "}
+                <span className="font-medium font-mono">
+                  {bankInfo.account}
+                </span>
+              </p>
+              <p>
+                Chủ TK: <span className="font-medium">{bankInfo.holder}</span>
+              </p>
+              {bankInfo.branch && (
+                <p>
+                  Chi nhánh:{" "}
+                  <span className="font-medium">{bankInfo.branch}</span>
+                </p>
+              )}
+              <p className="text-xs text-gray-500 mt-2">
+                * Bạn có thể chuyển khoản ngay nếu muốn; mã QR và nội dung CK
+                chính xác sẽ hiển thị ở trang xác nhận sau khi đặt hàng.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
 
