@@ -104,10 +104,11 @@ export function OrderForm({
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="customer-name" className="block text-sm font-medium text-gray-700 mb-2">
               Họ và tên <span className="text-red-500">*</span>
             </label>
             <input
+              id="customer-name"
               type="text"
               name="name"
               required
@@ -119,10 +120,11 @@ export function OrderForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="customer-phone" className="block text-sm font-medium text-gray-700 mb-2">
               Số điện thoại <span className="text-red-500">*</span>
             </label>
             <input
+              id="customer-phone"
               type="tel"
               name="phone"
               required
@@ -133,10 +135,11 @@ export function OrderForm({
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="customer-email" className="block text-sm font-medium text-gray-700 mb-2">
               Email
             </label>
             <input
+              id="customer-email"
               type="email"
               name="email"
               className="input"
@@ -157,10 +160,10 @@ export function OrderForm({
 
         <div className="grid md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="shipping-city" className="block text-sm font-medium text-gray-700 mb-2">
               Tỉnh/Thành phố <span className="text-red-500">*</span>
             </label>
-            <select name="city" required defaultValue="" className="input">
+            <select id="shipping-city" name="city" required defaultValue="" className="input">
               <option value="" disabled>
                 Chọn tỉnh/thành phố
               </option>
@@ -175,10 +178,11 @@ export function OrderForm({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="shipping-district" className="block text-sm font-medium text-gray-700 mb-2">
               Quận/Huyện <span className="text-red-500">*</span>
             </label>
             <input
+              id="shipping-district"
               type="text"
               name="district"
               required
@@ -189,10 +193,11 @@ export function OrderForm({
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="shipping-address" className="block text-sm font-medium text-gray-700 mb-2">
               Địa chỉ chi tiết <span className="text-red-500">*</span>
             </label>
             <input
+              id="shipping-address"
               type="text"
               name="address"
               required
@@ -204,10 +209,11 @@ export function OrderForm({
           </div>
 
           <div className="md:col-span-2">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="order-note" className="block text-sm font-medium text-gray-700 mb-2">
               Ghi chú
             </label>
             <textarea
+              id="order-note"
               name="note"
               rows={3}
               maxLength={500}
@@ -231,6 +237,7 @@ export function OrderForm({
           <div className="p-4 border border-primary bg-primary/5 rounded-xl">
             <div className="flex items-start gap-3">
               <input
+                aria-label="Đặt trước qua chuyển khoản ngân hàng"
                 type="radio"
                 name="payment"
                 value="bank"
@@ -246,9 +253,8 @@ export function OrderForm({
                   <span
                     className="inline-flex"
                     title="Bạn có thể chuyển khoản ngay bằng thông tin bên dưới, hoặc chờ mình liên hệ xác nhận đơn rồi hướng dẫn chuyển khoản."
-                    aria-label="Giải thích thanh toán chuyển khoản"
                   >
-                    <Info className="w-4 h-4 text-accent" />
+                    <Info className="w-4 h-4 text-accent" aria-hidden="true" />
                   </span>
                 </div>
                 <p className="text-sm text-gray-500">
@@ -345,7 +351,7 @@ export function OrderForm({
 
       <p className="text-center text-sm text-gray-500">
         Bằng việc đặt hàng, bạn đồng ý với{" "}
-        <a href="#" className="text-primary hover:underline">
+        <a href="#" className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary">
           điều khoản dịch vụ
         </a>{" "}
         của chúng tôi.

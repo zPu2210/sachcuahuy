@@ -119,7 +119,7 @@ export function BookCard({ book }: BookCardProps) {
 
       <div className="p-5">
         <Link href={isComingSoon ? "#" : `/sach/${book.slug}`}>
-          <h3
+          <h2
             className={clsx(
               "font-serif text-xl font-bold mb-1 line-clamp-1 transition-colors",
               isComingSoon
@@ -128,7 +128,7 @@ export function BookCard({ book }: BookCardProps) {
             )}
           >
             {book.title}
-          </h3>
+          </h2>
         </Link>
         <p className="text-xs text-gray-500 mb-4 font-medium uppercase tracking-wide">
           {book.author}

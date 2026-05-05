@@ -44,7 +44,7 @@ export function Header() {
               <span className="font-serif text-xl font-bold text-primary leading-none">
                 Sách Của Huy
               </span>
-              <span className="text-[10px] tracking-widest text-gray-500 uppercase">Writer & Storyteller</span>
+              <span className="text-[10px] tracking-widest text-gray-600 uppercase">Writer & Storyteller</span>
             </div>
           </Link>
 

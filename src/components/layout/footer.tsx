@@ -38,7 +38,7 @@ export function Footer({ settings }: FooterProps) {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold text-primary mb-4">Liên Kết</h4>
+            <h2 className="font-semibold text-primary mb-4 text-base">Liên Kết</h2>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -77,7 +77,7 @@ export function Footer({ settings }: FooterProps) {
 
           {/* Contact */}
           <div>
-            <h4 className="font-semibold text-primary mb-4">Liên Hệ</h4>
+            <h2 className="font-semibold text-primary mb-4 text-base">Liên Hệ</h2>
             <ul className="space-y-2">
               {email && (
                 <li className="flex items-center gap-2 text-gray-600 text-sm">
@@ -110,7 +110,7 @@ export function Footer({ settings }: FooterProps) {
 
           {/* Social */}
           <div>
-            <h4 className="font-semibold text-primary mb-4">Mạng Xã Hội</h4>
+            <h2 className="font-semibold text-primary mb-4 text-base">Mạng Xã Hội</h2>
             <div className="flex gap-3">
               {facebook && (
                 <a
