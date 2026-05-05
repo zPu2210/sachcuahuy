@@ -1,7 +1,8 @@
 ---
 phase: 3
 created: 2026-05-03
-status: prep-complete (upload deferred — awaiting admin token)
+status: completed
+uploaded: 2026-05-05
 ---
 
 # Phase 3 — Image Classification & Final Mapping
@@ -81,25 +82,23 @@ cwebp -q 80 -resize 1600 0 -metadata none -m 6 <input>.jpg -o <output>.webp
 ADMIN_TOKEN="<paste>" /tmp/sachcuahuy-classify/upload-and-link.sh
 ```
 
-## File IDs (post-upload)
-
-Filled in after upload runs:
+## File IDs
 
 ```
-MIENNAM_COVER=<file-uuid>
-GOCPHANTU_COVER=<file-uuid>
-AUTHOR_PORTRAIT=<file-uuid>
-FOLDER=<folder-uuid>
+MIENNAM_COVER=16bb0c87-da8d-4901-ad83-a733804adbc6
+GOCPHANTU_COVER=140cfb53-bd47-49e7-980f-d743008e03e6
+AUTHOR_PORTRAIT=15cbe426-c136-4350-90c6-2acd0afc4f91
+FOLDER=4493f9ff-0069-4cea-b4eb-4bc9cbb8e491
 ```
 
-## Public URLs (post-upload)
+## Public URLs
 
 Frontend will fetch via:
 ```
 https://cms.sachcuahuy.com/assets/{id}?width=800&format=webp&fit=cover
 ```
 
-Already wired in `lib/directus.ts` → `getDirectusImageUrl()`.
+Verified HTTP 200 from public `/assets/*` after adding public `directus_files.read` permission.
 
 ## Gallery Handling (deferred)
 

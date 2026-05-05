@@ -1,7 +1,7 @@
 ---
 title: "sachcuahuy production launch — Phase 1-5"
 created: 2026-05-02
-revised: 2026-05-03 (Phase 5 cook complete; ready for prod deploy + UAT)
+revised: 2026-05-05 (prod deployed; CMS images + revalidation live; Lighthouse green)
 status: in-progress
 phase_1_completed: 2026-05-03
 phase_1_report: plans/reports/cook-260503-1334-phase-01-directus-setup.md
@@ -10,6 +10,8 @@ phase_2_report: plans/reports/cook-260503-1400-phase-02-frontend-integration.md
 phase_4_completed: 2026-05-03
 phase_4_report: plans/reports/cook-260503-2041-phase-04-goclaw-zalo-integration.md
 phase_5_cook_completed: 2026-05-03
+phase_3_completed: 2026-05-05
+phase_5_prod_verified: 2026-05-05
 phase_5_report: plans/reports/cook-260503-2215-phase-05-polish-launch.md
 priority: P1
 total_effort: ~6 days
@@ -21,6 +23,8 @@ mode: hard
 > **Phase 2 handoff (2026-05-03):** Frontend wired to Directus, ISR 5min, real /api/orders flow, /xac-nhan/[token] PII gate, lock-window reset on expiry, lint migrated to ESLint CLI. Code committed (8 commits + harden) and ready to push. Vercel env vars required before deploy. Phase 3 (image upload) parallel-safe. See [phase-02 report](../reports/cook-260503-1400-phase-02-frontend-integration.md).
 >
 > **Phase 1 handoff (2026-05-03):** Directus 11.17.4 live at https://cms.sachcuahuy.com — schema, seed data, roles, tokens, backup all verified. See [phase-01 report](../reports/cook-260503-1334-phase-01-directus-setup.md).
+>
+> **Launch closeout (2026-05-05):** Production `https://sachcuahuy.com` deployed from `main`; Directus revalidation route + flows live; 3 launch images uploaded/linked; public asset reads fixed. Final Lighthouse mobile: `/` 90/100/100/100, `/sach` 97/100/100/100, `/dat-hang` 96/100/100/58. Checkout SEO 58 is intentional `noindex`. Remaining gates: T-1 order smoke, anh/Huy UAT, 2FA/manual admin checks, and post-launch observation.
 
 Migrate MVP Next.js website từ hardcoded data sang full production stack: Directus 11 CMS + Postgres trên Contabo + Vercel frontend + GoClaw/Zalo notification (via Python relay service). Ship 2 sách thật, end-to-end order flow real.
 
@@ -91,10 +95,10 @@ Following adversarial review (6 P1/P2 findings), plan revised:
 | Phase | Title | Effort | Status |
 |---|---|---|---|
 | 1 | Directus + Postgres Setup | 2d | ✅ completed 2026-05-03 |
-| 2 | Frontend Integration | 1.5d | ✅ completed 2026-05-03 (8 commits + harden, awaiting push + Vercel env) |
-| 3 | Image Processing & Upload | 0.5d | 🟡 prep complete 2026-05-03 (classify + WebP + scripts); upload+link deferred until admin token |
+| 2 | Frontend Integration | 1.5d | ✅ completed 2026-05-03; pushed/prod verified 2026-05-05 |
+| 3 | Image Processing & Upload | 0.5d | ✅ completed 2026-05-05 (3 files uploaded/linked; public assets 200) |
 | 4 | GoClaw + Zalo Integration | 1.5d | ✅ completed 2026-05-03 |
-| 5 | Polish & Launch | 0.5d | 🟡 cook complete 2026-05-03 (build/lint/smoke green); pending prod deploy + UAT |
+| 5 | Polish & Launch | 0.5d | 🟡 prod deployed + Lighthouse green 2026-05-05; pending UAT/T-1 smoke |
 
 **Total: ~6 days work** (pessimistic, có buffer).
 

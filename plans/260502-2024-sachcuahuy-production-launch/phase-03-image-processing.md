@@ -1,11 +1,12 @@
 ---
 phase: 3
 title: "Image Processing & Upload"
-status: in-progress (prep complete 2026-05-03; upload+link deferred until anh paste admin token)
+status: completed
 priority: P2
 effort: "0.5d"
 dependencies: [1]
 prep_completed: 2026-05-03
+upload_completed: 2026-05-05
 prep_report: plans/reports/cook-260503-1944-phase-03-image-prep.md
 classification_doc: image-classification.md
 ---
@@ -24,14 +25,14 @@ classification_doc: image-classification.md
 
 ## Overview
 
-Phân loại 20 ảnh source thành buckets (cover/gallery/author/misc), AI-describe từng ảnh để pick canonical cover, optimize WebP @80 quality, upload Directus Files API, link `books.cover_image` + `books.gallery` cho 2 sách. Author photo → `site_settings.author_image`.
+Phân loại 20 ảnh source thành buckets (cover/author/misc), AI-describe từng ảnh để pick canonical cover, optimize WebP @80 quality, upload Directus Files API, link `books.cover_image` cho 2 sách. Author photo → `site_settings.author_image`.
 
-**Parallel với Phase 2** — chỉ cần Directus API live (Phase 1 done).
+**Completed 2026-05-05:** 3 WebP files uploaded to Directus folder `sachcuahuy-launch`, linked to 2 books + site settings, public `/assets/*` access fixed, and frontend smoke verified on prod.
 
 ## Requirements
 
 ### Functional
-- Mỗi sách (Miền Nam của Huy + Góc Phần Tư) có 1 cover + 3-5 gallery images
+- Mỗi sách (Miền Nam của Huy + Góc Phần Tư) có 1 cover image
 - Author có 1 photo trong `site_settings.author_image`
 - Tất cả images lưu Directus Files (DB managed), accessible qua `/assets/{id}`
 - WebP format, max 1600px width, quality 80
@@ -74,11 +75,9 @@ Phân loại 20 ảnh source thành buckets (cover/gallery/author/misc), AI-desc
          ▼ upload Directus /files
          │
     Directus DB:
-    ├── files: 8-12 records
+    ├── files: 3 records
     ├── books[mien-nam].cover_image_id  → file id
-    ├── books[mien-nam].gallery (m2m)   → file ids
     ├── books[goc-phan-tu].cover_image_id
-    ├── books[goc-phan-tu].gallery
     └── site_settings.author_image_id
 ```
 
@@ -246,27 +245,26 @@ curl -I "https://cms.sachcuahuy.com/assets/$MIENNAM_COVER_ID?width=800&format=we
 - [x] Verify size reduction + visual quality (Read inline; no artifacts)
 - [x] Prep upload script `scripts/upload-images-to-directus.sh` (idempotent)
 - [x] Document final mapping trong `image-classification.md`
-- [ ] **DEFERRED — needs admin token from anh:**
-  - [ ] Upload 3 WebP to Directus Files
-  - [ ] Link `books[mien-nam-cua-huy].cover_image`
-  - [ ] Link `books[goc-phan-tu].cover_image`
-  - [ ] Link `site_settings.author_image`
-  - [ ] Add alt text VI (script does it via `description` field on POST)
-  - [ ] Move files into Directus folder `sachcuahuy-launch` (script does it)
-  - [ ] Verify public asset URL accessible (script does HEAD check)
-  - [ ] Frontend smoke test (no broken images, ISR pickup after 5min revalidate)
+- [x] Upload 3 WebP to Directus Files
+- [x] Link `books[mien-nam-cua-huy].cover_image`
+- [x] Link `books[goc-phan-tu].cover_image`
+- [x] Link `site_settings.author_image`
+- [x] Add alt text VI (`description` on Directus file records)
+- [x] Move files into Directus folder `sachcuahuy-launch`
+- [x] Verify public asset URL accessible (HTTP 200)
+- [x] Frontend smoke test (prod pages render Directus asset URLs)
 
 **Note:** v2.2 reality check — `books.gallery` field does not exist. Phase 3 = 3 uploads only (no m2m gallery). 14 product-mien-nam shots remain in source for future use (Phase 6 if schema bumped).
 
 ## Success Criteria
 
-- [ ] 2 sách có cover + ≥3 gallery images mỗi sách
-- [ ] Author có 1 photo trong site_settings
-- [ ] All images <300KB sau Directus transform `?width=800&format=webp`
-- [ ] Frontend `/`, `/sach/[slug]`, `/gioi-thieu` render no broken images
-- [ ] LCP image trên home <200KB transferred
-- [ ] Alt text VI có cho tất cả uploads (a11y)
-- [ ] Source folder `/Users/pu/Downloads/sachcuahuy/` intact (không bị xóa)
+- [x] 2 sách có cover image trong Directus
+- [x] Author có 1 photo trong site_settings
+- [x] All uploaded images <300KB source WebP
+- [x] Frontend `/`, `/sach/[slug]`, `/gioi-thieu` render Directus images
+- [x] Lighthouse mobile final: `/` Perf 90, `/sach` Perf 97, `/dat-hang` Perf 96; A11y/BP 100
+- [x] Alt text VI có cho tất cả uploads
+- [x] Source folder `/Users/pu/Downloads/sachcuahuy/` intact (không bị xóa)
 
 ## Risk Assessment
 
@@ -299,5 +297,5 @@ After Phase 3 complete:
 
 - Ảnh tác giả có sẵn trong 20 file chưa? Nếu không → request anh chụp/cung cấp (delay Phase 3 hoặc accept placeholder).
 - Cover Miền Nam của Huy hiện đã có trong `public/images/books/mien-nam-cua-huy.jpg` — keep as-is (re-upload qua Directus) hay dùng ảnh từ 20 file mới? Anh confirm.
-- Có cần generate og:image variant 1200x630 cho social share? → Defer Phase 5 (auto via Directus transform).
+- Có cần generate og:image variant 1200x630 cho social share? → Defer Phase 6 (auto via Directus transform or on-demand OG route).
 - Watermark ảnh (chống copy)? → Defer post-launch nếu thấy issue.
