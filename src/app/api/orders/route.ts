@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createItem, readItems } from "@directus/sdk";
-import { directusOrders } from "@/lib/directus";
+import {
+  assertDirectusOrdersConfigured,
+  directusErrorMessage,
+  directusOrders,
+} from "@/lib/directus";
 import { getSiteSettings } from "@/lib/site-config";
 import { getBookBySlug } from "@/lib/books";
 import {
@@ -54,6 +58,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const parsed = OrderSchema.parse(body);
+    assertDirectusOrdersConfigured();
 
     const settings = await getSiteSettings();
 
@@ -142,7 +147,7 @@ export async function POST(req: NextRequest) {
         { status: 400 },
       );
     }
-    const msg = e instanceof Error ? e.message : "unknown";
+    const msg = directusErrorMessage(e);
     if (msg.startsWith("out_of_stock:")) {
       return NextResponse.json({ error: "out_of_stock", slug: msg.slice("out_of_stock:".length) }, { status: 409 });
     }

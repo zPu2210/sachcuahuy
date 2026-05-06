@@ -14,3 +14,32 @@ export const directus = createDirectus<Schema>(directusUrl).with(rest());
 export const directusOrders = createDirectus<Schema>(directusUrl)
   .with(rest())
   .with(staticToken(process.env.DIRECTUS_API_ORDERS_TOKEN ?? ""));
+
+export function assertDirectusOrdersConfigured(): void {
+  if (!process.env.DIRECTUS_API_ORDERS_TOKEN?.trim()) {
+    throw new Error("DIRECTUS_API_ORDERS_TOKEN is not set");
+  }
+}
+
+export function directusErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  if (!error || typeof error !== "object") return String(error);
+
+  const directusError = error as {
+    message?: unknown;
+    errors?: Array<{
+      message?: unknown;
+      extensions?: { code?: unknown; reason?: unknown };
+    }>;
+  };
+  const messages = [
+    typeof directusError.message === "string" ? directusError.message : null,
+    ...(directusError.errors ?? []).flatMap((item) => [
+      typeof item.message === "string" ? item.message : null,
+      typeof item.extensions?.code === "string" ? item.extensions.code : null,
+      typeof item.extensions?.reason === "string" ? item.extensions.reason : null,
+    ]),
+  ].filter(Boolean);
+
+  return messages.length > 0 ? messages.join(" | ") : "unknown_directus_error";
+}

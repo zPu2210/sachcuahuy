@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { readItems, updateItem } from "@directus/sdk";
-import { directusOrders } from "@/lib/directus";
+import {
+  assertDirectusOrdersConfigured,
+  directusErrorMessage,
+  directusOrders,
+} from "@/lib/directus";
 import {
   isValidOrderToken,
   signPiiCookie,
@@ -53,6 +57,7 @@ export async function POST(req: NextRequest, ctx: RouteContext) {
     if (!isValidOrderToken(token)) {
       return NextResponse.json({ error: "invalid_token" }, { status: 404 });
     }
+    assertDirectusOrdersConfigured();
 
     const body = await req.json();
     const { phone_last_4 } = VerifySchema.parse(body);
@@ -144,7 +149,7 @@ export async function POST(req: NextRequest, ctx: RouteContext) {
         { status: 400 },
       );
     }
-    console.error("[orders.verify]", e instanceof Error ? e.message : e);
+    console.error("[orders.verify]", directusErrorMessage(e));
     return NextResponse.json({ error: "server_error" }, { status: 500 });
   }
 }
