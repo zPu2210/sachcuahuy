@@ -37,7 +37,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group relative z-50">
             <div className="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-              <Book className="w-5 h-5 text-primary group-hover:text-white transition-colors" />
+              <Book className="w-5 h-5 text-primary group-hover:text-white transition-colors" aria-hidden="true" />
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-xl font-bold text-primary leading-none">
@@ -48,7 +48,7 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav aria-label="Chính" className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -79,7 +79,7 @@ export function Header() {
               aria-label="Xem sách"
               className="relative p-2 text-gray-600 hover:text-primary transition-colors hover:bg-gray-100/50 rounded-full mr-2"
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-5 h-5" aria-hidden="true" />
             </Link>
 
             <Link href="/sach" className="hidden md:flex btn btn-primary py-2 px-5 text-sm shadow-md shadow-primary/20">
@@ -93,9 +93,9 @@ export function Header() {
               aria-label={isMenuOpen ? "Đóng menu" : "Mở menu"}
             >
               {isMenuOpen ? (
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6" aria-hidden="true" />
               ) : (
-                <Menu className="w-6 h-6" />
+                <Menu className="w-6 h-6" aria-hidden="true" />
               )}
             </button>
           </div>
@@ -108,7 +108,7 @@ export function Header() {
             isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
           )}
         >
-          <nav className="flex flex-col items-center gap-8">
+          <nav aria-label="Di động" className="flex flex-col items-center gap-8">
             {navLinks.map((link, i) => (
               <div
                 key={link.href}

@@ -62,7 +62,7 @@ export function FeaturesSection(props: FeaturesSectionProps) {
             <div key={feature.title} className="h-full">
               <div className="h-full text-center p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-primary transition-colors duration-300">
-                  <feature.icon className="w-8 h-8 text-primary transition-colors duration-300" />
+                  <feature.icon className="w-8 h-8 text-primary transition-colors duration-300" aria-hidden="true" />
                 </div>
                 <h3 className="font-serif text-lg font-bold text-primary mb-3">
                   {feature.title}

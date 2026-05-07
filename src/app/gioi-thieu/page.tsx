@@ -94,19 +94,19 @@ export default async function AboutPage() {
 
             <div className="grid md:grid-cols-3 gap-6 mt-12">
               <div className="bg-white rounded-xl p-6 border border-gray-100 text-center">
-                <MapPin className="w-8 h-8 text-accent mx-auto mb-3" />
+                <MapPin className="w-8 h-8 text-accent mx-auto mb-3" aria-hidden="true" />
                 <p className="text-sm text-gray-500">Hiện đang sống tại</p>
                 <p className="font-semibold text-primary">{AUTHOR_LOCATION}</p>
               </div>
               <div className="bg-white rounded-xl p-6 border border-gray-100 text-center">
-                <BookOpen className="w-8 h-8 text-accent mx-auto mb-3" />
+                <BookOpen className="w-8 h-8 text-accent mx-auto mb-3" aria-hidden="true" />
                 <p className="text-sm text-gray-500">Sách đã xuất bản</p>
                 <p className="font-semibold text-primary">
                   {publishedBooks.length}+ cuốn
                 </p>
               </div>
               <div className="bg-white rounded-xl p-6 border border-gray-100 text-center">
-                <Mic className="w-8 h-8 text-accent mx-auto mb-3" />
+                <Mic className="w-8 h-8 text-accent mx-auto mb-3" aria-hidden="true" />
                 <p className="text-sm text-gray-500">Nghề nghiệp</p>
                 <p className="font-semibold text-primary">Voice Talent</p>
               </div>

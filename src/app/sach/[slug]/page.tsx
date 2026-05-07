@@ -7,7 +7,7 @@ import { JsonLdBook } from "@/components/seo/json-ld";
 import { getBookBySlug, getBooks } from "@/lib/books";
 import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import type { Book } from "@/lib/types-directus";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, htmlToParagraphs } from "@/lib/utils";
 
 export const revalidate = 300;
 
@@ -87,15 +87,15 @@ export default async function BookDetailPage({ params }: PageProps) {
       <JsonLdBook book={book} coverUrl={getOgImageUrl(book)} />
       <div className="bg-white border-b border-gray-100">
         <div className="container-custom py-4">
-          <nav className="flex items-center gap-2 text-sm text-gray-500">
+          <nav aria-label="Đường dẫn" className="flex items-center gap-2 text-sm text-gray-500">
             <Link href="/" className="hover:text-primary transition-colors">
               Trang chủ
             </Link>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" aria-hidden="true" />
             <Link href="/sach" className="hover:text-primary transition-colors">
               Sách
             </Link>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" aria-hidden="true" />
             <span className="text-primary font-medium">{book.title}</span>
           </nav>
         </div>
@@ -159,7 +159,7 @@ export default async function BookDetailPage({ params }: PageProps) {
 
               <div className="bg-secondary rounded-xl p-6 mb-6">
                 <div className="flex items-baseline gap-4 flex-wrap">
-                  <span className="text-3xl font-serif font-semibold text-accent">
+                  <span className="text-3xl font-serif font-semibold text-[#7A6125]">
                     {formatPrice(book.price)}
                   </span>
                   {book.compare_price && (
@@ -183,30 +183,35 @@ export default async function BookDetailPage({ params }: PageProps) {
               )}
 
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link
-                  href={isOutOfStock ? "#" : `/dat-hang?slug=${book.slug}`}
-                  aria-disabled={isOutOfStock}
-                  className={`btn flex-1 justify-center ${
-                    isOutOfStock
-                      ? "btn-outline opacity-50 cursor-not-allowed pointer-events-none"
-                      : "btn-primary"
-                  }`}
-                >
-                  {isOutOfStock ? "Hết hàng" : "Mua Ngay"}
-                </Link>
+                {isOutOfStock ? (
+                  <button
+                    type="button"
+                    disabled
+                    className="btn flex-1 justify-center btn-outline opacity-50 cursor-not-allowed pointer-events-none"
+                  >
+                    Hết hàng
+                  </button>
+                ) : (
+                  <Link
+                    href={`/dat-hang?slug=${book.slug}`}
+                    className="btn btn-primary flex-1 justify-center"
+                  >
+                    Mua Ngay
+                  </Link>
+                )}
               </div>
 
               <div className="border-t border-gray-100 pt-6 space-y-4">
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
-                  <Truck className="w-5 h-5 text-accent" />
+                  <Truck className="w-5 h-5 text-accent" aria-hidden="true" />
                   <span>Miễn phí ship HCM/HN, tỉnh khác 25.000đ</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
-                  <CreditCard className="w-5 h-5 text-accent" />
+                  <CreditCard className="w-5 h-5 text-accent" aria-hidden="true" />
                   <span>Đặt trước qua chuyển khoản; có mã QR VietQR</span>
                 </div>
                 <div className="flex items-center gap-3 text-gray-600 text-sm">
-                  <Package className="w-5 h-5 text-accent" />
+                  <Package className="w-5 h-5 text-accent" aria-hidden="true" />
                   <span>Đóng gói cẩn thận</span>
                 </div>
               </div>
@@ -221,7 +226,7 @@ export default async function BookDetailPage({ params }: PageProps) {
             Mô Tả Sách
           </h2>
           <div className="prose prose-gray max-w-none">
-            {book.description.split("\n\n").map((paragraph, index) => (
+            {htmlToParagraphs(book.description).map((paragraph, index) => (
               <p key={index} className="text-gray-600 leading-relaxed mb-4">
                 {paragraph}
               </p>

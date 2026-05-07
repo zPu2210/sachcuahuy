@@ -10,14 +10,14 @@ export function CTASection({ featuredBook }: CTASectionProps) {
   return (
     <section className="relative py-24 overflow-hidden">
       <div className="absolute inset-0 bg-[#1E2B4D] z-0">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+        <div className="absolute inset-0 opacity-10 bg-[url('/textures/cubes.png')]"></div>
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px] transform translate-x-1/2 -translate-y-1/2"></div>
       </div>
 
       <div className="container-custom relative z-10 text-center">
         <div>
           <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white/10 text-white/90 text-sm font-medium mb-6 backdrop-blur-sm border border-white/10">
-            <Sparkles className="w-4 h-4 text-accent" />
+            <Sparkles className="w-4 h-4 text-accent" aria-hidden="true" />
             <span>Phiên bản giới hạn</span>
           </div>
         </div>
@@ -44,7 +44,7 @@ export function CTASection({ featuredBook }: CTASectionProps) {
               className="w-full sm:w-auto btn bg-white text-primary hover:bg-accent hover:text-white border-0 px-8 py-4 text-lg font-bold shadow-xl shadow-black/20"
             >
               Đặt Hàng Ngay
-              <ArrowRight className="w-5 h-5 ml-2" />
+              <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />
             </Link>
             <span className="text-white/50 text-sm hidden sm:inline-block">
               hoặc
@@ -57,7 +57,7 @@ export function CTASection({ featuredBook }: CTASectionProps) {
             </Link>
           </div>
 
-          <p className="mt-8 text-white/40 text-sm">
+          <p className="mt-8 text-white/70 text-sm">
             * Miễn phí giao hàng cho 100 đơn đầu tiên
           </p>
         </div>

@@ -30,14 +30,14 @@ export default function NotFound() {
             href="/"
             className="btn btn-primary inline-flex items-center px-6 py-3"
           >
-            <Home className="w-5 h-5 mr-2" />
+            <Home className="w-5 h-5 mr-2" aria-hidden="true" />
             Trang chủ
           </Link>
           <Link
             href="/sach"
             className="btn btn-outline inline-flex items-center px-6 py-3"
           >
-            <Book className="w-5 h-5 mr-2" />
+            <Book className="w-5 h-5 mr-2" aria-hidden="true" />
             Xem sách
           </Link>
         </div>
@@ -45,7 +45,7 @@ export default function NotFound() {
           href="/gioi-thieu"
           className="mt-8 inline-flex items-center text-sm text-gray-500 hover:text-primary transition-colors"
         >
-          <ArrowLeft className="w-4 h-4 mr-1" />
+          <ArrowLeft className="w-4 h-4 mr-1" aria-hidden="true" />
           Về tác giả
         </Link>
       </div>

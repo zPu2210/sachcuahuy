@@ -56,7 +56,7 @@ export function AuthorSection({
               </div>
 
               <div className="absolute -bottom-2 -right-2 bg-white p-3 rounded-full shadow-lg z-20 text-accent">
-                <Feather className="w-5 h-5" />
+                <Feather className="w-5 h-5" aria-hidden="true" />
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@ export function AuthorSection({
                 className="group inline-flex items-center text-primary font-bold hover:text-accent transition-colors border-b-2 border-primary/10 hover:border-accent pb-1"
               >
                 Tìm hiểu thêm về hành trình
-                <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Link>
             </div>
           </div>

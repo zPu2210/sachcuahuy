@@ -51,12 +51,12 @@ export function BookCard({ book, featured = false }: BookCardProps) {
               )}
             >
               {!isComingSoon && (
-                <div className="absolute inset-0 bg-white opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/leather.png')]"></div>
+                <div className="absolute inset-0 bg-white opacity-[0.03] bg-[url('/textures/leather.png')]"></div>
               )}
 
               {isComingSoon ? (
                 <div className="text-gray-400 flex flex-col items-center">
-                  <BookIcon className="w-12 h-12 mb-3 opacity-50" />
+                  <BookIcon className="w-12 h-12 mb-3 opacity-50" aria-hidden="true" />
                   <span className="font-medium text-sm">Sắp ra mắt</span>
                 </div>
               ) : (
@@ -89,7 +89,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
               className="bg-white text-primary p-3 rounded-full shadow-lg hover:bg-accent hover:text-white transition-colors"
               title="Xem chi tiết"
             >
-              <Eye className="w-4 h-4" />
+              <Eye className="w-4 h-4" aria-hidden="true" />
             </Link>
             {!isOutOfStock && (
               <Link
@@ -97,7 +97,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
                 className="bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors"
                 title="Đặt hàng"
               >
-                <ShoppingCart className="w-4 h-4" />
+                <ShoppingCart className="w-4 h-4" aria-hidden="true" />
               </Link>
             )}
           </div>

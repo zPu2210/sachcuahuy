@@ -46,7 +46,7 @@ export function BooksSection({ books }: BooksSectionProps) {
             className="btn btn-outline px-8 py-3 rounded-full hover:shadow-lg transition-transform hover:-translate-y-1"
           >
             Xem Tất Cả Các Sách
-            <ArrowRight className="w-4 h-4 ml-2" />
+            <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
           </Link>
         </div>
       </div>

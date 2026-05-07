@@ -15,14 +15,16 @@ const inter = Inter({
 
 const cormorant = Cormorant_Garamond({
   subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "700"],
   variable: "--font-cormorant",
+  display: "optional",
 });
 
 const dancing = Dancing_Script({
   subsets: ["latin", "vietnamese"],
-  weight: ["400", "500", "600"],
+  weight: ["400"],
   variable: "--font-dancing",
+  display: "optional",
 });
 
 const SITE_URL =
@@ -98,9 +100,15 @@ export default async function RootLayout({
       <body
         className={`${inter.variable} ${cormorant.variable} ${dancing.variable} font-sans`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded"
+        >
+          Bỏ qua đến nội dung chính
+        </a>
         {settings && <JsonLdOrganization settings={settings} />}
         <Header />
-        <main>{children}</main>
+        <main id="main-content">{children}</main>
         <Footer settings={settings} />
         <Analytics />
         <SpeedInsights />

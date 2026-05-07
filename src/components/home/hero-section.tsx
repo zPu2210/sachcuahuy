@@ -35,7 +35,6 @@ export function HeroSection({
       format: "webp",
       quality: 85,
     }) ?? "/images/book-cover-front.png?v=1";
-  const spineLabel = featuredBook.publisher || featuredBook.author;
 
   return (
     <section className="relative min-h-[90vh] flex items-center overflow-hidden bg-[#FDFBF7]">
@@ -55,7 +54,7 @@ export function HeroSection({
           <div className="order-2 lg:order-1">
             <div>
               <span className="inline-flex items-center gap-2 text-[#7A6125] font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20 w-fit">
-                <Sparkles className="w-4 h-4 fill-accent" />
+                <Sparkles className="w-4 h-4 fill-accent" aria-hidden="true" />
                 Tác phẩm mới ra mắt
               </span>
             </div>
@@ -104,7 +103,7 @@ export function HeroSection({
                 className="btn btn-primary group px-8 py-4 text-lg"
               >
                 Đặt Hàng Ngay
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" aria-hidden="true" />
               </Link>
 
               <div className="flex flex-col">
@@ -118,7 +117,7 @@ export function HeroSection({
             </div>
 
             <div className="mt-12 flex items-center gap-4 text-sm text-gray-500">
-              <div className="flex -space-x-3">
+              <div aria-hidden="true" className="flex -space-x-3">
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
@@ -126,10 +125,11 @@ export function HeroSection({
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={`https://api.dicebear.com/9.x/avataaars/svg?seed=${i}`}
-                      alt="avatar"
+                      src={`/avatars/avatar-${i}.svg`}
+                      alt=""
                       width={36}
                       height={36}
+                      loading="lazy"
                     />
                   </div>
                 ))}
@@ -146,25 +146,9 @@ export function HeroSection({
 
               <Link
                 href={`/sach/${featuredBook.slug}`}
-                className="relative block transform-style-3d hover:rotate-y-[-10deg] hover:rotate-x-[5deg] transition-all duration-500 ease-out cursor-pointer group"
-                style={{ transformStyle: "preserve-3d", perspective: "1000px" }}
+                className="relative block transition-all duration-500 ease-out cursor-pointer group"
               >
-                <div className="absolute left-0 top-[2px] bottom-[2px] w-[24px] bg-[#1a237e] transform -translate-x-[12px] translate-z-[-12px] rotate-y-[-90deg] flex flex-col items-center justify-center border-l border-white/10 rounded-sm overflow-hidden z-20">
-                  <span className="font-serif text-white/80 tracking-[0.2em] text-[8px] rotate-90 whitespace-nowrap mt-auto mb-12 opacity-70">
-                    {spineLabel.toUpperCase()}
-                  </span>
-                </div>
-
-                <div
-                  className="absolute right-0 top-1 bottom-1 w-[28px] bg-[#F5F5F0] transform translate-x-[14px] translate-z-[-12px] rotate-y-[90deg] shadow-inner rounded-sm"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(to right, #e0e0e0 1px, transparent 1px)",
-                    backgroundSize: "3px 100%",
-                  }}
-                ></div>
-
-                <div className="relative w-[300px] md:w-[350px] aspect-[1/1.45] bg-[#1a237e] rounded-sm shadow-2xl overflow-hidden transform translate-z-[12px]">
+                <div className="relative w-[300px] md:w-[350px] aspect-[1/1.45] bg-[#1a237e] rounded-sm shadow-2xl overflow-hidden">
                   <Image
                     src={coverUrl}
                     alt={`${featuredBook.title} - ${featuredBook.author}`}
@@ -176,8 +160,6 @@ export function HeroSection({
                   <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/10 pointer-events-none z-20 mix-blend-overlay opacity-50"></div>
                   <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-gradient-to-r from-black/20 to-transparent z-20"></div>
                 </div>
-
-                <div className="absolute inset-0 bg-[#0f1629] rounded-sm transform translate-z-[-12px] shadow-2xl"></div>
               </Link>
             </div>
           </div>

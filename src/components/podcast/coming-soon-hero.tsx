@@ -19,16 +19,16 @@ export function ComingSoonHero() {
           transition={{ duration: 0.6 }}
           className="inline-flex items-center justify-center w-20 h-20 md:w-24 md:h-24 rounded-full bg-accent/10 ring-1 ring-accent/30 mb-6 mx-auto"
         >
-          <Mic className="w-10 h-10 md:w-12 md:h-12 text-accent" />
+          <Mic className="w-10 h-10 md:w-12 md:h-12 text-accent" aria-hidden="true" />
         </motion.div>
 
         <motion.span
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.5 }}
-          className="inline-flex items-center gap-2 text-accent font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20"
+          className="inline-flex items-center gap-2 text-[#7A6125] font-medium text-sm mb-6 bg-accent/10 px-4 py-2 rounded-full ring-1 ring-accent/20"
         >
-          <Sparkles className="w-4 h-4 fill-accent" />
+          <Sparkles className="w-4 h-4 fill-accent" aria-hidden="true" />
           Sắp Ra Mắt
         </motion.span>
 
@@ -39,7 +39,7 @@ export function ComingSoonHero() {
           className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-primary leading-[1.1] mb-6 tracking-tight"
         >
           Podcast{" "}
-          <span className="text-accent italic">Sách Của Huy</span>
+          <span className="text-[#7A6125] italic">Sách Của Huy</span>
         </motion.h1>
 
         <motion.p
@@ -71,7 +71,7 @@ export function ComingSoonHero() {
             Khám Phá Sách
           </Link>
           <Link href="/" className="btn btn-outline px-8 py-3 text-base">
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
             Về Trang Chủ
           </Link>
         </motion.div>

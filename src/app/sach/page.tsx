@@ -24,11 +24,11 @@ export default async function BooksPage() {
     <div className="min-h-screen">
       <div className="bg-white border-b border-gray-100">
         <div className="container-custom py-4">
-          <nav className="flex items-center gap-2 text-sm text-gray-500">
+          <nav aria-label="Đường dẫn" className="flex items-center gap-2 text-sm text-gray-500">
             <Link href="/" className="hover:text-primary transition-colors">
               Trang chủ
             </Link>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" aria-hidden="true" />
             <span className="text-primary font-medium">Sách</span>
           </nav>
         </div>

@@ -243,7 +243,7 @@ export default async function ConfirmationPage({ params }: PageProps) {
                 )}
                 <div>
                   <span className="text-gray-500">Số tiền:</span>{" "}
-                  <span className="font-semibold text-accent">
+                  <span className="font-semibold text-[#7A6125]">
                     {formatPrice(order.total)}
                   </span>
                 </div>
@@ -303,7 +303,7 @@ export default async function ConfirmationPage({ params }: PageProps) {
             </div>
             <div className="flex justify-between font-semibold text-primary pt-2 border-t border-gray-100">
               <span>Tổng cộng</span>
-              <span className="text-lg text-accent">{formatPrice(order.total)}</span>
+              <span className="text-lg text-[#7A6125]">{formatPrice(order.total)}</span>
             </div>
           </div>
         </div>

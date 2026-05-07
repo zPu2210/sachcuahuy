@@ -18,10 +18,6 @@ const nextConfig: NextConfig = {
         protocol: "https" as const,
         hostname: "img.vietqr.io",
       },
-      {
-        protocol: "https" as const,
-        hostname: "api.dicebear.com",
-      },
     ],
   },
 };
