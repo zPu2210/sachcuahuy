@@ -78,9 +78,12 @@ export default async function CheckoutPage({ searchParams }: PageProps) {
               />
             </div>
 
-            <div className="lg:col-span-1">
+            <aside aria-labelledby="order-summary-heading" className="lg:col-span-1">
               <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 sticky top-24">
-                <h2 className="font-serif text-xl font-semibold text-primary mb-6">
+                <h2
+                  id="order-summary-heading"
+                  className="font-serif text-xl font-semibold text-primary mb-6"
+                >
                   Đơn Hàng Của Bạn
                 </h2>
 
@@ -139,7 +142,7 @@ export default async function CheckoutPage({ searchParams }: PageProps) {
                   </div>
                 </div>
               </div>
-            </div>
+            </aside>
           </div>
         </div>
       </div>

@@ -78,13 +78,18 @@ export function VerifyForm({ token }: VerifyFormProps) {
           autoComplete="off"
           required
           value={value}
-          onChange={(e) => setValue(e.target.value.replace(/[^0-9]/g, "").slice(0, 4))}
+          onChange={(e) => {
+            setValue(e.target.value.replace(/[^0-9]/g, "").slice(0, 4));
+            if (error) setError(null);
+          }}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? "phone_last_4-error" : undefined}
           className="input w-32 text-center font-mono tracking-widest text-lg"
           placeholder="••••"
         />
       </div>
       {error && (
-        <p className="text-sm text-red-600" role="alert">
+        <p id="phone_last_4-error" className="text-sm text-red-600" role="alert">
           {error}
         </p>
       )}

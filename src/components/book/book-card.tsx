@@ -33,40 +33,36 @@ export function BookCard({
       )}
     >
       <div className="relative aspect-[3/4.2] overflow-hidden rounded-t-2xl bg-[#F0F0F0]">
-        <Link
-          href={isComingSoon ? "#" : `/sach/${book.slug}`}
-          className="block w-full h-full"
-          aria-disabled={isComingSoon || undefined}
-        >
-          {!isComingSoon && coverUrl ? (
-            <div className="absolute inset-0 bg-[#E0E0E0] group-hover:scale-105 transition-transform duration-700 ease-out">
-              <Image
-                src={coverUrl}
-                alt={book.title}
-                fill
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-cover"
-                priority={featured}
-              />
-              <div className="absolute inset-0 bg-black/5 mix-blend-multiply"></div>
+        {isComingSoon ? (
+          <div
+            className="block w-full h-full"
+            role="img"
+            aria-label={`${book.title} — sắp ra mắt`}
+          >
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-white transition-transform duration-700 ease-out group-hover:scale-105 bg-gray-200">
+              <div className="text-gray-500 flex flex-col items-center">
+                <BookIcon className="w-12 h-12 mb-3 opacity-50" aria-hidden="true" />
+                <span className="font-medium text-sm">Sắp ra mắt</span>
+              </div>
             </div>
-          ) : (
-            <div
-              className={clsx(
-                "absolute inset-0 flex flex-col items-center justify-center p-6 text-white transition-transform duration-700 ease-out group-hover:scale-105",
-                isComingSoon ? "bg-gray-200" : "bg-primary",
-              )}
-            >
-              {!isComingSoon && (
+          </div>
+        ) : (
+          <Link href={`/sach/${book.slug}`} className="block w-full h-full">
+            {coverUrl ? (
+              <div className="absolute inset-0 bg-[#E0E0E0] group-hover:scale-105 transition-transform duration-700 ease-out">
+                <Image
+                  src={coverUrl}
+                  alt={book.title}
+                  fill
+                  sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                  className="object-cover"
+                  priority={featured}
+                />
+                <div className="absolute inset-0 bg-black/5 mix-blend-multiply"></div>
+              </div>
+            ) : (
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-white transition-transform duration-700 ease-out group-hover:scale-105 bg-primary">
                 <div className="absolute inset-0 bg-white opacity-[0.03] bg-[url('/textures/leather.png')]"></div>
-              )}
-
-              {isComingSoon ? (
-                <div className="text-gray-500 flex flex-col items-center">
-                  <BookIcon className="w-12 h-12 mb-3 opacity-50" aria-hidden="true" />
-                  <span className="font-medium text-sm">Sắp ra mắt</span>
-                </div>
-              ) : (
                 <div className="w-full h-full border border-white/10 p-4 flex flex-col items-center justify-center relative z-10">
                   <span className="font-serif text-[10px] tracking-[0.2em] mb-6 opacity-80">
                     {book.author.toUpperCase()}
@@ -84,10 +80,10 @@ export function BookCard({
                     </span>
                   </div>
                 </div>
-              )}
-            </div>
-          )}
-        </Link>
+              </div>
+            )}
+          </Link>
+        )}
 
         {!isComingSoon && (
           <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-3 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 px-4">
@@ -127,18 +123,17 @@ export function BookCard({
       </div>
 
       <div className="p-5">
-        <Link href={isComingSoon ? "#" : `/sach/${book.slug}`}>
-          <HeadingTag
-            className={clsx(
-              "font-serif text-xl font-bold mb-1 line-clamp-1 transition-colors",
-              isComingSoon
-                ? "text-gray-500"
-                : "text-primary group-hover:text-accent-dark",
-            )}
-          >
+        {isComingSoon ? (
+          <HeadingTag className="font-serif text-xl font-bold mb-1 line-clamp-1 text-gray-500">
             {book.title}
           </HeadingTag>
-        </Link>
+        ) : (
+          <Link href={`/sach/${book.slug}`}>
+            <HeadingTag className="font-serif text-xl font-bold mb-1 line-clamp-1 transition-colors text-primary group-hover:text-accent-dark">
+              {book.title}
+            </HeadingTag>
+          </Link>
+        )}
         <p className="text-xs text-gray-700 mb-4 font-medium uppercase tracking-wide">
           {book.author}
         </p>

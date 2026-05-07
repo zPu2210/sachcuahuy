@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ShoppingCart, Menu, X, Book } from "lucide-react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
@@ -10,10 +10,15 @@ interface HeaderProps {
   cartCount?: number;
 }
 
+const FOCUSABLE_SELECTOR =
+  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function Header({ cartCount = 0 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+  const toggleRef = useRef<HTMLButtonElement | null>(null);
+  const mobileNavRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const updateScrollState = () => setIsScrolled(window.scrollY > 50);
@@ -24,11 +29,50 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
   useEffect(() => {
     if (!isMenuOpen) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const nav = mobileNavRef.current;
+    const toggle = toggleRef.current;
+    const focusables = nav
+      ? Array.from(nav.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
+      : [];
+    focusables[0]?.focus();
+
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMenuOpen(false);
+      if (e.key === "Escape") {
+        setIsMenuOpen(false);
+        return;
+      }
+      if (e.key !== "Tab" || !nav) return;
+      const items = Array.from(nav.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      const insideNav = !!active && nav.contains(active);
+      if (e.shiftKey && (active === first || !insideNav)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (active === last || !insideNav)) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     document.addEventListener("keydown", handleKey);
-    return () => document.removeEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = previousOverflow;
+      // Only restore focus to toggle when the menu is closed while focus is
+      // still inside the trap (Esc, X click, outside-nav click). Skip when a
+      // link click navigated away — that would steal focus from the new page.
+      const active = document.activeElement as HTMLElement | null;
+      if (nav && active && nav.contains(active)) {
+        toggle?.focus();
+      }
+    };
   }, [isMenuOpen]);
 
   const navLinks = [
@@ -125,6 +169,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
             </Link>
 
             <button
+              ref={toggleRef}
               onClick={() => setIsMenuOpen((open) => !open)}
               className="md:hidden inline-flex items-center justify-center w-11 h-11 text-gray-700 hover:text-primary transition-colors relative z-50"
               aria-label={isMenuOpen ? "Đóng menu" : "Mở menu"}
@@ -143,6 +188,8 @@ export function Header({ cartCount = 0 }: HeaderProps) {
         {/* Mobile Navigation Overlay */}
         <div
           id="mobile-nav"
+          ref={mobileNavRef}
+          aria-hidden={!isMenuOpen}
           className={clsx(
             "fixed inset-0 bg-paper/95 backdrop-blur-xl z-40 md:hidden flex flex-col items-center justify-center transition-opacity duration-200",
             isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
@@ -161,6 +208,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
                 <Link
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
+                  tabIndex={isMenuOpen ? 0 : -1}
                   className="font-serif text-3xl font-medium text-primary hover:text-accent-dark transition-colors"
                 >
                   {link.label}
@@ -177,6 +225,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               <Link
                 href="/sach"
                 onClick={() => setIsMenuOpen(false)}
+                tabIndex={isMenuOpen ? 0 : -1}
                 className="btn btn-primary mt-4"
               >
                 Đến Cửa Hàng

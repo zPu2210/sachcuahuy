@@ -3,6 +3,7 @@ import { MapPin, BookOpen, Mic } from "lucide-react";
 import { BookCard } from "@/components/book/book-card";
 import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import { getBooks } from "@/lib/books";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 import { getSiteSettings } from "@/lib/site-config";
 
 export const revalidate = 300;
@@ -37,7 +38,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function AboutPage() {
   const [books, settings] = await Promise.all([getBooks(), getSiteSettings()]);
   const publishedBooks = books.filter((b) => !b.is_coming_soon);
-  const bioHtml = settings.author_bio || AUTHOR_FALLBACK_BIO_HTML;
+  const bioHtml = sanitizeHtml(settings.author_bio || AUTHOR_FALLBACK_BIO_HTML);
   const authorQuote =
     settings.author_short_bio ||
     "Sinh ra tại Phú Thọ, lớn lên ở Hà Nội, chọn sống ở Sài Gòn.";
