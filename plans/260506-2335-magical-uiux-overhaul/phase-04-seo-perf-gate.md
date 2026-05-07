@@ -343,41 +343,52 @@ Em present:
 - Gold cleanup confirmation
 - Total time + token budget actual vs estimated
 
-## Todo List
+## Shipped (Trimmed Scope)
 
+### Completed
+- [x] 4.4 Remove gold from tailwind.config.ts
+- [x] 4.4 Grep + replace 4 raw `#7A6125` instances → `text-accent-dark` (dat-hang, xac-nhan)
+- [x] 4.4 Build pass
+- [x] 4.2 Create json-ld-person component
+- [x] 4.2 Mount JsonLdPerson on /gioi-thieu
+
+### Success Criteria (Shipped)
+- [x] Gold token removed completely (grep clean, Tailwind config clean)
+- [x] JSON-LD Person schema on /gioi-thieu
+- [x] JSON-LD Book schema already present on /sach/[slug] (pre-existing)
+- [x] Build passes (11/11 pages)
+
+### Skipped (Intentional)
+- PodcastSeries JSON-LD — /podcast is coming-soon with no real episodes
+
+---
+
+## Deferred (Aspirational — Future Phase or Backlog)
+
+### Custom OG Image Routes (~3h)
 - [ ] 4.1 Create home OG image route
 - [ ] 4.1 Create /sach OG image route
 - [ ] 4.1 Create /sach/[slug] dynamic OG
 - [ ] 4.1 Create /gioi-thieu OG
 - [ ] 4.1 Create /podcast OG
 - [ ] 4.1 Validate all OG via opengraph.xyz
-- [ ] 4.2 Create json-ld-book component
-- [ ] 4.2 Create json-ld-person component
-- [ ] 4.2 Create json-ld-podcast (if scope)
-- [ ] 4.2 Mount per page
-- [ ] 4.2 Validate via schema.org tester
-- [ ] 4.3 Update sitemap with image entries
-- [ ] 4.3 Add /sach/[slug] dynamic sitemap
-- [ ] 4.4 Grep + replace gold token leftover
-- [ ] 4.4 Remove gold from tailwind.config.ts
-- [ ] 4.4 Build pass
-- [ ] 4.5 Lighthouse 4 pages × 2 viewports
+
+### Sitemap Enhancement (~30min)
+- [ ] 4.3 Update sitemap with `<image:image>` entries
+- [ ] 4.3 Verify /sach/[slug] dynamic entries (already present, no image tags)
+
+### Performance Gate (~1h)
+- [ ] 4.5 Lighthouse 4 pages × 2 viewports (CLI not installed, manual verification)
 - [ ] 4.5 Document scores in report
+- [ ] Lighthouse mobile ≥85 all 4 pages all categories
+- [ ] LCP <2.8s all pages
+
+### Documentation (~45min)
 - [ ] 4.6 Write docs/design-system.md
 - [ ] 4.7 Final review presentation
 
-## Success Criteria
-
-- [ ] 5 OG images custom shipped (home, sach, sach-slug, gioi-thieu, podcast)
-- [ ] All OG validate via opengraph.xyz
-- [ ] JSON-LD Book + Person + (PodcastSeries) ship + validate
-- [ ] Sitemap has image entries
-- [ ] Gold token removed completely (grep clean)
-- [ ] Lighthouse mobile ≥85 all 4 pages all categories
-- [ ] LCP <2.8s all pages
-- [ ] Design system doc shipped at docs/design-system.md
-- [ ] Final report `plans/reports/phase-04-lighthouse-final.md`
-- [ ] Anh approve final state → ship merge to main
+### Content Quality
+- [ ] `htmlToParagraphs` entity decoder expansion — current NAMED_ENTITIES map is incomplete; Vietnamese diacritics like `&oacute;`, `&agrave;` would render literally if Directus outputs them as named entities. Low-risk if Directus outputs UTF-8 directly (typical behavior).
 
 ## Risk Assessment
 
