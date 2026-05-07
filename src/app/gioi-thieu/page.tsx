@@ -5,11 +5,14 @@ import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import { getBooks } from "@/lib/books";
 import { sanitizeHtml } from "@/lib/sanitize-html";
 import { getSiteSettings } from "@/lib/site-config";
+import { WatercolorWash } from "@/components/ui/watercolor-wash";
+import { PaperTexture } from "@/components/ui/paper-texture";
+import { HandDrawnDivider } from "@/components/ui/hand-drawn-divider";
+import { SignatureFlourish } from "@/components/ui/signature-flourish";
 
 export const revalidate = 300;
 
 const AUTHOR_NAME = "Trọng Huy";
-const AUTHOR_TITLE = "Tác giả • Voice Talent";
 const AUTHOR_LOCATION = "Sài Gòn, Việt Nam";
 const AUTHOR_FALLBACK_BIO_HTML =
   "<p>Trọng Huy là phát thanh viên radio và Voice Talent Quảng Cáo tại Việt Nam. Bên cạnh công việc giọng nói, anh còn là một người viết với những tản văn nhẹ nhàng về cuộc sống đời thường.</p>";
@@ -51,13 +54,15 @@ export default async function AboutPage() {
 
   return (
     <div className="min-h-screen">
-      <section className="py-16 md:py-24 bg-primary text-white">
-        <div className="container-custom text-center">
+      <section className="relative py-16 md:py-24 bg-primary text-white overflow-hidden">
+        <WatercolorWash color="cobalt" className="inset-0 opacity-30" />
+        <PaperTexture className="opacity-[0.03]" />
+        <div className="container-custom text-center relative z-10">
           <h1 className="font-serif text-3xl md:text-4xl font-semibold mb-6">
             Về Tác Giả
           </h1>
 
-          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/10 border-4 border-accent/30 mx-auto mb-6 overflow-hidden">
+          <div className="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/10 border-4 border-accent/30 mx-auto mb-6 overflow-hidden ring-4 ring-white/10">
             {authorImageUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
@@ -75,50 +80,61 @@ export default async function AboutPage() {
           <h2 className="font-serif text-2xl md:text-3xl font-semibold mb-2">
             {AUTHOR_NAME}
           </h2>
-          <p className="text-white/70">{AUTHOR_TITLE}</p>
+          <p className="text-white/70">
+            Tác giả • <span lang="en">Voice Talent</span>
+          </p>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container-custom">
+      <section className="relative section bg-paper">
+        <PaperTexture />
+        <div className="container-custom relative z-10">
           <div className="max-w-3xl mx-auto">
-            <blockquote className="font-script text-2xl md:text-3xl text-gray-600 text-center mb-12">
+            <blockquote className="font-script text-2xl md:text-3xl text-ink/70 text-center mb-8">
               &ldquo;{authorQuote}&rdquo;
             </blockquote>
 
-            <div className="w-24 h-1 bg-accent mx-auto rounded-full mb-12"></div>
+            <div className="flex justify-center mb-10">
+              <HandDrawnDivider variant="sparkle" width={160} />
+            </div>
 
             <div
-              className="prose prose-lg prose-gray max-w-none text-gray-600 leading-relaxed"
+              className="prose prose-lg prose-gray max-w-none text-ink/80 leading-relaxed"
               dangerouslySetInnerHTML={{ __html: bioHtml }}
             />
 
             <div className="grid md:grid-cols-3 gap-6 mt-12">
-              <div className="bg-white rounded-xl p-6 border border-gray-100 text-center">
+              <div className="bg-cream rounded-xl p-6 border border-accent/10 text-center shadow-sm">
                 <MapPin className="w-8 h-8 text-accent mx-auto mb-3" aria-hidden="true" />
-                <p className="text-sm text-gray-500">Hiện đang sống tại</p>
-                <p className="font-semibold text-primary">{AUTHOR_LOCATION}</p>
+                <p className="text-sm text-ink/50">Hiện đang sống tại</p>
+                <p className="font-semibold text-navy">{AUTHOR_LOCATION}</p>
               </div>
-              <div className="bg-white rounded-xl p-6 border border-gray-100 text-center">
+              <div className="bg-cream rounded-xl p-6 border border-accent/10 text-center shadow-sm">
                 <BookOpen className="w-8 h-8 text-accent mx-auto mb-3" aria-hidden="true" />
-                <p className="text-sm text-gray-500">Sách đã xuất bản</p>
-                <p className="font-semibold text-primary">
+                <p className="text-sm text-ink/50">Sách đã xuất bản</p>
+                <p className="font-semibold text-navy">
                   {publishedBooks.length}+ cuốn
                 </p>
               </div>
-              <div className="bg-white rounded-xl p-6 border border-gray-100 text-center">
+              <div className="bg-cream rounded-xl p-6 border border-accent/10 text-center shadow-sm">
                 <Mic className="w-8 h-8 text-accent mx-auto mb-3" aria-hidden="true" />
-                <p className="text-sm text-gray-500">Nghề nghiệp</p>
-                <p className="font-semibold text-primary">Voice Talent</p>
+                <p className="text-sm text-ink/50">Nghề nghiệp</p>
+                <p className="font-semibold text-navy">
+                  <span lang="en">Voice Talent</span>
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section">
-        <div className="container-custom">
-          <h2 className="font-serif text-2xl md:text-3xl font-semibold text-primary text-center mb-12">
+      <section className="relative section bg-cream overflow-hidden">
+        <WatercolorWash color="sunset" className="inset-0 opacity-20" />
+        <div className="container-custom relative z-10">
+          <div className="flex justify-center mb-8">
+            <HandDrawnDivider variant="leaf" width={140} />
+          </div>
+          <h2 className="font-serif text-2xl md:text-3xl font-semibold text-navy text-center mb-12">
             Tác Phẩm
           </h2>
 
@@ -126,6 +142,10 @@ export default async function AboutPage() {
             {publishedBooks.map((book) => (
               <BookCard key={book.id} book={book} headingLevel={3} />
             ))}
+          </div>
+
+          <div className="flex justify-center mt-16">
+            <SignatureFlourish className="w-48 md:w-56" />
           </div>
         </div>
       </section>

@@ -1,11 +1,13 @@
 ---
 phase: 3
 title: "Gioi-thieu & Podcast"
-status: pending
+status: surface-shipped
 priority: P1
-effort: "4h"
+effort: "1h (surface) / 4h (full)"
 dependencies: [1]
 ---
+
+> **Trimmed Surface-Only Pass (2026-05-07):** This phase was executed as a focused surface pass — token migration, Phase 1 primitives, a11y fixes. AI-generated assets, Directus schema changes, email signup form, and new about/ component directory are DEFERRED. See "Shipped" vs "Deferred" sections below.
 
 # Phase 3: /gioi-thieu (About) & /podcast
 
@@ -15,6 +17,33 @@ dependencies: [1]
 - Audit integration: `plans/260506-2335-magical-uiux-overhaul/audit-integration-notes.md`
 - Phase 1 outputs (tokens + 4 shared components) — REUSE
 - Existing files: `src/app/gioi-thieu/page.tsx`, `src/app/podcast/page.tsx`, `src/components/podcast/*`
+
+## Shipped (Surface Pass)
+
+### /gioi-thieu
+- [x] Token sweep: `bg-paper`, `text-navy`, `text-ink/70`, `text-accent`
+- [x] Hero atmosphere: WatercolorWash (cobalt) + PaperTexture
+- [x] Bio section: PaperTexture bg, HandDrawnDivider (sparkle), cream cards
+- [x] Works section: WatercolorWash (sunset), HandDrawnDivider (leaf), SignatureFlourish
+- [x] Mixed-language fix: `<span lang="en">Voice Talent</span>` (2 places)
+- [x] Enhanced card borders: `border-accent/10` + `shadow-sm`
+
+### /podcast (coming-soon-hero)
+- [x] Token sweep: `bg-paper`, `text-navy`, `text-ink/70`, `text-accent`, `text-accent-dark`
+- [x] P0-4 contrast fix: replaced `#7A6125` → `text-accent-dark` (badge) + `text-accent` (title accent)
+- [x] Atmosphere: WatercolorWash (cobalt) + PaperTexture
+- [x] Added HandDrawnDivider (wave) before CTAs
+- [x] Removed hardcoded `bg-[#FDFBF7]` → `bg-paper` token
+
+## Deferred (Full Implementation)
+
+The following from original plan are NOT shipped and should be addressed in future:
+
+- **AI-generated assets**: author hero portrait, chapter scenes, podcast hero, soundwave divider
+- **New components**: `src/components/about/` directory (AuthorHero, AuthorBioChapter, AuthorTimeline, AuthorPullQuote)
+- **Directus schema**: `author_hero_image` field
+- **Podcast expansion**: episode list, subscribe links, email signup form
+- **JSON-LD**: Person + PodcastSeries schemas (Phase 4)
 
 ## Overview
 
