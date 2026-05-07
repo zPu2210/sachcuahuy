@@ -6,18 +6,30 @@ import { ShoppingCart, Menu, X, Book } from "lucide-react";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
-export function Header() {
+interface HeaderProps {
+  cartCount?: number;
+}
+
+export function Header({ cartCount = 0 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
     const updateScrollState = () => setIsScrolled(window.scrollY > 50);
-
     updateScrollState();
     window.addEventListener("scroll", updateScrollState, { passive: true });
     return () => window.removeEventListener("scroll", updateScrollState);
   }, []);
+
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsMenuOpen(false);
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [isMenuOpen]);
 
   const navLinks = [
     { href: "/sach", label: "Tác Phẩm" },
@@ -29,7 +41,7 @@ export function Header() {
     <header
       className={clsx(
         "sticky top-0 left-0 right-0 z-50 transition-all duration-300",
-        isScrolled ? "bg-white/80 backdrop-blur-md shadow-sm py-2" : "bg-transparent py-4"
+        isScrolled ? "bg-paper/85 backdrop-blur-md shadow-sm py-2" : "bg-transparent py-4",
       )}
     >
       <div className="container-custom">
@@ -37,13 +49,18 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group relative z-50">
             <div className="w-10 h-10 bg-primary/5 rounded-full flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors duration-300">
-              <Book className="w-5 h-5 text-primary group-hover:text-white transition-colors" aria-hidden="true" />
+              <Book
+                className="w-5 h-5 text-primary group-hover:text-white transition-colors"
+                aria-hidden="true"
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-serif text-xl font-bold text-primary leading-none">
                 Sách Của Huy
               </span>
-              <span className="text-[10px] tracking-widest text-gray-600 uppercase">Writer & Storyteller</span>
+              <span className="text-[10px] tracking-widest text-gray-700 uppercase">
+                <span lang="en">Writer & Storyteller</span>
+              </span>
             </div>
           </Link>
 
@@ -55,42 +72,64 @@ export function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  aria-current={isActive ? "page" : undefined}
                   className={clsx(
-                    "px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 relative",
-                    isActive ? "text-primary" : "text-gray-600 hover:text-primary hover:bg-primary/5"
+                    "group relative px-5 py-2 rounded-full text-sm font-medium transition-colors duration-300",
+                    isActive
+                      ? "text-primary"
+                      : "text-gray-700 hover:text-primary hover:bg-primary/5",
                   )}
                 >
-                  {link.label}
-                  {isActive && (
+                  <span className="relative">
+                    {link.label}
                     <span
-                      className="absolute inset-0 bg-primary/5 rounded-full -z-10"
+                      aria-hidden="true"
+                      className={clsx(
+                        "pointer-events-none absolute left-0 right-0 -bottom-1 h-[2px] bg-accent rounded-full transition-transform duration-300 origin-left",
+                        isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100",
+                      )}
                     />
-                  )}
+                  </span>
                 </Link>
-              )
+              );
             })}
           </nav>
 
           {/* Right Section */}
           <div className="flex items-center gap-2">
-            {/* Cart shortcut → catalog (no real cart MVP) */}
             <Link
               href="/sach"
-              aria-label="Xem sách"
-              className="relative p-2 text-gray-600 hover:text-primary transition-colors hover:bg-gray-100/50 rounded-full mr-2"
+              aria-label={
+                cartCount > 0
+                  ? `Giỏ hàng, ${cartCount} sản phẩm`
+                  : "Giỏ hàng, chưa có sản phẩm"
+              }
+              className="relative inline-flex items-center justify-center w-11 h-11 text-gray-700 hover:text-primary transition-colors hover:bg-primary/5 rounded-full mr-1"
             >
               <ShoppingCart className="w-5 h-5" aria-hidden="true" />
+              {cartCount > 0 && (
+                <span
+                  aria-hidden="true"
+                  className="absolute top-1 right-1 min-w-[18px] h-[18px] px-1 inline-flex items-center justify-center text-[10px] font-bold leading-none rounded-full bg-accent text-white shadow-sm"
+                >
+                  {cartCount > 99 ? "99+" : cartCount}
+                </span>
+              )}
             </Link>
 
-            <Link href="/sach" className="hidden md:flex btn btn-primary py-2 px-5 text-sm shadow-md shadow-primary/20">
+            <Link
+              href="/sach"
+              className="hidden md:flex btn btn-primary py-2 px-5 text-sm shadow-md shadow-primary/20 hover:bg-primary-light hover:shadow-lg transition-all"
+            >
               Mua Sách
             </Link>
 
-            {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-600 hover:text-primary transition-colors relative z-50"
+              onClick={() => setIsMenuOpen((open) => !open)}
+              className="md:hidden inline-flex items-center justify-center w-11 h-11 text-gray-700 hover:text-primary transition-colors relative z-50"
               aria-label={isMenuOpen ? "Đóng menu" : "Mở menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-nav"
             >
               {isMenuOpen ? (
                 <X className="w-6 h-6" aria-hidden="true" />
@@ -103,8 +142,9 @@ export function Header() {
 
         {/* Mobile Navigation Overlay */}
         <div
+          id="mobile-nav"
           className={clsx(
-            "fixed inset-0 bg-white/95 backdrop-blur-xl z-40 md:hidden flex flex-col items-center justify-center transition-opacity duration-200",
+            "fixed inset-0 bg-paper/95 backdrop-blur-xl z-40 md:hidden flex flex-col items-center justify-center transition-opacity duration-200",
             isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
           )}
         >
@@ -121,7 +161,7 @@ export function Header() {
                 <Link
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="font-serif text-3xl font-medium text-primary hover:text-accent transition-colors"
+                  className="font-serif text-3xl font-medium text-primary hover:text-accent-dark transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -134,7 +174,11 @@ export function Header() {
               )}
               style={{ transitionDelay: isMenuOpen ? "340ms" : "0ms" }}
             >
-              <Link href="/sach" onClick={() => setIsMenuOpen(false)} className="btn btn-primary mt-4">
+              <Link
+                href="/sach"
+                onClick={() => setIsMenuOpen(false)}
+                className="btn btn-primary mt-4"
+              >
                 Đến Cửa Hàng
               </Link>
             </div>

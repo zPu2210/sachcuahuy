@@ -9,15 +9,21 @@ import type { Book } from "@/lib/types-directus";
 interface BookCardProps {
   book: Book;
   featured?: boolean;
+  headingLevel?: 2 | 3;
 }
 
-export function BookCard({ book, featured = false }: BookCardProps) {
+export function BookCard({
+  book,
+  featured = false,
+  headingLevel = 2,
+}: BookCardProps) {
   const isComingSoon = !!book.is_coming_soon;
   const isOutOfStock = book.stock_status === "out_of_stock";
   const coverUrl = buildAssetUrlFromFile(book.cover_image, {
     width: 600,
     format: "webp",
   });
+  const HeadingTag = (`h${headingLevel}` as const);
 
   return (
     <div
@@ -30,6 +36,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
         <Link
           href={isComingSoon ? "#" : `/sach/${book.slug}`}
           className="block w-full h-full"
+          aria-disabled={isComingSoon || undefined}
         >
           {!isComingSoon && coverUrl ? (
             <div className="absolute inset-0 bg-[#E0E0E0] group-hover:scale-105 transition-transform duration-700 ease-out">
@@ -47,7 +54,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
             <div
               className={clsx(
                 "absolute inset-0 flex flex-col items-center justify-center p-6 text-white transition-transform duration-700 ease-out group-hover:scale-105",
-                isComingSoon ? "bg-gray-200" : "bg-[#1E2B4D]",
+                isComingSoon ? "bg-gray-200" : "bg-primary",
               )}
             >
               {!isComingSoon && (
@@ -55,7 +62,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
               )}
 
               {isComingSoon ? (
-                <div className="text-gray-400 flex flex-col items-center">
+                <div className="text-gray-500 flex flex-col items-center">
                   <BookIcon className="w-12 h-12 mb-3 opacity-50" aria-hidden="true" />
                   <span className="font-medium text-sm">Sắp ra mắt</span>
                 </div>
@@ -87,6 +94,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
             <Link
               href={`/sach/${book.slug}`}
               className="bg-white text-primary p-3 rounded-full shadow-lg hover:bg-accent hover:text-white transition-colors"
+              aria-label={`Xem chi tiết ${book.title}`}
               title="Xem chi tiết"
             >
               <Eye className="w-4 h-4" aria-hidden="true" />
@@ -95,6 +103,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
               <Link
                 href={`/dat-hang?slug=${book.slug}`}
                 className="bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors"
+                aria-label={`Đặt hàng ${book.title}`}
                 title="Đặt hàng"
               >
                 <ShoppingCart className="w-4 h-4" aria-hidden="true" />
@@ -105,7 +114,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
 
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {book.is_new && !isComingSoon && (
-            <span className="px-3 py-1 bg-[#7A6125] text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
+            <span className="px-3 py-1 bg-accent-dark text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
               Mới
             </span>
           )}
@@ -119,18 +128,18 @@ export function BookCard({ book, featured = false }: BookCardProps) {
 
       <div className="p-5">
         <Link href={isComingSoon ? "#" : `/sach/${book.slug}`}>
-          <h2
+          <HeadingTag
             className={clsx(
               "font-serif text-xl font-bold mb-1 line-clamp-1 transition-colors",
               isComingSoon
-                ? "text-gray-400"
-                : "text-primary group-hover:text-[#7A6125]",
+                ? "text-gray-500"
+                : "text-primary group-hover:text-accent-dark",
             )}
           >
             {book.title}
-          </h2>
+          </HeadingTag>
         </Link>
-        <p className="text-xs text-gray-500 mb-4 font-medium uppercase tracking-wide">
+        <p className="text-xs text-gray-700 mb-4 font-medium uppercase tracking-wide">
           {book.author}
         </p>
 
@@ -138,7 +147,7 @@ export function BookCard({ book, featured = false }: BookCardProps) {
           <span
             className={clsx(
               "font-serif font-bold text-lg",
-              isComingSoon ? "text-gray-300" : "text-primary",
+              isComingSoon ? "text-gray-400" : "text-primary",
             )}
           >
             {isComingSoon ? "---" : formatPrice(book.price)}
@@ -149,8 +158,8 @@ export function BookCard({ book, featured = false }: BookCardProps) {
               className={clsx(
                 "text-xs font-medium",
                 isOutOfStock
-                  ? "text-gray-600"
-                  : "text-gray-600 group-hover:text-primary transition-colors",
+                  ? "text-gray-700"
+                  : "text-gray-700 group-hover:text-primary transition-colors",
               )}
             >
               {isOutOfStock ? "Hết hàng" : "Xem chi tiết →"}

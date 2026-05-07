@@ -7,22 +7,22 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar — terracotta accent */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8f6f3;
+  background: #faf6ec;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c9a962;
+  background: #a04420;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #b89a52;
+  background: #c75d2c;
 }
 
 /* Respect reduced motion */
@@ -97,9 +97,9 @@ html {
   }
 }
 
-/* Decorative hand-drawn line */
+/* Decorative hand-drawn line — terracotta */
 .decorative-line {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20'%3E%3Cpath d='M0,10 Q50,0 100,10 T200,10' fill='none' stroke='%23C9A962' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20'%3E%3Cpath d='M0,10 Q50,0 100,10 T200,10' fill='none' stroke='%23C75D2C' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: repeat-x;
   background-size: 200px 20px;
   height: 20px;
@@ -134,5 +134,33 @@ html {
   /* Glassmorphism */
   .glass {
     @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-lg;
+  }
+
+  /* Magical overhaul — Phase 1 */
+
+  /* Subtle paper grain. Pure CSS data URI = zero HTTP request.
+     opacity + mix-blend-mode live on the React component so callers
+     can override via Tailwind utilities without cascade collisions. */
+  .paper-texture {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.55 0 0 0 0 0.45 0 0 0 0 0.30 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 240px 240px;
+    pointer-events: none;
+  }
+
+  /* Atmospheric watercolor washes — radial gradients with feathered edge. */
+  .watercolor-wash-cobalt {
+    background: radial-gradient(closest-side, rgba(56, 86, 176, 0.35), rgba(56, 86, 176, 0));
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .watercolor-wash-terracotta {
+    background: radial-gradient(closest-side, rgba(199, 93, 44, 0.35), rgba(199, 93, 44, 0));
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  .watercolor-wash-sunset {
+    background: linear-gradient(135deg, #1E2B4D 0%, #3856B0 45%, #C75D2C 100%);
   }
 }

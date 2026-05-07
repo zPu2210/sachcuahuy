@@ -18,13 +18,24 @@ const config: Config = {
           DEFAULT: "#F8F6F3",
           dark: "#EDE9E3",
         },
+        // Phase 1 magical overhaul: accent redefined gold → terracotta.
+        // .DEFAULT: AA Large only on cream (~4.5:1) — headings, badges, decoratives.
+        // .dark: AA Normal on cream (~6.5:1) — inline body links, accents.
         accent: {
-          DEFAULT: "#C9A962",
-          light: "#D4B875",
-          dark: "#B89A52",
+          DEFAULT: "#C75D2C",
+          light: "#E27A4F",
+          dark: "#A04420",
+        },
+        cobalt: {
+          DEFAULT: "#3856B0",
+          light: "#5C7AC9",
+          dark: "#27408C",
         },
         cream: "#F8F6F3",
         navy: "#1E2B4D",
+        ink: "#142849",
+        paper: "#FAF6EC",
+        // Deprecated — kept one phase as rollback safety. Remove in Phase 4.
         gold: "#C9A962",
       },
       fontFamily: {
