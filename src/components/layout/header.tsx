@@ -39,30 +39,35 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
     const nav = mobileNavRef.current;
     const toggle = toggleRef.current;
-    const focusables = nav
+    const navFocusables = nav
       ? Array.from(nav.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
       : [];
-    focusables[0]?.focus();
+    navFocusables[0]?.focus();
 
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setIsMenuOpen(false);
         return;
       }
-      if (e.key !== "Tab" || !nav) return;
-      const items = Array.from(nav.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+      if (e.key !== "Tab") return;
+      // Cycle: overlay links + the visible close (toggle) button. The toggle
+      // lives outside mobileNavRef in DOM, so the cycle is handled fully here
+      // — every Tab moves focus to the next/prev cycle item. Without this,
+      // Tab from a middle link would skip past the toggle into page content.
+      const items = nav
+        ? Array.from(nav.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
+        : [];
+      if (toggle) items.push(toggle);
       if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
       const active = document.activeElement as HTMLElement | null;
-      const insideNav = !!active && nav.contains(active);
-      if (e.shiftKey && (active === first || !insideNav)) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && (active === last || !insideNav)) {
-        e.preventDefault();
-        first.focus();
+      const idx = active ? items.indexOf(active) : -1;
+      e.preventDefault();
+      if (idx === -1) {
+        items[0].focus();
+        return;
       }
+      const dir = e.shiftKey ? -1 : 1;
+      items[(idx + dir + items.length) % items.length].focus();
     };
 
     document.addEventListener("keydown", handleKey);
