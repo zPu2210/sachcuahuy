@@ -39,7 +39,7 @@ export function CTASection({ featuredBook }: CTASectionProps) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <Link
             href={`/dat-hang?slug=${featuredBook.slug}`}
-            className="w-full sm:w-auto btn bg-white text-primary hover:bg-accent hover:text-white border-0 px-8 py-4 text-lg font-bold shadow-xl shadow-black/30 hover:shadow-2xl hover:-translate-y-0.5 transition-all"
+            className="w-full sm:w-auto btn bg-white text-primary hover:bg-accent-dark hover:text-white border-0 px-8 py-4 text-lg font-bold shadow-xl shadow-black/30 hover:shadow-2xl hover:-translate-y-0.5 transition-all"
           >
             Đặt Hàng Ngay
             <ArrowRight className="w-5 h-5 ml-2" aria-hidden="true" />

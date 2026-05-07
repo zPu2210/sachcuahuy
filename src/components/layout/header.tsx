@@ -97,13 +97,13 @@ export function Header({ cartCount = 0 }: HeaderProps) {
 
           {/* Right Section */}
           <div className="flex items-center gap-2">
+            {/* Cart icon: visual + counter slot ready for future cart context.
+                Until a real cart route exists, the action routes to /sach
+                and the SR label honestly describes the destination. The
+                counter badge is decorative (aria-hidden) at this stage. */}
             <Link
               href="/sach"
-              aria-label={
-                cartCount > 0
-                  ? `Giỏ hàng, ${cartCount} sản phẩm`
-                  : "Giỏ hàng, chưa có sản phẩm"
-              }
+              aria-label="Xem sách"
               className="relative inline-flex items-center justify-center w-11 h-11 text-gray-700 hover:text-primary transition-colors hover:bg-primary/5 rounded-full mr-1"
             >
               <ShoppingCart className="w-5 h-5" aria-hidden="true" />
