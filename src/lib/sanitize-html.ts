@@ -33,12 +33,29 @@ const ALLOWED_ATTRS_BY_TAG: Record<string, Set<string>> = {
 
 const URL_ATTRS = new Set(["href", "src"]);
 
+// Allow only safe URL schemes plus relative/fragment refs. Browsers decode a
+// single layer of HTML entities and ignore embedded ASCII control chars when
+// resolving an attribute URL, so we must do the same before checking the
+// scheme — otherwise `jav&#x61;script:` and `java&#10;script:` slip through.
 function isSafeUrl(value: string): boolean {
-  const trimmed = value.trim().toLowerCase();
-  if (trimmed.startsWith("javascript:") || trimmed.startsWith("data:") || trimmed.startsWith("vbscript:")) {
-    return false;
+  const decoded = value
+    .replace(/&#x([0-9a-f]+);?/gi, (_, hex: string) =>
+      String.fromCharCode(parseInt(hex, 16)),
+    )
+    .replace(/&#(\d+);?/g, (_, dec: string) =>
+      String.fromCharCode(parseInt(dec, 10)),
+    );
+  const cleaned = decoded.replace(/[\x00-\x1F\x7F]/g, "").trim().toLowerCase();
+  if (cleaned === "") return false;
+  if (cleaned.startsWith("/") || cleaned.startsWith("#") || cleaned.startsWith("?")) {
+    return true;
   }
-  return true;
+  return (
+    cleaned.startsWith("http:") ||
+    cleaned.startsWith("https:") ||
+    cleaned.startsWith("mailto:") ||
+    cleaned.startsWith("tel:")
+  );
 }
 
 export function sanitizeHtml(input: string): string {

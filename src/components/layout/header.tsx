@@ -19,6 +19,9 @@ export function Header({ cartCount = 0 }: HeaderProps) {
   const pathname = usePathname();
   const toggleRef = useRef<HTMLButtonElement | null>(null);
   const mobileNavRef = useRef<HTMLDivElement | null>(null);
+  // Set when the menu is closed by a link click. Suppresses focus return
+  // to the toggle so navigation does not steal focus from the new page.
+  const skipFocusReturnRef = useRef(false);
 
   useEffect(() => {
     const updateScrollState = () => setIsScrolled(window.scrollY > 50);
@@ -65,9 +68,16 @@ export function Header({ cartCount = 0 }: HeaderProps) {
     return () => {
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = previousOverflow;
-      // Only restore focus to toggle when the menu is closed while focus is
-      // still inside the trap (Esc, X click, outside-nav click). Skip when a
-      // link click navigated away — that would steal focus from the new page.
+      // Skip focus return when a nav link click closed the menu — at this
+      // point the link is still the activeElement and Next.js is about to
+      // navigate, so focusing the toggle would steal focus from the new page.
+      if (skipFocusReturnRef.current) {
+        skipFocusReturnRef.current = false;
+        return;
+      }
+      // Otherwise (Esc, X click, outside-nav click) restore focus to the
+      // toggle when focus would otherwise be left orphaned inside the
+      // hidden overlay.
       const active = document.activeElement as HTMLElement | null;
       if (nav && active && nav.contains(active)) {
         toggle?.focus();
@@ -207,7 +217,10 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               >
                 <Link
                   href={link.href}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={() => {
+                    skipFocusReturnRef.current = true;
+                    setIsMenuOpen(false);
+                  }}
                   tabIndex={isMenuOpen ? 0 : -1}
                   className="font-serif text-3xl font-medium text-primary hover:text-accent-dark transition-colors"
                 >
@@ -224,7 +237,10 @@ export function Header({ cartCount = 0 }: HeaderProps) {
             >
               <Link
                 href="/sach"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={() => {
+                  skipFocusReturnRef.current = true;
+                  setIsMenuOpen(false);
+                }}
                 tabIndex={isMenuOpen ? 0 : -1}
                 className="btn btn-primary mt-4"
               >

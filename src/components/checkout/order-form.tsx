@@ -108,8 +108,11 @@ export function OrderForm({
     }
   };
 
-  const validateAll = (form: HTMLFormElement): boolean => {
+  const validateAll = (
+    form: HTMLFormElement,
+  ): { valid: boolean; firstInvalid: HTMLElement | null } => {
     const next: Partial<Record<FieldName, string>> = {};
+    let firstInvalid: HTMLElement | null = null;
     Array.from(form.elements).forEach((el) => {
       const field = el as
         | HTMLInputElement
@@ -119,19 +122,23 @@ export function OrderForm({
       if (typeof field.checkValidity !== "function") return;
       if (!field.checkValidity()) {
         next[field.name] = vietnameseValidationMessage(field);
+        if (!firstInvalid) firstInvalid = field;
       }
     });
     setFieldErrors(next);
-    return Object.keys(next).length === 0;
+    return { valid: Object.keys(next).length === 0, firstInvalid };
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (disabled) return;
     const form = e.currentTarget;
-    if (!validateAll(form)) {
-      const firstInvalid = form.querySelector<HTMLElement>('[aria-invalid="true"]');
-      firstInvalid?.focus();
+    const result = validateAll(form);
+    if (!result.valid) {
+      // Focus the first invalid element directly. Querying by
+      // [aria-invalid="true"] would race the React re-render after
+      // setFieldErrors().
+      result.firstInvalid?.focus();
       return;
     }
     setIsSubmitting(true);
