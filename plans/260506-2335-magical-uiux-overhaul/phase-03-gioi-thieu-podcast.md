@@ -45,18 +45,26 @@ The following from original plan are NOT shipped and should be addressed in futu
 - **Podcast expansion**: episode list, subscribe links, email signup form
 - **JSON-LD**: Person + PodcastSeries schemas (Phase 4)
 
-## Overview
+---
+
+# ⚠️ ASPIRATIONAL BACKLOG (below this line)
+
+> The following sections (Overview, Key Insights, Requirements, Architecture, Implementation Steps, Todo List, Success Criteria, Risk Assessment) represent the **original full-scope vision**. They are **NOT the active checklist** — see "Shipped (Surface Pass)" above for what was actually implemented. These sections are preserved for future reference if/when the full scope is greenlit.
+
+---
+
+## Overview (Aspirational)
 
 Apply Phase 1 patterns sang `/gioi-thieu` (author about page) + `/podcast` (audio content). Less commerce-driven, more storytelling — focus emotional connection with reader. **Scout `/podcast` first** vì brainstorm chưa có visibility. Generate 6-8 assets: hero portrait + chapter scenes + podcast hero.
 
-## Key Insights
+## Key Insights (Aspirational)
 
 - **/gioi-thieu** = nơi reader fall in love với tác giả. Long-form storytelling friendly. Watercolor scenes + cinematic portrait shine.
 - **/podcast** scope unknown until scout. Could be: simple landing page, episode list, embedded player, or all of above.
 - **Author timeline** opportunity: career milestones với illustration per chapter.
 - **Soundwave decoration** unique cho podcast page — monoline với cobalt/terracotta gradient.
 
-## Requirements
+## Requirements (Aspirational)
 
 ### Functional
 
@@ -93,7 +101,7 @@ Apply Phase 1 patterns sang `/gioi-thieu` (author about page) + `/podcast` (audi
 - Reuse Phase 1 + Phase 2 patterns ≥80%
 - Audit findings P0/P1 trên gioi-thieu + podcast pickup
 
-## Architecture
+## Architecture (Aspirational)
 
 ```
 src/
@@ -136,7 +144,7 @@ Hiện `site_settings.author_image` only. Cần thêm `author_hero_image` cho la
 
 → **Default B**: Add `author_hero_image` field. Author home avatar (square crop, intimate) ≠ about hero (landscape, cinematic).
 
-## Related Code Files
+## Related Code Files (Aspirational)
 
 ### Create
 - `src/components/about/author-hero.tsx` (~70 LOC)
@@ -163,7 +171,7 @@ Hiện `site_settings.author_image` only. Cần thêm `author_hero_image` cho la
 - Upload large cinematic author portrait
 - Audit findings discoveries
 
-## Implementation Steps
+## Implementation Steps (Aspirational)
 
 ### 3.0 — Scout `/podcast/page.tsx` + `src/components/podcast/*` (30 min)
 
@@ -297,7 +305,7 @@ Em present:
 - Lighthouse scores
 - Audit findings carry-over
 
-## Todo List
+## Todo List (Aspirational)
 
 - [ ] 3.0 Scout `/podcast/page.tsx` + components → scope decision
 - [ ] 3.1 Add `author_hero_image` field to Directus (option B)
@@ -322,7 +330,7 @@ Em present:
 - [ ] 3.6 Before/after screenshots
 - [ ] 3.7 Anh review
 
-## Success Criteria
+## Success Criteria (Aspirational)
 
 - [ ] `/gioi-thieu` full refactor: hero + pull-quote + 3 chapters + timeline + signature
 - [ ] `/podcast` refactor matches scope (minimum viable hero + token migration)
@@ -334,7 +342,7 @@ Em present:
 - [ ] No regression: header nav still works
 - [ ] Anh approve
 
-## Risk Assessment
+## Risk Assessment (Aspirational)
 
 | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|
