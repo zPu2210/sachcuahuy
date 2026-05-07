@@ -308,47 +308,53 @@ Em present:
 
 Anh approve → Phase 1 complete, sang Phase 2-3. Anh reject specific element → em iterate trong Phase 1, không sang phase mới.
 
-## Todo List
+## Todo List (shipped subset — commits 9482eab, 92ffbb6)
 
-- [ ] 1.1 Update tailwind.config.ts với new tokens
-- [ ] 1.1 Update globals.css với CSS utilities
-- [ ] 1.1 A11y validate token contrast
+- [x] 1.1 Update tailwind.config.ts với new tokens
+- [x] 1.1 Update globals.css với CSS utilities
+- [x] 1.1 A11y validate token contrast (accent.dark ~6.5:1 on cream — AA Normal)
+- [x] 1.3 Create HandDrawnDivider component
+- [x] 1.3 Create WatercolorWash component
+- [x] 1.3 Create PaperTexture component
+- [x] 1.3 Create SignatureFlourish component
+- [x] 1.3 Build + lint pass
+- [x] 1.4 Refactor HeroSection
+- [x] 1.4 Refactor AuthorSection
+- [x] 1.4 Refactor BooksSection
+- [x] 1.4 Refactor FeaturesSection
+- [x] 1.4 Refactor CTASection
+- [x] 1.4 Cleanup Header
+- [x] 1.5 Pickup audit P0/P1 home findings (folded into QW commits 0daaa1f + b5834bc + 92ffbb6)
+- [x] 1.6 Smoke test order flow (no regression — verified through Phase 2 work)
+- [x] 1.7 Anh review gate (passed — Phase 2 unlocked + shipped)
+
+### Deferred to backlog (separate session, not blocking Phase 3/4)
+
 - [ ] 1.2 Lock 3 prompt templates (monoline, watercolor, portrait)
-- [ ] 1.2 Generate 9 assets via Nano Banana (batch + curate)
+- [ ] 1.2 Generate 9 assets via Nano Banana (batch + curate) — current build uses inline SVG primitives in HandDrawnDivider + globals.css data-URI textures instead
 - [ ] 1.2 Convert WebP + optimize SVG
 - [ ] 1.2 Upload author portrait Directus, link via site_settings
 - [ ] 1.2 Anh review 9 assets
-- [ ] 1.3 Create HandDrawnDivider component
-- [ ] 1.3 Create WatercolorWash component
-- [ ] 1.3 Create PaperTexture component
-- [ ] 1.3 Create SignatureFlourish component
-- [ ] 1.3 Build + lint pass
-- [ ] 1.4 Refactor HeroSection
-- [ ] 1.4 Refactor AuthorSection
-- [ ] 1.4 Refactor BooksSection
-- [ ] 1.4 Refactor FeaturesSection
-- [ ] 1.4 Refactor CTASection
-- [ ] 1.4 Cleanup Header
-- [ ] 1.5 Pickup audit P0/P1 home findings
-- [ ] 1.6 Lighthouse mobile home ≥85 verify
-- [ ] 1.6 axe-core scan + fix
-- [ ] 1.6 LCP <2.8s verify
-- [ ] 1.6 Smoke test order flow
-- [ ] 1.6 Capture before/after screenshots
-- [ ] 1.7 Anh review gate
+- [ ] 1.6 Lighthouse mobile home ≥85 verify (folded into Phase 4 SEO/Perf gate)
+- [ ] 1.6 axe-core scan + fix (folded into Phase 4)
+- [ ] 1.6 LCP <2.8s verify (folded into Phase 4)
+- [ ] 1.6 Capture before/after screenshots (deferred — live preview used during review)
 
 ## Success Criteria
 
-- [ ] Tokens shipped: terracotta replaced gold, cobalt added, ink + paper added (gold deprecated, kept for rollback)
-- [ ] 5 home sections refactor xong, no hardcoded color leftover
-- [ ] 4 shared components shipped tại `src/components/ui/`
+### Shipped (this phase)
+- [x] Tokens shipped: terracotta replaced gold, cobalt added, ink + paper added (gold deprecated, kept for rollback)
+- [x] 5 home sections refactored, no hardcoded color leftover on home surfaces
+- [x] 4 shared components shipped tại `src/components/ui/` (HandDrawnDivider, WatercolorWash, PaperTexture, SignatureFlourish)
+- [x] No regression: order flow smoke test pass
+- [x] Anh approve home → Phase 2-3 unlocked
+
+### Deferred (backlog)
 - [ ] 9 generated assets approve, organized at `/public/images/motifs/` + 1 in Directus
-- [ ] Lighthouse home mobile ≥85 each category
-- [ ] LCP <2.8s on 4G throttled
-- [ ] Bundle size delta <+30KB gzipped
-- [ ] No regression: order flow smoke test pass
+- [ ] Lighthouse home mobile ≥85 each category (Phase 4)
+- [ ] LCP <2.8s on 4G throttled (Phase 4)
+- [ ] Bundle size delta <+30KB gzipped (Phase 4)
 - [ ] Before/after side-by-side screenshots per section
-- [ ] Anh approve home → unlock Phase 2-3
 
 ## Risk Assessment
 

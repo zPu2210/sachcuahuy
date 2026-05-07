@@ -19,57 +19,72 @@ shipped_commit: 90da699
 
 ## Overview
 
-Apply validated Phase 1 patterns sang `/sach` (catalog grid) + `/sach/[slug]` (book detail). Tokens locked, 4 shared components reused. Generate 8-10 scene-specific watercolor assets cho 2 books (Miền Nam, Góc Phần Tư). Detail page = nơi reader read excerpts + commit-to-buy → cinematic storytelling priority.
+Apply validated Phase 1 patterns sang `/sach` (catalog grid) + `/sach/[slug]` (book detail). Tokens locked, 4 shared components reused. Detail page = nơi reader read excerpts + commit-to-buy → cinematic storytelling priority.
+
+> **Trimmed shipment (commit `90da699`).** This phase shipped against the *Shipped scope* section below — token sweep, BookCard heading-rank fix on related-book callers, watercolor atmosphere on `/sach` + `/sach/[slug]`, mobile sticky bottom CTA on detail, lone-related layout, Còn hàng pulse. The original *Aspirational scope (deferred)* section — per-book scene generation, Directus schema migration, BookDetailHero/Synopsis/Excerpt subcomponents, and the Lighthouse/LCP gate — is preserved as backlog only and folded into Phase 4 / a separate cook session. **Treat anything in the deferred section as not-required for Phase 2 closure.** See Todo List + Success Criteria below for the authoritative shipped vs deferred split.
 
 ## Key Insights
 
 - **/sach (catalog)** hiện đơn giản: page header + grid of BookCard. Chỉ cần page-header watercolor banner + reuse PaperTexture + corner doodles.
-- **/sach/[slug] (detail)** là trang quan trọng nhất cho conversion. Hiện chưa scout — em sẽ scout đầu Phase 2.
+- **/sach/[slug] (detail)** là trang quan trọng nhất cho conversion. Em scout xong đầu Phase 2 → giữ nguyên cấu trúc, không extract subcomponents trong shipped scope.
 - **BookCard** hiện đã polished với 3D hover, gold-accent badges. Migrate sang terracotta tokens, không restructure.
-- **Per-book scene illustrations** = differentiator. Mỗi book 1 hero scene + 2 inline scenes cho excerpts.
-- **Book covers giữ nguyên** (Phase 0 decision) — AI chỉ generate ambient + scene art.
+- **Per-book scene illustrations** = differentiator. Deferred — current shipping uses inline cobalt + terracotta watercolor washes for atmosphere instead.
+- **Book covers giữ nguyên** (Phase 0 decision) — AI chỉ generate ambient + scene art (deferred).
 
 ## Requirements
 
-### Functional
+### Shipped scope (Phase 2 close)
 
 1. **/sach catalog page**
-   - Page-header banner watercolor (terracotta + cream wash)
-   - PaperTexture overlay
+   - Page-header watercolor washes (terracotta + cobalt) + PaperTexture
+   - Title section: "Tủ Sách" eyebrow + H1 + HandDrawnDivider wave
+   - Tightened subhead (single-line)
+   - BookCard token migration: gold/raw-grey → terracotta/secondary-dark, hover shadow tint cobalt, Mới/Hết hàng badge size bumped
+   - Empty state: terracotta-ringed BookOpen icon
+
+2. **/sach/[slug] detail page**
+   - Hero section: bg-paper + cobalt + terracotta WatercolorWash + PaperTexture (no per-book art)
+   - Price color sweep #7A6125 → text-accent-dark (AA Normal on cream)
+   - Trust signals: terracotta-ringed icon badges + stronger body copy
+   - Còn hàng motion-safe pulse + medium weight; Hết hàng medium weight
+   - Related books: HandDrawnDivider header + lone-related collapse to `max-w-sm mx-auto`
+   - Mobile sticky bottom CTA (lg:hidden, iOS safe-area, price + Mua Ngay or disabled Hết hàng)
+   - BookCard `headingLevel={3}` on related-book callers (sach/[slug] + gioi-thieu)
+
+#### Non-functional (shipped scope)
+
+- Reuse Phase 1 components only — no new shared components (HandDrawnDivider, PaperTexture, WatercolorWash reused; no BookDetailHero etc. extracted)
+- npm run lint clean, npm run build clean
+- Audit findings P0/P1 catalog/detail pickup landed (price contrast P0, related-books heading rank P1, Còn hàng/trust visual P1/P2, lone-related P3, mobile sticky CTA P1)
+
+### Aspirational scope (deferred to backlog — not required for Phase 2 close)
+
+The full original Phase 2 spec is preserved here for a future expansion session. None of the bullets below block Phase 3 or Phase 4.
+
+1. **/sach catalog page (aspirational)**
    - 1 corner monoline doodle (top-right)
-   - Title section: "Tủ Sách" + watercolor brush stroke divider
-   - BookCard migration: gold tokens → terracotta tokens (no structural change)
-   - Empty state: improved illustration (book + sparkles)
+   - Empty state illustration with book + sparkles (currently uses BookOpen icon)
 
-2. **/sach/[slug] detail page** (scout first, then build)
-   - Hero: 3D book mockup + watercolor scene backdrop (per-book unique)
-   - Synopsis section: PaperTexture + drop cap (font-serif large terracotta)
-   - Excerpt sections: 2 inline scene illustrations (watercolor) interleaved với prose
+2. **/sach/[slug] detail page (aspirational)**
+   - Hero: 3D book mockup + per-book watercolor scene backdrop
+   - Synopsis: PaperTexture + drop cap (font-serif large terracotta)
+   - Excerpt sections: 2 inline scene illustrations interleaved với prose
    - Author byline: small portrait + signature flourish
-   - Price + CTA: terracotta accent + cobalt outline alt
-   - Related books / "Tác phẩm khác" carousel
-   - JSON-LD `Book` schema (deferred to Phase 4)
+   - Cobalt outline alt CTA
+   - Carousel for "Tác phẩm khác"
+   - JSON-LD `Book` schema (handled in Phase 4)
 
-3. **8-10 scene-specific assets**
-   - **Miền Nam của Huy** (3-4 assets):
-     - 1 hero watercolor scene (Saigon street, parasol, cobalt-terracotta palette)
-     - 2 inline scenes (memory of childhood / quiet moment)
-     - 1 reusable doodle (parasol or fish from cover)
-   - **Góc Phần Tư** (3-4 assets):
-     - 1 hero watercolor scene (cyclist sunset, mirror cover style)
-     - 2 inline scenes (pensive young man, mountain horizon)
-     - 1 reusable doodle (bicycle or mountain)
-   - **Reusable** (2 assets):
-     - Open-book monoline SVG (header for related books section)
-     - Page-turn SVG decoration
+3. **8-10 scene-specific assets (aspirational)**
+   - **Miền Nam của Huy** (3-4 assets): hero Saigon parasol, 2 inline scenes, 1 reusable doodle
+   - **Góc Phần Tư** (3-4 assets): hero cyclist sunset, 2 inline scenes, 1 reusable doodle
+   - **Reusable** (2 assets): open-book monoline SVG, page-turn SVG decoration
 
-### Non-functional
+#### Non-functional (aspirational — folded into Phase 4)
 
 - Lighthouse `/sach` + `/sach/[slug]` mobile ≥85
 - LCP <2.8s mỗi page
 - Hero scene ≤200KB WebP
-- Reuse ≥80% Phase 1 components — không tạo shared component mới (trừ khi block)
-- Audit findings P0/P1 trên catalog/detail pickup
+- Reuse ≥80% Phase 1 components (already met in shipped scope)
 
 ## Architecture
 
