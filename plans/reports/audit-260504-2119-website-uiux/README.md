@@ -65,7 +65,7 @@ Source columns = raw agent counts. Total = unique findings (post-dedup, post-rec
 **Red flags:**
 - Home **LCP 4.2s** > 4s "poor" threshold — single biggest perf issue
 - Home Perf **84** < overhaul target ≥85 (will resolve after LCP fix)
-- /dat-hang SEO **58** = intentional `noindex` on checkout (P0 #7 fixes canonical only → ~75)
+- /dat-hang SEO **58** = **expected behavior** — `noindex` on checkout is intentional (won't be indexed regardless). The missing `alternates.canonical: "/dat-hang"` is optional P3 hygiene only (would lift Lighthouse SEO 58→~75 but no business impact). Reclassified P0→P3 backlog (see fix-plan.md).
 
 JSONs at `lighthouse/{home,sach,dat-hang}.json`.
 

@@ -67,12 +67,12 @@ Capture baseline      3 sub-agents parallel:          Em consolidate
 
 ## Success Criteria
 
-- [ ] 16+ baseline screenshots captured, organized, named consistently
-- [ ] 3 findings docs (visual, a11y, perf) severity-ranked
-- [ ] Top 10 P0/P1 findings có screenshot reference + fix recommendation
-- [ ] fix-plan.md có effort (S/M/L) + impact (high/med/low)
-- [ ] README executive summary đọc < 5 phút hiểu ngay
-- [ ] Quick-win section (high impact + low effort)
+- [x] 16+ baseline screenshots captured, organized, named consistently (16 baseline + 6 interactive = 22 PNGs) — evidence: `screenshots/` dir with 22 files, naming pattern `{page}-{viewport}-{state}.png`
+- [x] 3 findings docs (visual, a11y, perf) severity-ranked (28 visual + 18 a11y + 13 perf) — evidence: `findings-visual.md` line 2, `findings-a11y.md` line 2, `findings-perf.md` line 2
+- [x] Top 10 P0/P1 findings có screenshot reference + fix recommendation (in README) — evidence: `README.md` "Top 10 Findings" table with Source column
+- [x] fix-plan.md có effort (S/M/L) + impact (high/med/low) — evidence: `fix-plan.md` "Quick Wins" table cols 4-5, P0 section effort col
+- [x] README executive summary đọc < 5 phút hiểu ngay — evidence: `README.md` "TL;DR" + "Lighthouse Scores" + "Top 10 Findings" sections
+- [x] Quick-win section (high impact + low effort) — 12 QW items in fix-plan.md — evidence: `fix-plan.md` "Quick Wins" table rows QW-1 through QW-12
 
 ## Output Structure
 

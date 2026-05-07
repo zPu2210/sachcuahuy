@@ -6,7 +6,7 @@ inputs:
   - findings-a11y.md (18 findings)
   - findings-perf.md (13 findings)
   - findings-competitor.md (Nhã Nam patterns)
-deduplicated: ~5 cross-agent overlaps merged
+deduplicated: 3 cross-agent overlaps merged + 1 reclassified P0→P3
 ---
 
 # Fix Plan — sachcuahuy.com UI/UX Audit
@@ -48,7 +48,7 @@ Total column = **unique findings** after merging cross-agent overlaps + reclassi
 | P0-6 | **Decorative step numbers inside `<h2>`** (`<span>1</span> Thông Tin...` reads as "1 Thông Tin") | A11y | /dat-hang | S | Parking |
 | P0-7 | **Home LCP 4.2s — `preserve-3d`/`perspective` on hero `<Link>` blocks paint 3.2s** | Perf | / | S | Phase 1 |
 
-**P0 estimated effort: ~4-5h total. Most are S. Phase 1 picks 3 P0s (#2, #5, #7) directly; Pre-Phase-1 QW Sprint covers 4 more (#1, #4, #5, #7) — see below.**
+**P0 estimated effort: ~4-5h total. Most are S. Phase 1 picks 3 global/home P0s (#2, #5, #7) directly. Quick Wins batch covers these + other globals. Two transactional P0s (#3, #6 on /dat-hang) remain in Session F parking lot — not blocking magical overhaul.**
 
 **Note on /dat-hang canonical:** Perf agent originally labeled this P0 due to SEO score 58, but agent's own assessment text confirmed `noindex` is intentional for checkout. The 1-line `alternates.canonical: "/dat-hang"` fix is optional SEO hygiene only. Reclassified → P3 Backlog (see below).
 
@@ -75,7 +75,7 @@ Recommended *first* /ck:cook session — máy hơn cả Phase 1 entry. Prep work
 
 **Quick Wins batch effort: ~4-5h total. Recommend isolating as a "stabilization sprint" before Phase 1.**
 
-**Scoped outcome:** QW Sprint clears **global + home P0 baseline** (skip link, contrast in shared spots, hero LCP, raw HTML render). Two transactional A11y P0s remain in Session F parking lot:
+**Scoped outcome:** Quick Wins clears **global/home P0 baseline** (skip link, contrast in shared spots, hero LCP, raw HTML render). Two transactional A11y P0s remain in Session F parking lot:
 - **P0-3** form validation invisible (`/dat-hang`)
 - **P0-6** decorative step number inside `<h2>` (`/dat-hang`)
 
@@ -97,7 +97,6 @@ These do NOT block magical overhaul (transactional pages are explicitly out of o
 - /gioi-thieu hero solid navy block + tiny avatar — Phase 3
 - Listing "Mới" badge tiny/low contrast — Phase 1 (home featured) + Phase 2 (listing)
 - Generic `alt="avatar"` (Visual + A11y P1 overlap, listed once)
-
 ### A11y P1 (7 findings)
 - Mobile menu toggle missing aria-expanded + Esc + focus trap — Phase 1 global
 - Out-of-stock `<Link aria-disabled>` broken on Enter — Phase 2 (sach detail)
@@ -227,13 +226,13 @@ Group cụ thể trong findings-{visual,a11y,perf}.md. Highlights:
 
 ## Recommended Order
 
-1. **Session A (Quick Wins)** — first, before Phase 1 — clears P0 baseline + fast LCP
+1. **Session A (Quick Wins)** — first, before Phase 1 — clears global/home P0s + fast LCP. Transactional P0s (P0-3 form validation, P0-6 step heading) remain Session F.
 2. **Session B (Phase 1 Home)** — overhaul vertical slice — anh gate decision
 3. **Sessions C + D parallel** — Phase 2 & 3
 4. **Session E (Phase 4 SEO/Perf)** — gate
-5. **Session F (Parking)** — anytime, separate from overhaul
+5. **Session F (Parking)** — anytime, separate from overhaul. Picks up P0-3 + P0-6 + transactional P1/P2.
 
-**Critical:** Session A reduces risk for Phase 1 (no perf surprises, no a11y debt to track during overhaul). Strongly recommend NOT skip.
+**Critical:** Session A reduces risk for Phase 1 (no perf surprises, no a11y debt on home/global to track during overhaul). Strongly recommend NOT skip. Note: Session A does NOT clear all 7 P0s — 2 transactional P0s deferred by design (out of overhaul scope).
 
 ---
 
