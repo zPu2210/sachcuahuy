@@ -9,15 +9,19 @@ dependencies: [2, 3]
 
 # Phase 4: SEO & Performance Gate
 
+> **Shipped (trimmed):** Gold token cleanup + JsonLdPerson. See [Shipped](#shipped-trimmed-scope) section below for what was delivered. The Overview/Requirements/Architecture sections below document the **original aspirational scope** for reference — most items are now in [Deferred](#deferred-aspirational--future-phase-or-backlog).
+
 ## Context Links
 
 - Brainstorm: `plans/reports/brainstorm-260506-2335-magical-uiux-overhaul.md` (section 8 — SEO image optimization)
 - Phase 1-3 outputs (all pages refactored, all assets generated)
 - Existing SEO: `src/app/layout.tsx`, `src/components/seo/json-ld.tsx`, `src/app/sitemap.ts`, `src/app/robots.ts`
 
-## Overview
+## Overview (Original Aspirational Scope)
 
 Final gate phase: SEO infrastructure (custom OG images per page, JSON-LD Book + Person + PodcastSeries), final Lighthouse audit (≥85 all 4 pages), gold token cleanup, design system documentation. Locks down brand consistency và search visibility.
+
+**Trimmed delivery:** Gold cleanup + JsonLdPerson only. Custom OG routes, sitemap image entries, Lighthouse enforcement, design-system doc → deferred.
 
 ## Key Insights
 

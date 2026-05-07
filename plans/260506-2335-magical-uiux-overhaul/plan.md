@@ -58,14 +58,21 @@ Phase 1 = gate phase. Anh approve home before phases 2-4.
 
 ## Scope
 
-### In scope
-- 4 public pages (`/`, `/sach`, `/sach/[slug]`, `/gioi-thieu`, `/podcast`)
-- Token refactor (palette navy + terracotta + cobalt + ink + paper; deprecate gold)
-- 25-32 generated images (monoline motifs static + watercolor scenes/portraits via Directus)
+### Shipped (Trimmed)
+- 4 public pages (`/`, `/sach`, `/sach/[slug]`, `/gioi-thieu`, `/podcast`) — surface pass with tokens + primitives
+- Token refactor (palette navy + terracotta + cobalt + ink + paper; gold removed)
 - 4 shared components (HandDrawnDivider, WatercolorWash, PaperTexture, SignatureFlourish)
-- SEO: WebP/AVIF, descriptive filenames Vietnamese alt, OG images per page, JSON-LD Book + Person
-- Lighthouse ≥85 mobile per page
+- JSON-LD Book (pre-existing) + Person (new on /gioi-thieu)
+- A11y contrast fixes (gold → accent-dark)
+
+### Deferred (Original Aspirational — Backlog)
+- 25-32 AI-generated images (monoline motifs + watercolor scenes/portraits)
+- Custom OG images per page (5 routes)
+- Sitemap `<image:image>` entries
+- Lighthouse ≥85 mobile enforcement (manual verification pending)
 - Design system doc at `docs/design-system.md`
+- PodcastSeries JSON-LD (pending real episodes)
+- `htmlToParagraphs` entity decoder expansion
 
 ### Out of scope
 - Transactional pages `/dat-hang`, `/xac-nhan/*` (function-first, không vibe)
