@@ -140,7 +140,7 @@ export function HeroSection({
             </div>
           </div>
 
-          <div className="order-1 lg:order-2 flex justify-center perspective-1000 mt-8 md:mt-0">
+          <div className="order-1 lg:order-2 flex justify-center mt-8 md:mt-0">
             <div className="relative group">
               <div className="absolute inset-0 bg-accent/20 blur-[60px] rounded-full transform scale-110 group-hover:scale-125 transition-transform duration-700"></div>
 

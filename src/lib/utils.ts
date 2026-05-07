@@ -42,16 +42,27 @@ const NAMED_ENTITIES: Record<string, string> = {
   raquo: "»",
 };
 
+function decodeCodePoint(code: number, fallback: string): string {
+  if (!Number.isFinite(code) || code < 0 || code > 0x10ffff) return fallback;
+  try {
+    return String.fromCodePoint(code);
+  } catch {
+    return fallback;
+  }
+}
+
 export function htmlToParagraphs(html: string): string[] {
   if (!html) return [];
   const text = html
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<\/p\s*>/gi, "\n\n")
     .replace(/<[^>]+>/g, "")
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) =>
-      String.fromCodePoint(parseInt(hex, 16)),
+    .replace(/&#x([0-9a-f]+);/gi, (match, hex) =>
+      decodeCodePoint(parseInt(hex, 16), match),
     )
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
+    .replace(/&#(\d+);/g, (match, dec) =>
+      decodeCodePoint(Number(dec), match),
+    )
     .replace(/&([a-zA-Z]+);/g, (match, name) =>
       Object.prototype.hasOwnProperty.call(NAMED_ENTITIES, name)
         ? NAMED_ENTITIES[name]
