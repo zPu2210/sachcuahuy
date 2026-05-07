@@ -1,9 +1,9 @@
 ---
 phase: 4
 title: "SEO & Perf Gate (final)"
-status: pending
+status: completed (trimmed)
 priority: P1
-effort: "3h"
+effort: "~30min actual (trimmed scope)"
 dependencies: [2, 3]
 ---
 

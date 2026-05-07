@@ -35,8 +35,6 @@ const config: Config = {
         navy: "#1E2B4D",
         ink: "#142849",
         paper: "#FAF6EC",
-        // Deprecated — kept one phase as rollback safety. Remove in Phase 4.
-        gold: "#C9A962",
       },
       fontFamily: {
         serif: ["var(--font-cormorant)", "Georgia", "serif"],

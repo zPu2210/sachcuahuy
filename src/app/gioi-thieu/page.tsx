@@ -9,6 +9,7 @@ import { WatercolorWash } from "@/components/ui/watercolor-wash";
 import { PaperTexture } from "@/components/ui/paper-texture";
 import { HandDrawnDivider } from "@/components/ui/hand-drawn-divider";
 import { SignatureFlourish } from "@/components/ui/signature-flourish";
+import { JsonLdPerson } from "@/components/seo/json-ld";
 
 export const revalidate = 300;
 
@@ -51,9 +52,24 @@ export default async function AboutPage() {
     format: "webp",
     quality: 85,
   });
+  const authorDescription = (settings.author_bio || AUTHOR_FALLBACK_BIO_HTML)
+    .replace(/<[^>]+>/g, "")
+    .trim();
+  const sameAs = [
+    settings.social_facebook,
+    settings.social_instagram,
+    settings.social_zalo,
+  ].filter((s): s is string => !!s && s.length > 0);
 
   return (
     <div className="min-h-screen">
+      <JsonLdPerson
+        name={AUTHOR_NAME}
+        jobTitle="Phát thanh viên Radio, Voice Talent, Nhà văn"
+        description={authorDescription}
+        imageUrl={authorImageUrl}
+        sameAs={sameAs}
+      />
       <section className="relative py-16 md:py-24 bg-primary text-white overflow-hidden">
         <WatercolorWash color="cobalt" className="inset-0 opacity-30" />
         <PaperTexture className="opacity-[0.03]" />

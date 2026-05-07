@@ -82,3 +82,36 @@ export function JsonLdBook({
     />
   );
 }
+
+export function JsonLdPerson({
+  name,
+  jobTitle,
+  description,
+  imageUrl,
+  sameAs,
+}: {
+  name: string;
+  jobTitle?: string;
+  description?: string;
+  imageUrl?: string | null;
+  sameAs?: string[];
+}) {
+  const url = siteUrl();
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name,
+    url: `${url}/gioi-thieu`,
+  };
+  if (jobTitle) data.jobTitle = jobTitle;
+  if (description) data.description = description;
+  if (imageUrl) data.image = imageUrl;
+  if (sameAs && sameAs.length > 0) data.sameAs = sameAs;
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}

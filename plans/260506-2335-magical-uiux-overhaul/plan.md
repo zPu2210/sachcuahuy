@@ -47,11 +47,12 @@ Phase 1 = gate phase. Anh approve home before phases 2-4.
 | 1 | [Home Vertical Slice](phase-01-home-vertical-slice.md) | completed | ~8h | em | 0 |
 | 2 | [Sach Catalog & Detail](phase-02-sach-catalog-detail.md) | completed (trimmed) | ~3h actual (surface scope) | em | 1 |
 | 3 | [Gioi-thieu & Podcast](phase-03-gioi-thieu-podcast.md) | completed (trimmed) | ~1h actual (surface scope) | em | 1 |
-| 4 | [SEO & Perf Gate](phase-04-seo-perf-gate.md) | pending | ~3h | em | 2,3 |
+| 4 | [SEO & Perf Gate](phase-04-seo-perf-gate.md) | completed (trimmed) | ~30min actual | em | 2,3 |
 
 **Trimmed-vs-deferred:**
 - **Phase 2** shipped surface-only: token sweep, BookCard heading-rank fix, mobile sticky CTA, watercolor atmosphere, lone-related layout. Per-book scene generation, Directus schema for `hero_scene`/`excerpt_scene_*`, BookDetailHero/BookSynopsis/BookExcerpt components → deferred.
 - **Phase 3** shipped surface-only: token sweep, Phase 1 primitives (WatercolorWash, PaperTexture, HandDrawnDivider, SignatureFlourish), P0-4 contrast fix (`#7A6125`→`text-accent-dark`), `lang="en"` markup. AI assets (author hero, chapter scenes, podcast hero, soundwave), `src/components/about/` directory, Directus `author_hero_image`, podcast expansion → deferred.
+- **Phase 4** shipped trimmed: gold token cleanup (Tailwind config + 4 transactional page instances), JsonLdPerson on /gioi-thieu. Custom OG image routes (5 routes), sitemap image entries, `docs/design-system.md`, Lighthouse ≥85 enforcement → deferred. PodcastSeries schema skipped (no real episodes). Manual Lighthouse verification pending (CLI not installed).
 
 **Total wall: ~21h planned | Phase 1+2 actual: ~11h | Token budget: ~600K aggregate, ~150K main context**
 
