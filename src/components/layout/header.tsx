@@ -22,6 +22,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
   // Set when the menu is closed by a link click. Suppresses focus return
   // to the toggle so navigation does not steal focus from the new page.
   const skipFocusReturnRef = useRef(false);
+  const focusMainAfterNavRef = useRef(false);
 
   useEffect(() => {
     const updateScrollState = () => setIsScrolled(window.scrollY > 50);
@@ -84,6 +85,30 @@ export function Header({ cartCount = 0 }: HeaderProps) {
       }
     };
   }, [isMenuOpen]);
+
+  const focusMainContent = () => {
+    document.getElementById("main-content")?.focus({ preventScroll: true });
+  };
+
+  useEffect(() => {
+    if (!focusMainAfterNavRef.current) return;
+    focusMainAfterNavRef.current = false;
+    requestAnimationFrame(focusMainContent);
+  }, [pathname]);
+
+  const closeMobileMenuForNavigation = (href: string) => {
+    skipFocusReturnRef.current = true;
+    focusMainAfterNavRef.current = true;
+    setIsMenuOpen(false);
+
+    if (href === pathname) {
+      requestAnimationFrame(() => {
+        if (!focusMainAfterNavRef.current) return;
+        focusMainAfterNavRef.current = false;
+        focusMainContent();
+      });
+    }
+  };
 
   const navLinks = [
     { href: "/sach", label: "Tác Phẩm" },
@@ -217,10 +242,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
               >
                 <Link
                   href={link.href}
-                  onClick={() => {
-                    skipFocusReturnRef.current = true;
-                    setIsMenuOpen(false);
-                  }}
+                  onClick={() => closeMobileMenuForNavigation(link.href)}
                   tabIndex={isMenuOpen ? 0 : -1}
                   className="font-serif text-3xl font-medium text-primary hover:text-accent-dark transition-colors"
                 >
@@ -237,10 +259,7 @@ export function Header({ cartCount = 0 }: HeaderProps) {
             >
               <Link
                 href="/sach"
-                onClick={() => {
-                  skipFocusReturnRef.current = true;
-                  setIsMenuOpen(false);
-                }}
+                onClick={() => closeMobileMenuForNavigation("/sach")}
                 tabIndex={isMenuOpen ? 0 : -1}
                 className="btn btn-primary mt-4"
               >

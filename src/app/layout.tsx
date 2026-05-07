@@ -108,7 +108,9 @@ export default async function RootLayout({
         </a>
         {settings && <JsonLdOrganization settings={settings} />}
         <Header />
-        <main id="main-content">{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
         <Footer settings={settings} />
         <Analytics />
         <SpeedInsights />
