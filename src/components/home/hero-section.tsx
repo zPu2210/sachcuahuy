@@ -47,7 +47,7 @@ export function HeroSection({
           srcSet="/images/hero-portrait.webp"
         />
         <img
-          src="/images/hero-landscape.webp"
+          src="/images/hero-banner.webp"
           alt=""
           className="w-full h-full object-cover opacity-30"
         />
