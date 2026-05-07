@@ -1,7 +1,7 @@
 ---
 phase: 3
 title: "Consolidation & Fix Plan"
-status: pending
+status: completed
 priority: P1
 effort: "15 min"
 dependencies: [1, 2]
@@ -176,15 +176,15 @@ Em (main, READ + WRITE)
 
 ## Success Criteria
 
-- [ ] `fix-plan.md` exists, có 4 buckets (P0/QuickWins/P1/Backlog)
-- [ ] Severity distribution table populated
-- [ ] De-duplication done (no obvious doubles)
-- [ ] Effort estimates trên all P0/P1 items
-- [ ] README.md readable < 5 min, có Top 10 + Lighthouse scores + Next Actions
-- [ ] Cross-cutting themes identified (pattern observations)
-- [ ] Suggested Cook sessions có wall time estimate
-- [ ] Dummy order cleanup info trong README
-- [ ] plan.md status → completed
+- [x] `fix-plan.md` exists, có 4 buckets (P0/QuickWins/P1/Backlog)
+- [x] Severity distribution table populated
+- [x] De-duplication done (3 cross-agent overlaps merged: form validation, hero avatar alt, mobile touch target — see fix-plan.md note)
+- [x] Effort estimates trên all P0/P1 items
+- [x] README.md readable < 5 min, có Top 10 + Lighthouse scores + Next Actions
+- [x] Cross-cutting themes identified (7 themes, see fix-plan.md)
+- [x] Suggested Cook sessions có wall time estimate (6 sessions A-F)
+- [x] Dummy order cleanup info trong README
+- [x] plan.md status → completed
 
 ## Risk Assessment
 

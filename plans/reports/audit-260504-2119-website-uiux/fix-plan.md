@@ -13,15 +13,26 @@ deduplicated: ~5 cross-agent overlaps merged
 
 ## Severity Distribution
 
-| Sev | Total (deduped) | Visual | A11y | Perf |
-|---|---|---|---|---|
-| **P0 Critical** | 8 | 3 | 4 | 2 |
-| **P1 High** | 22 | 11 | 7 | 6 |
-| **P2 Medium** | 16 | 9 | 5 | 3 |
-| **P3 Low** | 9 | 5 | 2 | 2 |
-| **Total** | **55** | 28 | 18 | 13 |
+Source columns = **raw agent counts** (pre-dedup, pre-reclassification).
+Total column = **unique findings** after merging cross-agent overlaps + reclassification.
 
-Note: 1 multi-agent overlap (form validation = Visual P0 #3 + A11y P0 #2 = same root cause "no inline error rendering / aria-invalid"). Counted once at P0 level.
+| Sev | Total (unique) | Visual (raw) | A11y (raw) | Perf (raw) |
+|---|---|---|---|---|
+| **P0 Critical** | 7 | 3 | 4 | 2 |
+| **P1 High** | 23 | 11 | 7 | 6 |
+| **P2 Medium** | 16 | 9 | 5 | 3 |
+| **P3 Low** | 10 | 5 | 2 | 2 |
+| **Total** | **56** | 28 | 18 | 13 |
+
+**Math:** Raw sum = 59. Cross-agent overlaps merged: 3 items (−3). Reclassification: 1 item shifts P0→P3 (no count change). → Unique = 56.
+
+**Cross-agent overlaps merged (3):**
+1. Form validation invisible — Visual P0 #3 + A11y P0 #2 (same root: missing inline errors + aria-invalid wiring) → kept as 1 P0
+2. Generic `alt="avatar"` on hero — Visual P1 + A11y P1 (same finding, different framing) → kept as 1 P1
+3. Mobile touch target on cart icon — Visual P1 (general 44×44) + A11y P2 (cart-specific 36px) → kept as 1 P1 (higher severity wins)
+
+**Reclassification (1):**
+- `/dat-hang` `alternates.canonical` missing — perf agent labeled P0 but assessment text confirmed `noindex` is **intentional** (checkout page) and SEO 58 is expected behavior. Canonical fix is optional hygiene, NOT a conversion-blocker. Demoted P0 → P3 backlog. See Backlog section below.
 
 ---
 
@@ -36,9 +47,10 @@ Note: 1 multi-agent overlap (form validation = Visual P0 #3 + A11y P0 #2 = same 
 | P0-5 | **Missing skip link** ("Bỏ qua đến nội dung chính") | A11y | all | S | Phase 1 (global layout) |
 | P0-6 | **Decorative step numbers inside `<h2>`** (`<span>1</span> Thông Tin...` reads as "1 Thông Tin") | A11y | /dat-hang | S | Parking |
 | P0-7 | **Home LCP 4.2s — `preserve-3d`/`perspective` on hero `<Link>` blocks paint 3.2s** | Perf | / | S | Phase 1 |
-| P0-8 | **/dat-hang missing `alternates.canonical`** → SEO 58 (canonical audit fails) | Perf | /dat-hang | XS | Phase 4 (SEO gate) |
 
-**P0 estimated effort: ~5h total. Most are S. Phase 1 picks 3 P0s (#2, #5, #7).**
+**P0 estimated effort: ~4-5h total. Most are S. Phase 1 picks 3 P0s (#2, #5, #7) directly; Pre-Phase-1 QW Sprint covers 4 more (#1, #4, #5, #7) — see below.**
+
+**Note on /dat-hang canonical:** Perf agent originally labeled this P0 due to SEO score 58, but agent's own assessment text confirmed `noindex` is intentional for checkout. The 1-line `alternates.canonical: "/dat-hang"` fix is optional SEO hygiene only. Reclassified → P3 Backlog (see below).
 
 ---
 
@@ -51,25 +63,30 @@ Recommended *first* /ck:cook session — máy hơn cả Phase 1 entry. Prep work
 | QW-1 | Add skip link to layout.tsx body | A11y P0 | S (5 min) | High (a11y compliance) |
 | QW-2 | Replace 4 raw `text-accent` → `text-[#7A6125]` (sach/[slug]:162, xac-nhan:246,306, coming-soon-hero:29,42) | A11y P0 | S | High (WCAG AA) |
 | QW-3 | Fix raw HTML rendering in book descriptions | Visual P0 | S | High (kill credibility issue) |
-| QW-4 | Add `alternates.canonical: "/dat-hang"` | Perf P0 | XS | Med (SEO 58→75) |
-| QW-5 | Remove `preserve-3d`/`perspective` from hero `<Link>` wrapper | Perf P0 | S | Very High (LCP −1.5s) |
-| QW-6 | Self-host `transparenttextures.com` PNGs to `/public/textures/` | Perf P1 | XS | Med (−116ms cross-origin) |
-| QW-7 | Replace 3 Dicebear API calls với local SVGs | Perf P1 | XS | Med (−500ms, eliminate 3rd-party) |
-| QW-8 | Hide "Sẽ cập nhật sau" footer placeholder | Visual P1 | S (5 min) | Med (professionalism) |
-| QW-9 | Add `aria-hidden="true"` to ~20 decorative Lucide icons | A11y P1 | M | Med (a11y) |
-| QW-10 | Add `aria-label` to each `<nav>` ("Chính", "Đường dẫn", "Di động") | A11y P1 | S | Med (a11y) |
-| QW-11 | Bump `text-white/40` → `text-white/70` in CTA footnote | A11y P1 | XS | Med (WCAG AA) |
-| QW-12 | Reduce Cormorant + Dancing Script weights + `display: "optional"` | Perf P1 | S | Med (font −40KB) |
-| QW-13 | Add `<button disabled>` instead of `<Link aria-disabled>` for OOS | A11y P1 | S | Med (keyboard fix) |
+| QW-4 | Remove `preserve-3d`/`perspective` from hero `<Link>` wrapper | Perf P0 | S | Very High (LCP −1.5s) |
+| QW-5 | Self-host `transparenttextures.com` PNGs to `/public/textures/` | Perf P1 | XS | Med (−116ms cross-origin) |
+| QW-6 | Replace 3 Dicebear API calls với local SVGs | Perf P1 | XS | Med (−500ms, eliminate 3rd-party) |
+| QW-7 | Hide "Sẽ cập nhật sau" footer placeholder | Visual P1 | S (5 min) | Med (professionalism) |
+| QW-8 | Add `aria-hidden="true"` to ~20 decorative Lucide icons | A11y P1 | M | Med (a11y) |
+| QW-9 | Add `aria-label` to each `<nav>` ("Chính", "Đường dẫn", "Di động") | A11y P1 | S | Med (a11y) |
+| QW-10 | Bump `text-white/40` → `text-white/70` in CTA footnote | A11y P1 | XS | Med (WCAG AA) |
+| QW-11 | Reduce Cormorant + Dancing Script weights + `display: "optional"` | Perf P1 | S | Med (font −40KB) |
+| QW-12 | Add `<button disabled>` instead of `<Link aria-disabled>` for OOS | A11y P1 | S | Med (keyboard fix) |
 
 **Quick Wins batch effort: ~4-5h total. Recommend isolating as a "stabilization sprint" before Phase 1.**
+
+**Scoped outcome:** QW Sprint clears **global + home P0 baseline** (skip link, contrast in shared spots, hero LCP, raw HTML render). Two transactional A11y P0s remain in Session F parking lot:
+- **P0-3** form validation invisible (`/dat-hang`)
+- **P0-6** decorative step number inside `<h2>` (`/dat-hang`)
+
+These do NOT block magical overhaul (transactional pages are explicitly out of overhaul scope) but should be tracked + scheduled (Session F).
 
 ---
 
 ## 📋 P1 Sprint (1-2 days — important but not blocking)
 
 ### Visual P1 (11 findings)
-- Footer "Sẽ cập nhật sau" placeholder → QW-8 above (or hide column entirely)
+- Footer "Sẽ cập nhật sau" placeholder → QW-7 above (or hide column entirely)
 - Mobile order summary placement (move above submit button) — `/dat-hang` parking
 - Hero CTA hover state missing visual feedback — Phase 1
 - Header nav hover/active indicator weak — Phase 1
@@ -84,19 +101,19 @@ Recommended *first* /ck:cook session — máy hơn cả Phase 1 entry. Prep work
 ### A11y P1 (7 findings)
 - Mobile menu toggle missing aria-expanded + Esc + focus trap — Phase 1 global
 - Out-of-stock `<Link aria-disabled>` broken on Enter — Phase 2 (sach detail)
-- White/40 footnote contrast — QW-11 above
+- White/40 footnote contrast — QW-10 above
 - BookCard `<h2>` heading rank conflicts (3 sibling h2 under section h2) — Phase 2 (related books) + Phase 1 (home featured)
 - Generic alt="avatar" on hero social-proof — Phase 1 (overlaps Visual)
-- Decorative Lucide icons — QW-9 above
+- Decorative Lucide icons — QW-8 above
 - (1 more covered by QWs)
 
 ### Perf P1 (6 findings)
 - Unused JS chunk 988 (Framer Motion 90% unused) — Phase 4 perf gate
-- /sach render-blocking CSS 620ms savings — QW-12 (font fix) + Phase 4 cleanup
-- Font bundle 295KB → reduce weights — QW-12 above
+- /sach render-blocking CSS 620ms savings — QW-11 (font fix) + Phase 4 cleanup
+- Font bundle 295KB → reduce weights — QW-11 above
 - /sach LCP load delay 1.6s (preload hint needed) — Phase 4
-- External textures preconnect — QW-6 above
-- External Dicebear avatars — QW-7 above
+- External textures preconnect — QW-5 above
+- External Dicebear avatars — QW-6 above
 
 ---
 
@@ -128,6 +145,7 @@ Group cụ thể trong findings-{visual,a11y,perf}.md. Highlights:
 - ISR `revalidate=300` → 600 — Phase 4
 - Home Perf 84 → expected 88-92 after P0 fix (no separate action)
 - `preload-lcp-image` audit verify — Phase 4
+- **/dat-hang `alternates.canonical: "/dat-hang"`** [reclassified P0→P3] — XS effort, optional SEO hygiene only. `noindex` on checkout is intentional (won't be indexed regardless), so SEO score 58 is expected behavior. Canonical fix moves Lighthouse SEO 58→~75 but has no business impact. — Phase 4 if convenient, otherwise drop.
 
 **Mixed-language `lang="en"` markup, spinner aria-hidden** — Phase 1 + Parking
 
@@ -154,10 +172,10 @@ Group cụ thể trong findings-{visual,a11y,perf}.md. Highlights:
 ## Suggested /ck:cook Sessions
 
 ### Session A — Quick Wins Stabilization (~4-5h, recommended FIRST)
-**Goal:** Fix conversion-blockers + a11y gaps + perf P0s before/parallel to magical overhaul.
-- QW-1 to QW-13 (13 fixes)
-- Touch: layout.tsx, hero-section.tsx, sach/[slug]/page.tsx, xac-nhan/[token]/page.tsx, coming-soon-hero.tsx, dat-hang/page.tsx, footer.tsx, header.tsx, layouts.tsx fonts, public/textures + public/avatars
-- **Outcome:** Home Perf 84 → ~90, A11y violations cleared, no placeholder text, fast LCP
+**Goal:** Fix conversion-blockers + global/home a11y gaps + perf P0s before/parallel to magical overhaul.
+- QW-1 to QW-12 (12 fixes)
+- Touch: layout.tsx, hero-section.tsx, sach/[slug]/page.tsx, xac-nhan/[token]/page.tsx, coming-soon-hero.tsx, footer.tsx, header.tsx, layouts.tsx fonts, public/textures + public/avatars
+- **Scoped outcome:** Home Perf 84 → ~90, **global + home A11y P0 baseline cleared**, no placeholder text, fast LCP. NOT cleared: P0-3 form validation + P0-6 step heading semantics (both /dat-hang, deferred to Session F).
 
 ### Session B — Phase 1 Home Magical Overhaul (~8h, per overhaul plan)
 **Goal:** Magical visual identity on home page.
@@ -174,7 +192,7 @@ Group cụ thể trong findings-{visual,a11y,perf}.md. Highlights:
 - Trust signals badge redesign (P1)
 - Mobile sticky CTA (P1)
 - BookCard heading-level prop (A11y P1)
-- Out-of-stock `<button disabled>` (A11y P1, partly in QW-13)
+- Out-of-stock `<button disabled>` (A11y P1, partly in QW-12)
 
 ### Session D — Phase 3 Gioi-thieu & Podcast (~4h)
 **Goal:** Apply magical overhaul to author + podcast pages.

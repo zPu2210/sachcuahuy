@@ -10,7 +10,7 @@ status: pending-anh-review
 
 # Audit findings → Overhaul phase routing
 
-Em filter 55 audit findings (deduped) → route per overhaul phase. Out-of-scope findings → parking lot (separate /ck:cook session).
+Em filter 56 unique audit findings (post-dedup, post-reclass) → route per overhaul phase. Out-of-scope findings → parking lot (separate /ck:cook session).
 
 **Critical decision point:** Anh review trước approve Phase 1 entry. Audit findings có thể bump Phase 1 effort 8h → 10-12h tuỳ pickup level.
 
@@ -28,24 +28,31 @@ Em filter 55 audit findings (deduped) → route per overhaul phase. Out-of-scope
 | QW-1 | Add skip link to `layout.tsx` body | A11y P0 | S |
 | QW-2 | Replace 4 raw `text-accent` → `text-[#7A6125]` | A11y P0 | S |
 | QW-3 | Fix raw HTML rendering trong `/sach/[slug]` description | Visual P0 | S |
-| QW-4 | Add `alternates.canonical: "/dat-hang"` | Perf P0 | XS |
-| QW-5 | Remove `preserve-3d`/`perspective` from hero `<Link>` wrapper | Perf P0 | S |
-| QW-6 | Self-host `transparenttextures.com` PNGs to `/public/textures/` | Perf P1 | XS |
-| QW-7 | Replace 3 Dicebear API calls với local SVGs | Perf P1 | XS |
-| QW-8 | Hide "Sẽ cập nhật sau" footer placeholder | Visual P1 | S |
-| QW-9 | Add `aria-hidden="true"` to ~20 decorative Lucide icons | A11y P1 | M |
-| QW-10 | Add `aria-label` to each `<nav>` | A11y P1 | S |
-| QW-11 | Bump `text-white/40` → `text-white/70` in CTA footnote | A11y P1 | XS |
-| QW-12 | Reduce Cormorant + Dancing Script weights + `display: "optional"` | Perf P1 | S |
-| QW-13 | Add `<button disabled>` instead of `<Link aria-disabled>` for OOS | A11y P1 | S |
+| QW-4 | Remove `preserve-3d`/`perspective` from hero `<Link>` wrapper | Perf P0 | S |
+| QW-5 | Self-host `transparenttextures.com` PNGs to `/public/textures/` | Perf P1 | XS |
+| QW-6 | Replace 3 Dicebear API calls với local SVGs | Perf P1 | XS |
+| QW-7 | Hide "Sẽ cập nhật sau" footer placeholder | Visual P1 | S |
+| QW-8 | Add `aria-hidden="true"` to ~20 decorative Lucide icons | A11y P1 | M |
+| QW-9 | Add `aria-label` to each `<nav>` | A11y P1 | S |
+| QW-10 | Bump `text-white/40` → `text-white/70` in CTA footnote | A11y P1 | XS |
+| QW-11 | Reduce Cormorant + Dancing Script weights + `display: "optional"` | Perf P1 | S |
+| QW-12 | Add `<button disabled>` instead of `<Link aria-disabled>` for OOS | A11y P1 | S |
 
-### Outcome estimate
+(Previous QW-4 "/dat-hang `alternates.canonical`" removed — reclassified P0→P3 since `noindex` is intentional. See Phase 4 SEO section + parking lot for handling. Renumbered remaining items.)
+
+### Outcome estimate (scoped)
 - Home Perf 84 → ~90 (passes overhaul gate ≥85)
 - LCP 4.2s → ~2.2s (within "good" tier)
-- A11y P0 baseline cleared
+- **Global + home A11y P0 baseline cleared** (skip link + 4 gold/cream contrast spots fixed)
 - No placeholder text in production
 - Font budget −40KB
 - 4 cross-origin connections eliminated
+
+### Remains open after QW Sprint (NOT cleared, deferred to Session F)
+- **P0-3** Form validation invisible (`/dat-hang`) — needs shared FormField component, M effort
+- **P0-6** Decorative step numbers `<span>1</span>` inside `<h2>` (`/dat-hang`) — S effort
+
+Both are transactional-page A11y P0s. Out of magical overhaul scope (per overhaul plan §Out-of-scope: `/dat-hang`, `/xac-nhan/*`). Phase 1 not blocked, but anh should schedule Session F separately. **Do not interpret QW Sprint as "all P0s cleared" — only global + home P0s.**
 
 **Decision needed (anh):**
 - [ ] Approve QW sprint as separate /ck:cook session?
@@ -75,13 +82,13 @@ Em recommend **Option 1** (separate sprint) — clean baseline + better measurem
 - **[P1] Mobile menu toggle aria-expanded + Esc + focus trap** — pickup (header.tsx Phase 1 polish)
 - **[P1] Generic `alt="avatar"` on hero social-proof** — duplicates Visual P3
 - **[P1] BookCard `<h2>` heading rank** — pickup home featured (parameterize headingLevel)
-- **[P1] Decorative Lucide icons unmarked** → covered by QW-9, NOT Phase 1
+- **[P1] Decorative Lucide icons unmarked** → covered by QW-8, NOT Phase 1
 - **[P3] Mixed-language `lang="en"` markup (header tagline)** — pickup (small)
 
 ### Perf (home)
-- **[P0-7] Home LCP 4.2s preserve-3d** → covered by QW-5, NOT Phase 1
-- **[P1] External textures + Dicebear** → covered by QW-6, QW-7
-- **[P1] Font bundle reduction** → covered by QW-12
+- **[P0-7] Home LCP 4.2s preserve-3d** → covered by QW-4, NOT Phase 1
+- **[P1] External textures + Dicebear** → covered by QW-5, QW-6
+- **[P1] Font bundle reduction** → covered by QW-11
 
 ### Bumped Phase 1 effort
 - Original plan: 8h
@@ -112,12 +119,12 @@ Em recommend **Option 1** (separate sprint) — clean baseline + better measurem
 
 ### A11y
 - **[P0-4 partial] `text-accent` on `/sach/[slug]:162` price** → covered by QW-2
-- **[P1] Out-of-stock CTA `<Link aria-disabled>` broken** → covered by QW-13 OR pickup explicitly (Phase 2 BookCard refactor)
+- **[P1] Out-of-stock CTA `<Link aria-disabled>` broken** → covered by QW-12 OR pickup explicitly (Phase 2 BookCard refactor)
 - **[P1] BookCard `<h2>` heading rank** — pickup (related books → h3, parameterize)
 
 ### Perf
 - **[P1] /sach LCP load delay 1.6s preload hint** — pickup (Phase 2 listing performance fix)
-- **[P1] /sach render-blocking CSS 620ms** → mostly covered by QW-12 fonts; verify Phase 2
+- **[P1] /sach render-blocking CSS 620ms** → mostly covered by QW-11 fonts; verify Phase 2
 
 ### Bumped Phase 2 effort
 - Original: 5h
@@ -135,7 +142,7 @@ Em recommend **Option 1** (separate sprint) — clean baseline + better measurem
 
 ### A11y
 - **[P0-4 partial] `text-accent` on `/podcast/coming-soon-hero.tsx:29,42`** → covered by QW-2
-- **[P2] /gioi-thieu MapPin/BookOpen/Mic icons unmarked** → covered by QW-9
+- **[P2] /gioi-thieu MapPin/BookOpen/Mic icons unmarked** → covered by QW-8
 
 ### Perf
 - None /gioi-thieu or /podcast specific — magical overhaul image budget concern is general (covered by Phase 4 perf gate).
@@ -149,7 +156,7 @@ Em recommend **Option 1** (separate sprint) — clean baseline + better measurem
 ## Phase 4 — SEO/Perf Gate — pickup these findings
 
 ### Perf
-- **[P0-7] Home LCP fix** — already in QW-5; Phase 4 verify ≥85 holds
+- **[P0-7] Home LCP fix** — already in QW-4; Phase 4 verify ≥85 holds
 - **[P1] Unused JS chunk 988 (Framer Motion 90% unused)** — pickup (Phase 4 dynamic import or CSS replacement)
 - **[P1] /sach LCP load delay preload hint** — pickup explicit Phase 4 (Phase 2 lays groundwork, Phase 4 verifies)
 - **[P2] /dat-hang Speed Index 4.0s form skeleton** → parking (out of overhaul scope)
@@ -161,7 +168,7 @@ Em recommend **Option 1** (separate sprint) — clean baseline + better measurem
 - JSON-LD Book + Person — already in plan
 - Sitemap image entries — already in plan
 - WebP/AVIF alt text Vietnamese — already in plan
-- `alternates.canonical: "/dat-hang"` → covered by QW-4
+- `alternates.canonical: "/dat-hang"` → **reclassified P0→P3** (perf agent flagged P0 but `noindex` is intentional, SEO 58 expected behavior). Optional 1-line hygiene only — pickup if convenient, drop if not.
 - VND price formatter consistency — pickup (Phase 4 audit + lock util)
 
 ### Visual / A11y polish (consolidate cuối)
@@ -228,7 +235,7 @@ Audit-driven scope grew ~50% nhưng most landed in QW sprint (sidesteps overhaul
 
 1. **Form a11y systemic gap** — both forms (`OrderForm`, `VerifyForm`) need shared `FormField` component. Belongs Session F (parking).
 2. **Brand color token refactor** — `accent #C9A962` → `accent-text` darkened token, OR redefine `accent` itself. **Phase 1 magical overhaul will replace gold → terracotta anyway** — em recommend Phase 1 token refactor handle this from scratch (define `accent.DEFAULT` + `accent.dark` clearly, no `text-[#7A6125]` raw hex). Carries from QW-2 (temporary fix on baseline gold) to Phase 1 (permanent palette redefine).
-3. **Decorative-icon labelling** — global apply, covered by QW-9.
+3. **Decorative-icon labelling** — global apply, covered by QW-8.
 4. **`:focus-visible` global rule** — covered by Phase 4 polish.
 5. **CTA language drift** ("Đặt Hàng Ngay" / "Mua Ngay" / "Mua Sách") — Phase 1 design system doc lock + apply across phases.
 6. **Trust signals scaffolding** — Phase 2 detail picks up Vietnamese-ecommerce trust bar; consider Phase 1 home CTA section reinforce too.

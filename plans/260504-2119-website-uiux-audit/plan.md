@@ -40,11 +40,11 @@ Capture baseline      3 sub-agents parallel:          Em consolidate
 
 | # | Phase | Status | Effort | Owner |
 |---|---|---|---|---|
-| 1 | [Baseline Capture](phase-01-baseline-capture.md) | pending | ~20 min | em (main) |
-| 2 | [Multi-Agent Audit](phase-02-multi-agent-audit.md) | pending | ~30 min wall | 3 sub-agents parallel |
-| 3 | [Consolidation & Fix Plan](phase-03-consolidation-fix-plan.md) | pending | ~15 min | em (main) |
+| 1 | [Baseline Capture](phase-01-baseline-capture.md) | completed | ~20 min (~8 min actual) | em (main) |
+| 2 | [Multi-Agent Audit](phase-02-multi-agent-audit.md) | completed | ~30 min wall (~9 min actual, parallel) | 3 sub-agents parallel |
+| 3 | [Consolidation & Fix Plan](phase-03-consolidation-fix-plan.md) | completed | ~15 min (~10 min actual) | em (main) |
 
-**Total wall time: ~65 min | Token budget: ~150K**
+**Total wall time: ~65 min planned / ~30 min actual | Token budget: ~150K**
 
 ## Scope
 

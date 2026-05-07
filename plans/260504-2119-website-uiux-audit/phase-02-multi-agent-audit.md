@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: "Multi-Agent Audit"
-status: pending
+status: completed
 priority: P1
 effort: "30 min wall (parallel)"
 dependencies: [1]
@@ -349,13 +349,15 @@ Em quick scan 3 finding files:
 
 ## Success Criteria
 
-- [ ] 3 agent calls fired in single message (verified parallel via tool call inspection)
-- [ ] All 3 returned DONE status
-- [ ] `findings-visual.md` exists, ≥ 15 findings, severity-ranked
-- [ ] `findings-a11y.md` exists, ≥ 10 findings, WCAG cited
-- [ ] `findings-perf.md` exists, ≥ 10 findings, metrics cited
-- [ ] No agent token timeout
-- [ ] Cross-references valid (file:line, screenshot paths)
+- [x] 3 agent calls fired in single message (verified parallel via tool call inspection)
+- [x] All 3 returned DONE status
+- [x] `findings-visual.md` exists, ≥ 15 findings, severity-ranked (28 findings)
+- [x] `findings-a11y.md` exists, ≥ 10 findings, WCAG cited (18 findings + contrast table + form audit)
+- [x] `findings-perf.md` exists, ≥ 10 findings, metrics cited (13 findings + LCP element analysis)
+- [x] No agent token timeout (all DONE)
+- [x] Cross-references valid (file:line, screenshot paths)
+
+Note: 3 agents returned findings inline + write-to-file requests. Em wrote 3 files manually from agent outputs (per agent fallback pattern).
 
 ## Risk Assessment
 

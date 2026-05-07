@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Baseline Capture"
-status: pending
+status: completed
 priority: P1
 effort: "20 min"
 dependencies: []
@@ -126,14 +126,14 @@ Em (main) ──┬─► Playwright headed/headless 1 sample
 
 ## Success Criteria
 
-- [ ] 16+ baseline PNGs ở `screenshots/`, naming `NN-page-viewport.png`
-- [ ] 5+ interactive state PNGs ở `screenshots/interactive/`
-- [ ] 3 Lighthouse JSONs ở `lighthouse/`
-- [ ] Dummy order created, token saved, success state screenshot captured (HOẶC documented why fallback dùng error state)
-- [ ] `findings-competitor.md` có 5-10 UX patterns notes
-- [ ] `baseline-manifest.md` list đầy đủ files + dummy order ID/token
-- [ ] No Cloudflare 403 hoặc bot block error
-- [ ] Vietnamese diacritics render đúng (verify visually)
+- [x] 16+ baseline PNGs ở `screenshots/`, naming `NN-page-viewport.png` (16 captured)
+- [x] 5+ interactive state PNGs ở `screenshots/interactive/` (6 captured)
+- [x] 3 Lighthouse JSONs ở `lighthouse/`
+- [x] Dummy order created, token saved, success state screenshot captured (order code SCH-260506-6774, token t458gvsbfeez2ztz)
+- [x] `findings-competitor.md` có 5-10 UX patterns notes (Nhã Nam, 7 patterns + 5 recs)
+- [x] `baseline-manifest.md` list đầy đủ files + dummy order ID/token
+- [x] No Cloudflare 403 hoặc bot block error (all 200/404 expected)
+- [x] Vietnamese diacritics render đúng (verify visually)
 
 ## Risk Assessment
 

@@ -21,15 +21,17 @@ Site visually disciplined về palette + typography (no drift detected), Lightho
 
 ## Severity Totals (deduplicated)
 
-| Sev | Total | Visual | A11y | Perf |
-|---|---|---|---|---|
-| **P0 Critical** | 8 | 3 | 4 | 2 |
-| **P1 High** | 22 | 11 | 7 | 6 |
-| **P2 Medium** | 16 | 9 | 5 | 3 |
-| **P3 Low** | 9 | 5 | 2 | 2 |
-| **Total** | **55** | 28 | 18 | 13 |
+Source columns = raw agent counts. Total = unique findings (post-dedup, post-reclassification).
 
-(1 cross-agent overlap merged: form validation visible/invisible = Visual P0 #3 + A11y P0 #2 same root cause.)
+| Sev | Total (unique) | Visual (raw) | A11y (raw) | Perf (raw) |
+|---|---|---|---|---|
+| **P0 Critical** | 7 | 3 | 4 | 2 |
+| **P1 High** | 23 | 11 | 7 | 6 |
+| **P2 Medium** | 16 | 9 | 5 | 3 |
+| **P3 Low** | 10 | 5 | 2 | 2 |
+| **Total** | **56** | 28 | 18 | 13 |
+
+**Math:** 28+18+13 = 59 raw. 3 cross-agent overlaps merged (form validation, hero avatar alt, mobile touch target). 1 reclassification (Perf P0 `/dat-hang` canonical → P3, since `noindex` is intentional). → 56 unique findings, 7 true P0s.
 
 ---
 
@@ -43,10 +45,12 @@ Site visually disciplined về palette + typography (no drift detected), Lightho
 | 4 | P0 | Home LCP 4.2s — `preserve-3d`/`perspective` on hero `<Link>` blocks paint 3.2s (77% of LCP) | / | Perf | S |
 | 5 | P0 | Gold #C9A962 on cream contrast 2.4:1 (4 raw `text-accent` spots remain) | /sach/[slug], /xac-nhan, /podcast | A11y | S |
 | 6 | P0 | Missing skip link → keyboard users tab through 5-7 header items every page | all | A11y | S |
-| 7 | P0 | /dat-hang missing `alternates.canonical` → SEO 58 (canonical fails) | /dat-hang | Perf | XS |
+| 7 | P0 | Decorative step numbers inside `<h2>` read as heading text on /dat-hang | /dat-hang | A11y | S |
 | 8 | P1 | "Sẽ cập nhật sau" placeholder visible in production footer (Mạng Xã Hội column) | all | Visual | S |
 | 9 | P1 | Mobile order summary placed below submit button — user pays without seeing total | /dat-hang | Visual | M |
 | 10 | P1 | Mobile menu toggle missing aria-expanded + Esc + focus trap | all (mobile) | A11y | M |
+
+(Previous Top 10 had `/dat-hang` canonical at #7 — reclassified to P3 backlog since `noindex` is intentional. Replaced with P0-6 step number heading semantics from full P0 list.)
 
 ---
 
@@ -81,23 +85,28 @@ After Session A done → start Phase 1 Home Vertical Slice with confidence (perf
 
 ## Quick Wins Bucket (recommend FIRST cook session)
 
-13 high-impact + low-effort items, ~5h total:
+12 high-impact + low-effort items, ~4-5h total:
 
 1. Add skip link to layout.tsx body (P0)
 2. Replace 4 raw `text-accent` → `text-[#7A6125]` (P0)
 3. Fix raw HTML rendering in book descriptions (P0)
-4. Add `alternates.canonical: "/dat-hang"` (P0)
-5. Remove `preserve-3d`/`perspective` from hero `<Link>` (P0 — biggest LCP win)
-6. Self-host `transparenttextures.com` PNGs to `/public/textures/` (P1)
-7. Replace 3 Dicebear API calls với local SVGs (P1)
-8. Hide "Sẽ cập nhật sau" footer placeholder (P1)
-9. Add `aria-hidden="true"` to ~20 decorative Lucide icons (P1)
-10. Add `aria-label` to each `<nav>` (P1)
-11. Bump `text-white/40` → `text-white/70` in CTA footnote (P1)
-12. Reduce Cormorant + Dancing Script weights + `display: "optional"` (P1)
-13. Add `<button disabled>` instead of `<Link aria-disabled>` for OOS (P1)
+4. Remove `preserve-3d`/`perspective` from hero `<Link>` (P0 — biggest LCP win)
+5. Self-host `transparenttextures.com` PNGs to `/public/textures/` (P1)
+6. Replace 3 Dicebear API calls với local SVGs (P1)
+7. Hide "Sẽ cập nhật sau" footer placeholder (P1)
+8. Add `aria-hidden="true"` to ~20 decorative Lucide icons (P1)
+9. Add `aria-label` to each `<nav>` (P1)
+10. Bump `text-white/40` → `text-white/70` in CTA footnote (P1)
+11. Reduce Cormorant + Dancing Script weights + `display: "optional"` (P1)
+12. Add `<button disabled>` instead of `<Link aria-disabled>` for OOS (P1)
 
-**Outcome estimate:** Home Perf 84 → ~90, LCP 4.2s → ~2.2s, A11y violations cleared, no placeholder text trong production.
+**Scoped outcome:** Home Perf 84 → ~90, LCP 4.2s → ~2.2s, **global + home A11y P0 baseline cleared** (skip link + 4 contrast spots fixed), no placeholder text trong production.
+
+**NOT cleared by QW Sprint** (transactional pages out of overhaul scope, deferred to Session F):
+- P0-3 form validation invisible (`/dat-hang`)
+- P0-6 decorative step numbers in `<h2>` (`/dat-hang`)
+
+These don't block magical overhaul Phase 1.
 
 ---
 
