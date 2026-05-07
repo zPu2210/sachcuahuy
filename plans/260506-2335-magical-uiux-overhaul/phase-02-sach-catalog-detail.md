@@ -1,10 +1,11 @@
 ---
 phase: 2
 title: "Sach Catalog & Detail"
-status: pending
+status: completed-trimmed
 priority: P1
-effort: "5h"
+effort: "5h planned, ~3h actual (surface subset)"
 dependencies: [1]
+shipped_commit: 90da699
 ---
 
 # Phase 2: /sach Catalog & /sach/[slug] Detail
@@ -270,10 +271,25 @@ Em present:
 - Lighthouse scores
 - Any audit findings carry-over
 
-## Todo List
+## Todo List (shipped subset — commit 90da699)
 
-- [ ] 2.0 Scout `/sach/[slug]/page.tsx` + decide subcomponent extraction
-- [ ] 2.1 Add 3 scene fields to `books` Directus collection
+- [x] 2.0 Scout `/sach/[slug]/page.tsx` (inline, no extraction needed for surface pass)
+- [x] 2.4 Refactor `/sach` page header + Tủ sách eyebrow + HandDrawnDivider + watercolor washes
+- [x] 2.4 Migrate BookCard tokens (greys → bg-secondary-dark, hover shadow tint cobalt, Mới/Hết hàng badges text-[10px] → text-xs)
+- [x] 2.4 Improved empty state (terracotta-ringed BookOpen icon)
+- [x] 2.5 Detail hero atmosphere (bg-paper + cobalt+terracotta WatercolorWash + PaperTexture)
+- [x] 2.5 Detail token sweep (price #7A6125 → text-accent-dark, trust icons → terracotta-ringed badges)
+- [x] 2.5 Còn hàng motion-safe pulse + medium weight; Hết hàng medium weight
+- [x] 2.5 Lone-related-book layout (max-w-sm mx-auto when relatedBooks.length === 1)
+- [x] 2.5 Mobile sticky bottom CTA (lg:hidden, iOS safe-area, price + Mua Ngay or disabled Hết hàng)
+- [x] 2.5 BookCard headingLevel={3} on related-book callers (sach/[slug] + gioi-thieu)
+- [x] 2.6 npm run lint clean, npm run build clean
+- [x] 2.6 Smoke catalog → detail → /dat-hang link nav (verified via dev server preview)
+- [x] 2.7 Anh review accepted (commit 90da699 + this status update)
+
+### Deferred to backlog (separate session, not blocking Phase 3/4)
+
+- [ ] 2.1 Add 3 scene fields (`hero_scene`, `excerpt_scene_1`, `excerpt_scene_2`) to `books` Directus collection
 - [ ] 2.1 Update Book type + fetch query
 - [ ] 2.2 Lock per-book prompt templates
 - [ ] 2.2 Generate 6 scene WebPs per 2 books (4 variants each → curate)
@@ -281,31 +297,27 @@ Em present:
 - [ ] 2.2 Generate open-book + page-turn SVGs
 - [ ] 2.2 Anh review 8-10 assets
 - [ ] 2.3 Upload Directus + link per-book scenes
-- [ ] 2.4 Refactor `/sach` page header + corner doodle
-- [ ] 2.4 Migrate BookCard tokens
-- [ ] 2.4 Improved empty state
-- [ ] 2.5 Create BookDetailHero
-- [ ] 2.5 Create BookSynopsis (drop cap)
-- [ ] 2.5 Create BookExcerpt (inline scenes)
-- [ ] 2.5 Create RelatedBooks (if needed)
-- [ ] 2.5 Refactor `/sach/[slug]/page.tsx` to use subcomponents
-- [ ] 2.5 Audit findings detail pickup
-- [ ] 2.6 Lighthouse + axe + LCP gates
-- [ ] 2.6 Smoke test catalog → detail → CTA
-- [ ] 2.6 Before/after screenshots
-- [ ] 2.7 Anh review
+- [ ] 2.5 Create BookDetailHero subcomponent (3D book + scene backdrop)
+- [ ] 2.5 Create BookSynopsis subcomponent (drop cap + paper texture)
+- [ ] 2.5 Create BookExcerpt subcomponent (inline scenes)
+- [ ] 2.5 Create RelatedBooks subcomponent (carousel — only if reused beyond this page)
+- [ ] 2.5 Refactor `/sach/[slug]/page.tsx` to use new subcomponents
+- [ ] 2.6 Lighthouse + axe + LCP gates (pushed to Phase 4 SEO/Perf gate)
+- [ ] 2.6 Before/after screenshots (deferred — current shipping uses live dev preview only)
 
 ## Success Criteria
 
-- [ ] `/sach` page header + BookCard tokens migrated, no gold leftover
+### Shipped (this phase, surface subset)
+- [x] `/sach` page header + BookCard tokens migrated, no gold/raw-hex leftover on the catalog/detail surfaces
+- [x] No regression: catalog → detail → CTA → /dat-hang flow (verified)
+- [x] Reuse Phase 1 components only — HandDrawnDivider, PaperTexture, WatercolorWash, no new shared components introduced
+
+### Deferred (backlog)
 - [ ] `/sach/[slug]` per-book scene art live (Miền Nam + Góc Phần Tư)
 - [ ] 8-10 scene assets approved, organized
 - [ ] BookDetailHero, BookSynopsis, BookExcerpt subcomponents ship
-- [ ] Lighthouse mobile ≥85 each page
-- [ ] LCP <2.8s
-- [ ] No regression: catalog → detail → CTA → /dat-hang flow
-- [ ] Reuse ≥80% Phase 1 components confirmed
-- [ ] Anh approve
+- [ ] Lighthouse mobile ≥85 each page (folded into Phase 4)
+- [ ] LCP <2.8s (folded into Phase 4)
 
 ## Risk Assessment
 

@@ -1,6 +1,6 @@
 ---
 title: "Magical UI/UX Overhaul — sachcuahuy.com"
-status: pending
+status: in-progress
 priority: P1
 created: 2026-05-06
 slug: magical-uiux-overhaul
@@ -44,12 +44,14 @@ Phase 1 = gate phase. Anh approve home before phases 2-4.
 | # | Phase | Status | Effort | Owner | Depends |
 |---|---|---|---|---|---|
 | 0 | [Audit Execution](phase-00-audit-execution.md) | completed | ~1h (~50min wall actual) | em (delegate to 260504-2119) | — |
-| 1 | [Home Vertical Slice](phase-01-home-vertical-slice.md) | pending | ~8h | em | 0 |
-| 2 | [Sach Catalog & Detail](phase-02-sach-catalog-detail.md) | pending | ~5h | em | 1 |
+| 1 | [Home Vertical Slice](phase-01-home-vertical-slice.md) | completed | ~8h | em | 0 |
+| 2 | [Sach Catalog & Detail](phase-02-sach-catalog-detail.md) | completed (trimmed) | ~3h actual (surface scope) | em | 1 |
 | 3 | [Gioi-thieu & Podcast](phase-03-gioi-thieu-podcast.md) | pending | ~4h | em | 1 |
 | 4 | [SEO & Perf Gate](phase-04-seo-perf-gate.md) | pending | ~3h | em | 2,3 |
 
-**Total wall: ~21h | Token budget: ~600K aggregate, ~150K main context**
+**Trimmed-vs-deferred:** Phase 2 shipped against the surface-only subset (token sweep, BookCard heading-rank fix on related-book callers, mobile sticky CTA, watercolor atmosphere, lone-related layout). Per-book scene generation, Directus schema migration for `hero_scene`/`excerpt_scene_*`, and the BookDetailHero/BookSynopsis/BookExcerpt subcomponents are deferred — see Phase 2 file *Deferred to backlog* section.
+
+**Total wall: ~21h planned | Phase 1+2 actual: ~11h | Token budget: ~600K aggregate, ~150K main context**
 
 ## Scope
 

@@ -1,10 +1,11 @@
 ---
 phase: 1
 title: "Home Vertical Slice (gate phase)"
-status: pending
+status: completed
 priority: P1
 effort: "6-10h (depends on audit re-scope)"
 dependencies: [0]
+shipped_commit: 9482eab
 ---
 
 # Phase 1: Home Vertical Slice — Gate Phase
