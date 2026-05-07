@@ -86,6 +86,10 @@ The full original Phase 2 spec is preserved here for a future expansion session.
 - Hero scene ≤200KB WebP
 - Reuse ≥80% Phase 1 components (already met in shipped scope)
 
+---
+
+> **The remainder of this file (Architecture, Related Code Files, Directus, Implementation Steps) is the original aspirational implementation plan, preserved as backlog reference for the deferred per-book scene art / subcomponent work.** It is **not** the shipped Phase 2 instruction set — Phase 2 closure is captured by the *Shipped scope* + Todo List → Shipped subset + Success Criteria → Shipped sections above. Future cook sessions: do not run these steps as a checklist; pull from them only when picking up the deferred backlog. Any artifact below that does not exist on `main` (e.g. `book-detail-hero.tsx`, the `book-scenes/` Directus folder, `add-book-scene-fields.py`) is part of the deferred work, not a missing dependency for Phase 2 closure.
+
 ## Architecture
 
 ```

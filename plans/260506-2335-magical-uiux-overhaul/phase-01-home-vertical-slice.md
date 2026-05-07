@@ -19,7 +19,9 @@ shipped_commit: 9482eab
 
 ## Overview
 
-Vertical slice MVP: complete makeover của home page với token refactor (navy + terracotta + cobalt + ink + paper), 4 shared components, 5 sections refactor, 8-10 generated assets, signature SVG. **Gate phase** — anh approve before Phase 2-3 scale.
+Vertical slice MVP: complete makeover của home page với token refactor (navy + terracotta + cobalt + ink + paper), 4 shared components, 5 sections refactor. **Gate phase** — anh approve before Phase 2-3 scale.
+
+> **Trimmed/completed shipment (commits `9482eab` + `92ffbb6`).** This phase closed against the *Shipped scope* section below — token refactor, globals.css utilities, 4 shared components, 5 home section refactors + Header cleanup, audit P0/P1 home pickup, anh review gate. The original *Aspirational scope (deferred)* section — 8-10 generated raster motifs, author-portrait img2img, signature SVG, Lighthouse/LCP/bundle/screenshot gates — is preserved as backlog only and folded into Phase 4 / a separate cook session. Current build uses inline SVG primitives (`HandDrawnDivider`) + globals.css data-URI textures instead of generated raster motifs. **Treat anything in the deferred section as not-required for Phase 1 closure.** Authoritative shipped vs deferred split: Todo List + Success Criteria below.
 
 ## Key Insights
 
@@ -32,39 +34,54 @@ Vertical slice MVP: complete makeover của home page với token refactor (navy
 
 ## Requirements
 
-### Functional
+### Shipped scope (Phase 1 close)
 
 1. **Token refactor** (`tailwind.config.ts` + `src/app/globals.css`)
    - Add: `accent` (terracotta family), `cobalt`, `ink`, `paper` tokens
    - Keep: `gold` token deprecated (rollback safety, remove Phase 4)
-   - Add CSS utilities: `.paper-texture`, `.watercolor-wash-cobalt`, `.watercolor-wash-terracotta`
+   - Add CSS utilities: `.paper-texture`, `.watercolor-wash-cobalt`, `.watercolor-wash-terracotta`, `.watercolor-wash-sunset`
 2. **4 shared components** (`src/components/ui/`)
    - `<HandDrawnDivider variant="wave|sparkle|leaf|dots" />` — inline SVG monoline
-   - `<WatercolorWash color="cobalt|terracotta|sunset" position="..." />` — atmospheric backdrop layer
+   - `<WatercolorWash color="cobalt|terracotta|sunset" />` — atmospheric backdrop layer
    - `<PaperTexture />` — subtle grain overlay (data URI SVG)
-   - `<SignatureFlourish />` — Trọng Huy ký SVG (em generate Phase 1.2)
-3. **5 home sections refactor**
+   - `<SignatureFlourish />` — Trọng Huy ký SVG (component shipped; raster signature deferred)
+3. **5 home sections refactor + Header cleanup**
    - HeroSection: ambient backdrop + terracotta accents + cobalt 3D spine + corner sparkles
-   - AuthorSection: paper texture bg + terracotta brush stroke border + signature flourish
+   - AuthorSection: paper texture bg + terracotta brush stroke border + signature flourish slot
    - BooksSection: watercolor brush stroke underline (replace gold) + corner monoline doodles
    - FeaturesSection: cobalt watercolor circle backdrop cho icons
    - CTASection: navy + terracotta sunset gradient + ambient backdrop
-4. **8-10 generated assets**
+   - Header: hardcoded gold cleanup, mobile menu polish (hover/active indicator, focus trap, skip link)
+4. **Audit findings pickup** (qua audit-integration-notes.md)
+   - Home P0/P1 audit findings merge vào scope refactor (delivered via QW commits + 92ffbb6)
+
+#### Non-functional (shipped scope)
+
+- npm run lint clean, npm run build clean
+- No regression: order flow + checkout vẫn work (smoke test verified through Phase 2 work)
+- A11y token contrast validated (`accent.dark` ~6.5:1 on cream — AA Normal)
+
+### Aspirational scope (deferred to backlog — not required for Phase 1 close)
+
+The full original Phase 1 spec is preserved here for a future expansion session. None of the bullets below block Phase 2/3/4 — Phase 4 already absorbs the Lighthouse/LCP/bundle gates.
+
+1. **8-10 generated raster assets (aspirational)**
    - 1 hero ambient backdrop (cobalt + terracotta wash, full-bleed atmospheric)
    - 1 author portrait variant (cinematic grading từ existing) — img2img
-   - 6 monoline SVG motifs (corner ornaments × 2, dividers × 2, sparkles × 2) — em hand-curate via Nano Banana
+   - 6 monoline SVG motifs (corner ornaments × 2, dividers × 2, sparkles × 2) — Nano Banana batch-curate
    - 1 signature SVG ("Trọng Huy" hand-drawn)
    - 1 CTA backdrop (sunset terracotta wash)
-5. **Audit findings pickup** (qua audit-integration-notes.md)
-   - Home P0/P1 audit findings merge vào scope refactor
 
-### Non-functional
+#### Non-functional (aspirational — folded into Phase 4)
 
 - Lighthouse home mobile ≥85 (perf, a11y, best-practices, SEO each)
 - LCP <2.8s on 4G throttled
-- No regression: order flow + checkout vẫn work (smoke test)
 - Bundle size delta < +30KB gzipped
 - Visual: side-by-side before/after screenshot per section
+
+---
+
+> **The remainder of this file (Architecture, Related Code Files, Implementation Steps) is the original aspirational implementation plan, preserved as backlog reference for the deferred raster-asset / signature work.** It is **not** the shipped Phase 1 instruction set — Phase 1 closure is captured by the *Shipped scope* + Todo List → Shipped subset + Success Criteria → Shipped sections above. Future cook sessions: do not run these steps as a checklist; pull from them only when picking up the deferred backlog. Any item below that conflicts with what's already on `main` (e.g. asset paths under `public/images/motifs/` that don't exist yet) is part of the deferred work.
 
 ## Architecture
 
