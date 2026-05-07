@@ -4,6 +4,9 @@ import { Metadata } from "next";
 import { ChevronRight, Truck, CreditCard, Package } from "lucide-react";
 import { BookCard } from "@/components/book/book-card";
 import { JsonLdBook } from "@/components/seo/json-ld";
+import { HandDrawnDivider } from "@/components/ui/hand-drawn-divider";
+import { PaperTexture } from "@/components/ui/paper-texture";
+import { WatercolorWash } from "@/components/ui/watercolor-wash";
 import { getBookBySlug, getBooks } from "@/lib/books";
 import { buildAssetUrlFromFile } from "@/lib/directus-assets";
 import type { Book } from "@/lib/types-directus";
@@ -83,7 +86,7 @@ export default async function BookDetailPage({ params }: PageProps) {
   const coverUrl = getCoverUrl(book);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-24 lg:pb-0">
       <JsonLdBook book={book} coverUrl={getOgImageUrl(book)} />
       <div className="bg-white border-b border-gray-100">
         <div className="container-custom py-4">
@@ -101,8 +104,17 @@ export default async function BookDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      <section className="section">
-        <div className="container-custom">
+      <section className="section relative bg-paper overflow-hidden">
+        <PaperTexture />
+        <WatercolorWash
+          color="cobalt"
+          className="top-[-10%] right-[-10%] w-[520px] h-[520px] rounded-full opacity-50"
+        />
+        <WatercolorWash
+          color="terracotta"
+          className="bottom-[-15%] left-[-10%] w-[420px] h-[420px] rounded-full opacity-40"
+        />
+        <div className="container-custom relative z-10">
           <div className="grid lg:grid-cols-2 gap-12">
             <div className="space-y-4">
               <div className="aspect-[3/4] bg-primary rounded-2xl overflow-hidden shadow-book">
@@ -159,7 +171,7 @@ export default async function BookDetailPage({ params }: PageProps) {
 
               <div className="bg-secondary rounded-xl p-6 mb-6">
                 <div className="flex items-baseline gap-4 flex-wrap">
-                  <span className="text-3xl font-serif font-semibold text-[#7A6125]">
+                  <span className="text-3xl font-serif font-semibold text-accent-dark">
                     {formatPrice(book.price)}
                   </span>
                   {book.compare_price && (
@@ -171,13 +183,19 @@ export default async function BookDetailPage({ params }: PageProps) {
               </div>
 
               {isOutOfStock ? (
-                <p className="flex items-center gap-2 text-gray-500 mb-6">
-                  <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
+                <p className="flex items-center gap-2.5 text-gray-600 mb-6 font-medium">
+                  <span
+                    aria-hidden="true"
+                    className="w-2.5 h-2.5 bg-gray-400 rounded-full"
+                  ></span>
                   Hết hàng
                 </p>
               ) : (
-                <p className="flex items-center gap-2 text-green-600 mb-6">
-                  <span className="w-2 h-2 bg-green-500 rounded-full"></span>
+                <p className="flex items-center gap-2.5 text-green-700 mb-6 font-medium">
+                  <span aria-hidden="true" className="relative flex h-2.5 w-2.5">
+                    <span className="motion-safe:animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-60"></span>
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green-500"></span>
+                  </span>
                   Còn hàng
                 </p>
               )}
@@ -201,17 +219,32 @@ export default async function BookDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              <div className="border-t border-gray-100 pt-6 space-y-4">
-                <div className="flex items-center gap-3 text-gray-600 text-sm">
-                  <Truck className="w-5 h-5 text-accent" aria-hidden="true" />
+              <div className="border-t border-gray-200 pt-6 space-y-3">
+                <div className="flex items-center gap-3 text-gray-700 text-sm">
+                  <span
+                    aria-hidden="true"
+                    className="flex-shrink-0 w-9 h-9 rounded-full bg-accent/15 ring-1 ring-accent/30 flex items-center justify-center"
+                  >
+                    <Truck className="w-4 h-4 text-accent-dark" />
+                  </span>
                   <span>Miễn phí ship HCM/HN, tỉnh khác 25.000đ</span>
                 </div>
-                <div className="flex items-center gap-3 text-gray-600 text-sm">
-                  <CreditCard className="w-5 h-5 text-accent" aria-hidden="true" />
+                <div className="flex items-center gap-3 text-gray-700 text-sm">
+                  <span
+                    aria-hidden="true"
+                    className="flex-shrink-0 w-9 h-9 rounded-full bg-accent/15 ring-1 ring-accent/30 flex items-center justify-center"
+                  >
+                    <CreditCard className="w-4 h-4 text-accent-dark" />
+                  </span>
                   <span>Đặt trước qua chuyển khoản; có mã QR VietQR</span>
                 </div>
-                <div className="flex items-center gap-3 text-gray-600 text-sm">
-                  <Package className="w-5 h-5 text-accent" aria-hidden="true" />
+                <div className="flex items-center gap-3 text-gray-700 text-sm">
+                  <span
+                    aria-hidden="true"
+                    className="flex-shrink-0 w-9 h-9 rounded-full bg-accent/15 ring-1 ring-accent/30 flex items-center justify-center"
+                  >
+                    <Package className="w-4 h-4 text-accent-dark" />
+                  </span>
                   <span>Đóng gói cẩn thận</span>
                 </div>
               </div>
@@ -269,17 +302,59 @@ export default async function BookDetailPage({ params }: PageProps) {
       {relatedBooks.length > 0 && (
         <section className="section">
           <div className="container-custom">
-            <h2 className="font-serif text-2xl font-semibold text-primary mb-8">
-              Sách Khác Của Tác Giả
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="flex flex-col items-center text-center mb-10">
+              <h2 className="font-serif text-2xl md:text-3xl font-semibold text-primary mb-4">
+                Sách Khác Của Tác Giả
+              </h2>
+              <HandDrawnDivider variant="dots" className="text-accent/60" width={120} />
+            </div>
+            <div
+              className={
+                relatedBooks.length === 1
+                  ? "max-w-sm mx-auto"
+                  : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+              }
+            >
               {relatedBooks.slice(0, 3).map((b) => (
-                <BookCard key={b.id} book={b} />
+                <BookCard key={b.id} book={b} headingLevel={3} />
               ))}
             </div>
           </div>
         </section>
       )}
+
+      <div
+        className="lg:hidden fixed inset-x-0 bottom-0 z-40 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.06)] px-4 pt-3"
+        style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
+      >
+        <div className="container-custom flex items-center justify-between gap-4 px-0">
+          <div className="flex flex-col leading-tight">
+            <span className="text-[11px] uppercase tracking-wider text-gray-500">
+              Giá
+            </span>
+            <span className="text-xl font-serif font-semibold text-accent-dark">
+              {formatPrice(book.price)}
+            </span>
+          </div>
+          {isOutOfStock ? (
+            <button
+              type="button"
+              disabled
+              className="btn btn-outline opacity-50 cursor-not-allowed pointer-events-none"
+            >
+              Hết hàng
+            </button>
+          ) : (
+            <Link
+              href={`/dat-hang?slug=${book.slug}`}
+              className="btn btn-primary"
+              aria-label={`Mua ${book.title} ngay`}
+            >
+              Mua Ngay
+            </Link>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

@@ -29,10 +29,10 @@ export function BookCard({
     <div
       className={clsx(
         "group relative bg-white rounded-2xl transition-all duration-300 ease-[cubic-bezier(0.25,0.8,0.25,1)]",
-        "hover:shadow-[0_20px_40px_-12px_rgba(0,0,0,0.1)] hover:-translate-y-2",
+        "hover:shadow-[0_20px_40px_-12px_rgba(39,64,140,0.18)] hover:-translate-y-2",
       )}
     >
-      <div className="relative aspect-[3/4.2] overflow-hidden rounded-t-2xl bg-[#F0F0F0]">
+      <div className="relative aspect-[3/4.2] overflow-hidden rounded-t-2xl bg-secondary-dark">
         {isComingSoon ? (
           <div
             className="block w-full h-full"
@@ -49,7 +49,7 @@ export function BookCard({
         ) : (
           <Link href={`/sach/${book.slug}`} className="block w-full h-full">
             {coverUrl ? (
-              <div className="absolute inset-0 bg-[#E0E0E0] group-hover:scale-105 transition-transform duration-700 ease-out">
+              <div className="absolute inset-0 bg-secondary-dark group-hover:scale-105 transition-transform duration-700 ease-out">
                 <Image
                   src={coverUrl}
                   alt={book.title}
@@ -110,12 +110,12 @@ export function BookCard({
 
         <div className="absolute top-3 left-3 flex flex-col gap-2">
           {book.is_new && !isComingSoon && (
-            <span className="px-3 py-1 bg-accent-dark text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
+            <span className="px-2.5 py-1 bg-accent-dark text-white text-xs font-bold tracking-wider uppercase rounded-sm shadow-sm">
               Mới
             </span>
           )}
           {isOutOfStock && !isComingSoon && (
-            <span className="px-3 py-1 bg-gray-700 text-white text-[10px] font-bold tracking-wider uppercase rounded-sm shadow-sm">
+            <span className="px-2.5 py-1 bg-gray-700 text-white text-xs font-bold tracking-wider uppercase rounded-sm shadow-sm">
               Hết hàng
             </span>
           )}

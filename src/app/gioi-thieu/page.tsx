@@ -124,7 +124,7 @@ export default async function AboutPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {publishedBooks.map((book) => (
-              <BookCard key={book.id} book={book} />
+              <BookCard key={book.id} book={book} headingLevel={3} />
             ))}
           </div>
         </div>
