@@ -150,12 +150,12 @@ export default async function BookDetailPage({ params }: PageProps) {
                 {book.title}
               </h1>
               {book.subtitle && (
-                <p className="text-lg text-gray-500 italic mb-2">
+                <p className="text-lg text-gray-600 italic mb-2">
                   {book.subtitle}
                 </p>
               )}
 
-              <div className="flex items-center gap-4 text-gray-500 mb-6 flex-wrap">
+              <div className="flex items-center gap-4 text-gray-600 mb-6 flex-wrap">
                 <span>Tác giả: {book.author}</span>
                 {book.publisher && (
                   <>
@@ -166,7 +166,7 @@ export default async function BookDetailPage({ params }: PageProps) {
               </div>
 
               {book.isbn && (
-                <p className="text-sm text-gray-500 mb-4">ISBN: {book.isbn}</p>
+                <p className="text-sm text-gray-600 mb-4">ISBN: {book.isbn}</p>
               )}
 
               <div className="bg-secondary rounded-xl p-6 mb-6">
@@ -269,7 +269,7 @@ export default async function BookDetailPage({ params }: PageProps) {
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
             {book.page_count != null && (
               <div className="bg-secondary rounded-lg p-4">
-                <p className="text-sm text-gray-500">Số trang</p>
+                <p className="text-sm text-gray-600">Số trang</p>
                 <p className="font-semibold text-primary">
                   {book.page_count} trang
                 </p>
@@ -277,7 +277,7 @@ export default async function BookDetailPage({ params }: PageProps) {
             )}
             {book.published_date && (
               <div className="bg-secondary rounded-lg p-4">
-                <p className="text-sm text-gray-500">Năm xuất bản</p>
+                <p className="text-sm text-gray-600">Năm xuất bản</p>
                 <p className="font-semibold text-primary">
                   {book.published_date}
                 </p>
@@ -285,13 +285,13 @@ export default async function BookDetailPage({ params }: PageProps) {
             )}
             {book.publisher && (
               <div className="bg-secondary rounded-lg p-4">
-                <p className="text-sm text-gray-500">Nhà xuất bản</p>
+                <p className="text-sm text-gray-600">Nhà xuất bản</p>
                 <p className="font-semibold text-primary">{book.publisher}</p>
               </div>
             )}
             {book.isbn && (
               <div className="bg-secondary rounded-lg p-4">
-                <p className="text-sm text-gray-500">ISBN</p>
+                <p className="text-sm text-gray-600">ISBN</p>
                 <p className="font-semibold text-primary text-sm">{book.isbn}</p>
               </div>
             )}

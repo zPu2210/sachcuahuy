@@ -22,14 +22,13 @@ export function generateOrderNumber(): string {
 
 // Convert Directus rich-text (HTML string) to plain-text paragraphs.
 // Preserves paragraph breaks from <p>/<br>, strips other tags, decodes named
-// + numeric (decimal/hex) HTML entities. Inline formatting is dropped — accept
-// the trade-off until a proper HTML sanitizer is introduced.
+// + numeric (decimal/hex) HTML entities. Inline formatting is dropped.
 const NAMED_ENTITIES: Record<string, string> = {
   nbsp: " ",
   amp: "&",
   lt: "<",
   gt: ">",
-  quot: '"',
+  quot: "\"",
   apos: "'",
   hellip: "…",
   mdash: "—",
@@ -40,6 +39,19 @@ const NAMED_ENTITIES: Record<string, string> = {
   rdquo: "”",
   laquo: "«",
   raquo: "»",
+  // Vietnamese/Latin diacritics
+  aacute: "á", agrave: "à", atilde: "ã", acirc: "â",
+  eacute: "é", egrave: "è", ecirc: "ê",
+  iacute: "í", igrave: "ì",
+  oacute: "ó", ograve: "ò", otilde: "õ", ocirc: "ô",
+  uacute: "ú", ugrave: "ù",
+  yacute: "ý",
+  Aacute: "Á", Agrave: "À", Atilde: "Ã", Acirc: "Â",
+  Eacute: "É", Egrave: "È", Ecirc: "Ê",
+  Iacute: "Í", Igrave: "Ì",
+  Oacute: "Ó", Ograve: "Ò", Otilde: "Õ", Ocirc: "Ô",
+  Uacute: "Ú", Ugrave: "Ù",
+  Yacute: "Ý",
 };
 
 function decodeCodePoint(code: number, fallback: string): string {
@@ -53,21 +65,29 @@ function decodeCodePoint(code: number, fallback: string): string {
 
 export function htmlToParagraphs(html: string): string[] {
   if (!html) return [];
-  const text = html
+  let text = html
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<\/p\s*>/gi, "\n\n")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&#x([0-9a-f]+);/gi, (match, hex) =>
-      decodeCodePoint(parseInt(hex, 16), match),
-    )
-    .replace(/&#(\d+);/g, (match, dec) =>
-      decodeCodePoint(Number(dec), match),
-    )
-    .replace(/&([a-zA-Z]+);/g, (match, name) =>
-      Object.prototype.hasOwnProperty.call(NAMED_ENTITIES, name)
-        ? NAMED_ENTITIES[name]
-        : match,
-    );
+    .replace(/<[^>]+>/g, "");
+
+  // Decode entities in loop to handle double-encoding (e.g., &amp;oacute;)
+  let prev = "";
+  while (prev !== text) {
+    prev = text;
+    text = text
+      .replace(/&#x([0-9a-f]+);/gi, (match, hex) =>
+        decodeCodePoint(parseInt(hex, 16), match),
+      )
+      .replace(/&#(\d+);/g, (match, dec) =>
+        decodeCodePoint(Number(dec), match),
+      )
+      .replace(/&([a-zA-Z]+);/g, (match, name) =>
+        Object.prototype.hasOwnProperty.call(NAMED_ENTITIES, name)
+          ? NAMED_ENTITIES[name]
+          : match,
+      );
+  }
+
   return text
     .split(/\n{2,}/)
     .map((p) => p.trim())
