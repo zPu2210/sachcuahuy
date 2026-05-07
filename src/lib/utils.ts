@@ -39,18 +39,19 @@ const NAMED_ENTITIES: Record<string, string> = {
   rdquo: "”",
   laquo: "«",
   raquo: "»",
-  // Vietnamese/Latin diacritics
-  aacute: "á", agrave: "à", atilde: "ã", acirc: "â",
+  // Vietnamese/Latin diacritics (HTML5 named entities)
+  aacute: "á", agrave: "à", atilde: "ã", acirc: "â", abreve: "ă",
   eacute: "é", egrave: "è", ecirc: "ê",
   iacute: "í", igrave: "ì",
-  oacute: "ó", ograve: "ò", otilde: "õ", ocirc: "ô",
-  uacute: "ú", ugrave: "ù",
+  oacute: "ó", ograve: "ò", otilde: "õ", ocirc: "ô", ohorn: "ơ",
+  uacute: "ú", ugrave: "ù", uhorn: "ư",
   yacute: "ý",
-  Aacute: "Á", Agrave: "À", Atilde: "Ã", Acirc: "Â",
+  dstrok: "đ", Dstrok: "Đ",
+  Aacute: "Á", Agrave: "À", Atilde: "Ã", Acirc: "Â", Abreve: "Ă",
   Eacute: "É", Egrave: "È", Ecirc: "Ê",
   Iacute: "Í", Igrave: "Ì",
-  Oacute: "Ó", Ograve: "Ò", Otilde: "Õ", Ocirc: "Ô",
-  Uacute: "Ú", Ugrave: "Ù",
+  Oacute: "Ó", Ograve: "Ò", Otilde: "Õ", Ocirc: "Ô", Ohorn: "Ơ",
+  Uacute: "Ú", Ugrave: "Ù", Uhorn: "Ư",
   Yacute: "Ý",
 };
 
@@ -65,12 +66,9 @@ function decodeCodePoint(code: number, fallback: string): string {
 
 export function htmlToParagraphs(html: string): string[] {
   if (!html) return [];
-  let text = html
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/p\s*>/gi, "\n\n")
-    .replace(/<[^>]+>/g, "");
 
-  // Decode entities in loop to handle double-encoding (e.g., &amp;oacute;)
+  // Decode entities FIRST in loop to handle double-encoding (e.g., &amp;oacute;)
+  let text = html;
   let prev = "";
   while (prev !== text) {
     prev = text;
@@ -87,6 +85,12 @@ export function htmlToParagraphs(html: string): string[] {
           : match,
       );
   }
+
+  // THEN strip tags (handles double-escaped &lt;p&gt; becoming <p> after decode)
+  text = text
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/p\s*>/gi, "\n\n")
+    .replace(/<[^>]+>/g, "");
 
   return text
     .split(/\n{2,}/)
