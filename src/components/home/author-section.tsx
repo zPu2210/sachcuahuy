@@ -39,7 +39,7 @@ export function AuthorSection({
       />
 
       <div className="container-custom relative z-10">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-16">
           <div className="flex-shrink-0">
             <div className="relative">
               <div className="absolute inset-0 border-2 border-accent/40 rounded-full transform rotate-6 scale-105"></div>

@@ -9,7 +9,7 @@ interface CTASectionProps {
 
 export function CTASection({ featuredBook }: CTASectionProps) {
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section className="relative py-10 md:py-24 overflow-hidden">
       <div className="absolute inset-0 watercolor-wash-sunset z-0">
         <PaperTexture className="opacity-[0.10] mix-blend-screen" />
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-accent/25 rounded-full blur-[120px] transform translate-x-1/2 -translate-y-1/2"></div>

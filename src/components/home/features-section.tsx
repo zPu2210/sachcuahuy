@@ -57,7 +57,7 @@ export function FeaturesSection(props: FeaturesSectionProps) {
       <div className="container-custom">
         <h2 className="sr-only">Cam kết dịch vụ</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
           {features.map((feature) => (
             <div key={feature.title} className="h-full">
               <div className="group h-full text-center p-8 bg-white rounded-2xl border border-cobalt/10 shadow-sm hover:shadow-xl hover:shadow-cobalt/10 hover:border-cobalt/30 transition-all duration-300 hover:-translate-y-1">

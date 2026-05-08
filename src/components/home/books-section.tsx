@@ -38,7 +38,7 @@ export function BooksSection({ books }: BooksSectionProps) {
         </div>
 
         {books.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {books.map((book, index) => (
               <div key={book.id} className="h-full">
                 <BookCard book={book} featured={index === 0} headingLevel={3} />
@@ -49,7 +49,7 @@ export function BooksSection({ books }: BooksSectionProps) {
           <p className="text-center text-gray-700">Chưa có sách nào.</p>
         )}
 
-        <div className="mt-16 flex flex-col items-center gap-6">
+        <div className="mt-8 md:mt-16 flex flex-col items-center gap-6">
           <HandDrawnDivider variant="dots" className="text-accent/60" width={140} />
           <Link
             href="/sach"
