@@ -37,7 +37,7 @@ export function useBooks() {
     error.value = null;
     try {
       const response = await api.get('/items/books', {
-        params: { sort: '-date_created', limit: -1 }
+        params: { sort: 'sort_order,-created_at', limit: -1 }
       });
       books.value = response.data.data || response.data;
     } catch (e: any) {

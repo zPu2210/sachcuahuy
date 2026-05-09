@@ -5,16 +5,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue';
+import { computed } from 'vue';
+import HomeForm from './forms/home-form.vue';
+import BooksForm from './forms/books-form.vue';
+import AboutForm from './forms/about-form.vue';
+import SettingsForm from './forms/settings-form.vue';
 
 const props = defineProps<{
   activeTab: string;
 }>();
-
-const HomeForm = defineAsyncComponent(() => import('./forms/home-form.vue'));
-const BooksForm = defineAsyncComponent(() => import('./forms/books-form.vue'));
-const AboutForm = defineAsyncComponent(() => import('./forms/about-form.vue'));
-const SettingsForm = defineAsyncComponent(() => import('./forms/settings-form.vue'));
 
 const contentComponent = computed(() => {
   switch (props.activeTab) {
