@@ -22,6 +22,8 @@ dependencies: []
 
 Deploy Directus 11 trên Contabo, share Postgres `goclaw-postgres-1` (new DB `directus_sachcuahuy`), tạo 6 collections theo schema brainstorm, seed sample data 2 sách + site_settings, setup admin users (anh super-admin, Huy editor).
 
+**Update 2026-05-04:** Directus Data Studio default language now `vi-VN`. Existing `scripts/setup-directus-schema.py` also patches Vietnamese collection labels, field labels/notes, and dropdown text while preserving collection names, field names, enum values, and permissions. Huy language patch uses `HUY_EMAIL=demtamsutronghuy@gmail.com`; admin language remains untouched unless `FORCE_ADMIN_VI=1`.
+
 ## Requirements
 
 ### Functional
@@ -31,6 +33,7 @@ Deploy Directus 11 trên Contabo, share Postgres `goclaw-postgres-1` (new DB `di
 - 2 admin users: anh (super_admin role), Huy (editor role — limited)
 - Public read API permissions: `books`, `pages`, `site_settings` (anonymous)
 - Public has **NO orders permissions** — all order writes via dedicated `api-orders` role token (server-side only, see Step 5)
+- CMS editor-facing metadata is Vietnamese (`vi-VN`) for Huy; API contract unchanged
 - Backup script daily
 
 ### Non-functional
@@ -73,8 +76,9 @@ Contabo VPS (185.111.159.28)
 ### Modify (server-side)
 - `/opt/goclaw/.env` — add `DIRECTUS_SACHCUAHUY_URL` env var (read by GoClaw flows Phase 4)
 
-### Local repo (no code changes Phase 1)
-- N/A — backend-only phase
+### Local repo
+- `scripts/setup-directus-schema.py` — idempotent schema + Vietnamese metadata patch
+- `scripts/directus-snapshots/baseline.yaml` — refreshed Directus schema snapshot
 
 ## Implementation Steps
 
@@ -167,6 +171,13 @@ EOF
 
 ### 4. Create collections (via Directus admin UI or schema apply)
 
+Use `scripts/setup-directus-schema.py`. It creates missing collections/fields and re-patches existing collection/field `meta` on every run:
+- collection `translations` + Vietnamese notes
+- field `translations` + Vietnamese notes
+- dropdown `options.choices[].text` only; `choices[].value` asserted unchanged before PATCH
+- project `default_language=vi-VN`
+- Huy user language when `HUY_EMAIL` is set
+
 **4.1. `books`** — primary content
 - Fields: `id` (uuid pk), `slug` (string unique), `title` (string), `subtitle` (string nullable), `author` (string default "Trọng Huy"), `description` (rich text), `short_description` (text), `price` (integer), `compare_price` (integer nullable), `stock_status` (dropdown: `in_stock`/`out_of_stock`), `cover_image` (file m2o), `gallery` (m2m files), `isbn` (string), `publisher` (string), `published_date` (date), `page_count` (integer), `is_new` (boolean default false), `is_coming_soon` (boolean default false), `sort_order` (integer), `status` (dropdown: `draft`/`published`/`archived`), `seo_title` (string), `seo_description` (text), `created_at` (datetime auto), `updated_at` (datetime auto)
 - Indexes: `slug` unique, `status` btree
@@ -242,7 +253,7 @@ EOF
 - Huy: <huy email TBD>, role editor (created above), tạm pwd → reset trên login
 
 ### 8. Schema snapshot + version control
-- `docker exec directus-sachcuahuy npx directus schema snapshot ./snapshots/baseline.yaml`
+- `docker exec directus-sachcuahuy npx directus schema snapshot -y ./snapshots/baseline.yaml`
 - Commit snapshot vào `/opt/directus-sachcuahuy/` git (separate repo or include in `goclaw-config`)
 
 ### 9. Backup script
@@ -306,7 +317,8 @@ DIRECTUS_RELAY_TOKEN=<relay-notifier role token>
 - [x] Configure permissions: NO public orders create; create `api-orders` + `relay-notifier` roles
 - [x] Grant `relay-notifier` role read access on `orders.id, order_code, customer_*, shipping_*, items, total, payment_method, notification_status, created_at` (needed by reconciliation worker — Phase 4)
 - [x] Seed 2 books + site_settings + 2 pages
-- [ ] Create admin users (anh + Huy) with 2FA
+- [x] Huy user exists (`demtamsutronghuy@gmail.com`) and language set to `vi-VN`
+- [ ] Enable/confirm 2FA for admin users
 - [x] Schema snapshot to `snapshots/baseline.yaml`
 - [x] Setup daily backup cron + test restore
 - [x] Smoke test public API (no auth) + service token writes
@@ -320,10 +332,13 @@ DIRECTUS_RELAY_TOKEN=<relay-notifier role token>
 - [x] `curl https://<DIRECTUS_CMS_HOST>/server/health` → `{"status":"ok"}`
 - [x] Public anonymous: `GET /items/books?status=published` → 2 books JSON
 - [x] Public anonymous: `POST /items/orders` → **403 forbidden** (anti-spam verified)
+- [x] `/server/info` project `default_language` → `vi-VN`
+- [x] Huy user language → `vi-VN`
+- [x] Vietnamese collection/field/dropdown metadata patched; enum values unchanged
 - [x] `api-orders` token: `POST /items/orders` succeeds
 - [x] `orders` schema includes `order_token`, `notification_status` (enum incl. `queued`), `verify_attempts`, `verify_locked_until`, `verify_last_attempt_at` fields
 - [x] Anh login admin → see all 6 collections + create/edit
-- [ ] Huy login → cannot edit `site_settings`, can edit `books`/`pages`/`orders.status`
+- [ ] Huy login UI smoke → cannot edit `site_settings`, can edit `books`/`pages`/`orders.status`
 - [x] Backup file generated <60MB, restore-able
 - [x] Container survives reboot (`reboot` Contabo, verify `docker ps` shows directus up)
 - [x] Schema snapshot committed to version control
@@ -364,5 +379,6 @@ After Phase 1 complete:
 
 - ~~Subdomain choice~~ → **Resolved Step 0**: must decide before phase starts (recommend buy `sachcuahuy.com`)
 - Editor role: Huy có cần access `customers` table không? Hiện default read-only; revisit sau khi Huy onboard
+- Huy UI smoke still needs manual login/password-reset confirmation.
 - Backup retention 14 days đủ không? GoClaw đang giữ 30 days — consistency hay tách?
 - Should `relay-notifier` role be separate from `api-orders` role? Current plan: yes (least privilege — relay only writes `notification_status`, can't create orders)

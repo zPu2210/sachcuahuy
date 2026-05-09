@@ -13,6 +13,8 @@ plan: plans/260502-2024-sachcuahuy-production-launch/
 
 Directus 11.17.4 deployed on Contabo, fronted by Cloudflare Tunnel at `https://cms.sachcuahuy.com`. Postgres DB `directus_sachcuahuy` shares container `goclaw-postgres-1` (PG 18.3). 6 collections with all v2.1 verify-lock + reconciliation fields. 4 roles, 2 service users with static tokens. Smoke 8/8 ✓.
 
+2026-05-04 addendum: CMS editor metadata localized for Huy. Project default language `vi-VN`; Huy user `demtamsutronghuy@gmail.com` language `vi-VN`; collection/field/dropdown labels Vietnamese. API keys/field names/enum values unchanged. Anonymous `orders` remains 403.
+
 End-to-end: ~3h work (incl. user pause at CMS hostname blocker + Cloudflare auth interactive flow).
 
 ## Verified Outcomes
@@ -31,6 +33,7 @@ End-to-end: ~3h work (incl. user pause at CMS hostname blocker + Cloudflare auth
 | 9 | Daily backup cron | `0 3 * * * /opt/directus-sachcuahuy/backup.sh`, test run 25K DB + uploads tar in `/backup/` |
 | 10 | Smoke 8/8 | health 200, books anon 200, settings anon 200, pages anon 200, orders POST anon **403**, customers GET anon **403**, podcast GET anon **403**, restart→200 |
 | 11 | Service tokens working | `api-orders` POST orders → 200; `relay-notifier` PATCH `notification_status` → 200, PATCH `payment_status` → **403** (least privilege confirmed) |
+| 12 | Vietnamese CMS metadata | `/server/info` default_language `vi-VN`; Huy user `vi-VN`; `books.stock_status` text `Còn hàng`, value `in_stock`; public books/pages/site_settings 200; anonymous orders POST **403** |
 
 ## Architecture (deployed)
 
@@ -97,13 +100,7 @@ scripts/
 ## Open Items (anh-side, non-blocking)
 
 1. **Enable 2FA** on `pu.hungphu@gmail.com` super-admin via Directus UI. Save backup codes to 1Password. (~3 min)
-2. **Provide Huy's email** + create editor user. Plan command:
-   ```bash
-   curl -X POST -H "Authorization: Bearer <ADMIN>" -H "Content-Type: application/json" \
-     -d '{"email":"huy@…","first_name":"Huy","role":"aed47fb7-ecd6-4921-b42d-f32d4e297bf9","status":"active"}' \
-     https://cms.sachcuahuy.com/users
-   ```
-   Send Huy a password reset link from admin UI.
+2. **Huy onboarding:** user exists at `demtamsutronghuy@gmail.com`; send/reset password if needed, then manual UI smoke for editor permissions.
 3. **Decide gitignore policy** for `~/marketing-tasks/projects/goclaw-config/sachcuahuy-credentials.md` (no secrets inside, but filename is "sensitive-adjacent").
 4. **Backup to 1Password**: `.env.sachcuahuy-credentials` should be backed up to 1Password vault.
 

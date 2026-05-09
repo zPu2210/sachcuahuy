@@ -8,6 +8,10 @@
 # Production
 /build
 /dist
+directus-extensions/*/dist/
+
+# Generated AI assets (large binaries — keep out of git)
+assets/generated/
 
 # Debug
 npm-debug.log*
