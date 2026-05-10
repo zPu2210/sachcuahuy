@@ -53,23 +53,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "vi_VN",
     siteName: "Sách Của Huy",
-    title: "Sách Của Huy",
-    description: "Tác phẩm văn học của Trọng Huy",
+    title: "Miền Nam Của Huy - Trọng Huy",
+    description:
+      "Nơi ấy có Mina và một mái nhà. Sách văn học bìa cứng của tác giả Trọng Huy.",
     url: SITE_URL,
     images: [
       {
-        url: "/images/book-cover-front.png",
+        url: "/images/og/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Sách Của Huy",
+        alt: "Miền Nam Của Huy - Sách của Trọng Huy",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Sách Của Huy",
-    description: "Tác phẩm văn học của Trọng Huy",
-    images: ["/images/book-cover-front.png"],
+    title: "Miền Nam Của Huy - Trọng Huy",
+    description:
+      "Nơi ấy có Mina và một mái nhà. Sách văn học bìa cứng của tác giả Trọng Huy.",
+    images: ["/images/og/og-image.png"],
   },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
