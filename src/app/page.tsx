@@ -28,6 +28,14 @@ export async function generateMetadata(): Promise<Metadata> {
         title: s.hero_title || "Sách Của Huy",
         description,
         type: "website",
+        images: [
+          {
+            url: "/images/og/og-image.png",
+            width: 1200,
+            height: 630,
+            alt: "Sách Của Huy - Miền Nam của Huy",
+          },
+        ],
       },
       alternates: { canonical: "/" },
     };
