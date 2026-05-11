@@ -1,7 +1,7 @@
 ---
 phase: 2
 title: "Visual patterns documentation"
-status: pending
+status: completed
 priority: P2
 effort: "2h"
 dependencies: [1]

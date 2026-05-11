@@ -1,7 +1,7 @@
 ---
 title: "Design System Extraction — sachcuahuy.com"
 created: 2026-05-08
-status: pending
+status: completed
 priority: P2
 total_effort: 1-2 days
 mode: auto
@@ -26,11 +26,11 @@ Extract design tokens, visual patterns, component inventory, and screen snapshot
 
 | # | Phase | Status | Effort | Output |
 |---|-------|--------|--------|--------|
-| 1 | [Token audit & extraction](phase-01-token-audit.md) | pending | 3h | `assets/design-tokens.json` + tokens section of `docs/design-system.md` |
-| 2 | [Visual patterns documentation](phase-02-visual-patterns.md) | pending | 2h | patterns section of `docs/design-system.md` |
-| 3 | [Component inventory](phase-03-component-inventory.md) | pending | 3h | `docs/component-inventory.md` |
-| 4 | [Screenshot capture](phase-04-screenshot-capture.md) | pending | 2h | `docs/screen-snapshots/*.png` (14 files) |
-| 5 | [Validation & docs index](phase-05-validation-index.md) | pending | 1h | `docs/design/README.md` + JSON schema validation |
+| 1 | [Token audit & extraction](phase-01-token-audit.md) | completed | 3h | `assets/design-tokens.json` + tokens section of `docs/design-system.md` |
+| 2 | [Visual patterns documentation](phase-02-visual-patterns.md) | completed | 2h | patterns section of `docs/design-system.md` |
+| 3 | [Component inventory](phase-03-component-inventory.md) | completed | 3h | `docs/component-inventory.md` |
+| 4 | [Screenshot capture](phase-04-screenshot-capture.md) | completed | 2h | `docs/screen-snapshots/*.png` (14 files) |
+| 5 | [Validation & docs index](phase-05-validation-index.md) | completed | 1h | `docs/design/README.md` + JSON schema validation |
 
 **Sequential dependencies:** 1 → 2 (patterns reference tokens), 1 + 3 → 5 (validation needs both). Phase 4 parallel after Phase 1.
 

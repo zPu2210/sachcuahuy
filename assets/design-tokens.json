@@ -1,0 +1,129 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "$description": "sachcuahuy.com design tokens — W3C Design Tokens community format (draft, 2024-05). Generated from tailwind.config.ts + src/app/globals.css on 2026-05-11. Source of truth: code. Do not hand-edit; regenerate from source.",
+  "color": {
+    "primary": {
+      "DEFAULT": { "$value": "#1E2B4D", "$type": "color", "$description": "Navy — main brand color. Buttons, headings, focus rings." },
+      "light":   { "$value": "#2D3F66", "$type": "color", "$description": "Primary hover state." },
+      "dark":    { "$value": "#141D36", "$type": "color", "$description": "Deepest navy — rarely used; reserved for emphasis." }
+    },
+    "secondary": {
+      "DEFAULT": { "$value": "#F8F6F3", "$type": "color", "$description": "Cream — secondary surface (same hex as `cream`)." },
+      "dark":    { "$value": "#EDE9E3", "$type": "color", "$description": "Cream-dark for subtle elevation." }
+    },
+    "accent": {
+      "DEFAULT": { "$value": "#C75D2C", "$type": "color", "$description": "Terracotta — Phase 1 magical overhaul. AA Large on cream (~4.5:1). Headings, badges, decoratives." },
+      "light":   { "$value": "#E27A4F", "$type": "color", "$description": "Terracotta hover." },
+      "dark":    { "$value": "#A04420", "$type": "color", "$description": "Terracotta-dark. AA Normal on cream (~6.5:1). Inline body links, accents, scrollbar thumb." }
+    },
+    "cobalt": {
+      "DEFAULT": { "$value": "#3856B0", "$type": "color", "$description": "Cobalt blue — watercolor wash + sunset gradient mid-stop." },
+      "light":   { "$value": "#5C7AC9", "$type": "color" },
+      "dark":    { "$value": "#27408C", "$type": "color" }
+    },
+    "cream":  { "$value": "#F8F6F3", "$type": "color", "$description": "Page background base." },
+    "navy":   { "$value": "#1E2B4D", "$type": "color", "$description": "Alias of primary.DEFAULT." },
+    "ink":    { "$value": "#142849", "$type": "color", "$description": "Deeper navy for type on cream where contrast matters." },
+    "paper":  { "$value": "#FAF6EC", "$type": "color", "$description": "Warm paper tone — scrollbar track, paper-texture base." }
+  },
+  "fontFamily": {
+    "serif":  {
+      "$value": "var(--font-cormorant), Georgia, serif",
+      "$type": "fontFamily",
+      "$description": "Cormorant Garamond. next/font subsets: latin, vietnamese. Weights 400, 700. Headings (h1-h6) + display."
+    },
+    "sans":   {
+      "$value": "var(--font-inter), system-ui, sans-serif",
+      "$type": "fontFamily",
+      "$description": "Inter. next/font subsets: latin, vietnamese. Body + UI."
+    },
+    "script": {
+      "$value": "var(--font-dancing), cursive",
+      "$type": "fontFamily",
+      "$description": "Dancing Script. next/font subsets: latin, vietnamese. Weight 400. Signature flourish, decorative."
+    }
+  },
+  "shadow": {
+    "book": {
+      "$value": "8px 8px 24px -4px rgb(0 0 0 / 0.2)",
+      "$type": "shadow",
+      "$description": "Hero book cover shadow. Asymmetric (positive x/y) to suggest a physical object on a surface."
+    }
+  },
+  "radius": {
+    "$description": "Tailwind defaults — see https://tailwindcss.com/docs/border-radius. Site uses three from default scale; no overrides.",
+    "scrollbar": { "$value": "4px",   "$type": "dimension", "$description": "::-webkit-scrollbar-thumb radius (custom CSS)." },
+    "lg":        { "$value": "0.5rem", "$type": "dimension", "$description": "Buttons (.btn), inputs (.input). Tailwind default `rounded-lg`." },
+    "2xl":       { "$value": "1rem",   "$type": "dimension", "$description": "Cards (.card). Tailwind default `rounded-2xl`." }
+  },
+  "motion": {
+    "float": {
+      "duration":      { "$value": "4s",                   "$type": "duration", "$description": "Hero book floating animation period." },
+      "timingFunction":{ "$value": "ease-in-out",          "$type": "cubicBezier" },
+      "iterationCount":{ "$value": "infinite",             "$type": "other" },
+      "keyframes":     { "$value": "0/100% translateY(0); 50% translateY(-12px)", "$type": "other", "$description": "Defined in globals.css @keyframes float." }
+    },
+    "btn": {
+      "duration":      { "$value": "200ms",        "$type": "duration", "$description": ".btn transition-all duration-200 ease-out." },
+      "timingFunction":{ "$value": "ease-out",     "$type": "cubicBezier" }
+    },
+    "card": {
+      "duration":      { "$value": "300ms",        "$type": "duration", "$description": ".card transition-all duration-300 ease-out." },
+      "timingFunction":{ "$value": "ease-out",     "$type": "cubicBezier" }
+    },
+    "input": {
+      "duration":      { "$value": "200ms",        "$type": "duration", "$description": ".input transition-all duration-200." }
+    },
+    "reducedMotion": {
+      "$value": "respects prefers-reduced-motion: reduce — animation-duration 0.01ms, iteration-count 1, transition-duration 0.01ms",
+      "$type": "other",
+      "$description": "Global override in globals.css media query."
+    }
+  },
+  "spacing": {
+    "$description": "Tailwind default scale used unmodified — see https://tailwindcss.com/docs/customizing-spacing. Custom sections use semantic classes only.",
+    "section": {
+      "$value": "py-8 md:py-16 lg:py-24",
+      "$type": "other",
+      "$description": ".section semantic class: 2rem / 4rem / 6rem vertical padding by breakpoint."
+    },
+    "container": {
+      "$value": "max-w-6xl mx-auto px-4 md:px-8",
+      "$type": "other",
+      "$description": ".container-custom: 72rem max width, 1rem/2rem horizontal padding."
+    }
+  },
+  "decorative": {
+    "watercolor-wash-cobalt": {
+      "$value": "radial-gradient(closest-side, rgba(56,86,176,0.35), rgba(56,86,176,0)); filter: blur(40px)",
+      "$type": "other",
+      "$description": "Soft cobalt blob backdrop. References color.cobalt.DEFAULT."
+    },
+    "watercolor-wash-terracotta": {
+      "$value": "radial-gradient(closest-side, rgba(199,93,44,0.35), rgba(199,93,44,0)); filter: blur(40px)",
+      "$type": "other",
+      "$description": "Soft terracotta blob backdrop. References color.accent.DEFAULT."
+    },
+    "watercolor-wash-sunset": {
+      "$value": "linear-gradient(135deg, #1E2B4D 0%, #3856B0 45%, #C75D2C 100%)",
+      "$type": "other",
+      "$description": "Hero sunset gradient: navy → cobalt → terracotta. References primary + cobalt + accent."
+    },
+    "paper-texture": {
+      "$value": "SVG fractalNoise filter, base 240×240, rgba(0.55,0.45,0.30,0.6) tint",
+      "$type": "other",
+      "$description": "Inline SVG data-URI (no HTTP). See globals.css .paper-texture utility."
+    },
+    "decorative-line": {
+      "$value": "SVG hand-drawn wave, stroke #C75D2C width 2, repeat-x, 200×20",
+      "$type": "other",
+      "$description": "Inline SVG data-URI. References color.accent.DEFAULT."
+    }
+  },
+  "scrollbar": {
+    "width":      { "$value": "8px",     "$type": "dimension" },
+    "track":      { "$value": "#FAF6EC", "$type": "color", "$description": "Alias of color.paper." },
+    "thumb":      { "$value": "#A04420", "$type": "color", "$description": "Alias of color.accent.dark." },
+    "thumbHover": { "$value": "#C75D2C", "$type": "color", "$description": "Alias of color.accent.DEFAULT." }
+  }
+}

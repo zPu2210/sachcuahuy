@@ -1,7 +1,7 @@
 ---
 phase: 1
 title: "Token audit & extraction"
-status: pending
+status: completed
 priority: P2
 effort: "3h"
 dependencies: []

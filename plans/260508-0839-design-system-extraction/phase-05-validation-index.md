@@ -1,7 +1,7 @@
 ---
 phase: 5
 title: "Validation & docs index"
-status: pending
+status: completed
 priority: P2
 effort: "1h"
 dependencies: [1, 3]
